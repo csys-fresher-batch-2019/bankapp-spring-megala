@@ -71,7 +71,7 @@
          <br/>
          <br/>
          Enter  Account Type:<input type="text" name="accType" 
-            placeholder="Enter Account Type" required>
+            placeholder="Enter Account Type" required>(saving,salaried)
          <br/>
          <br/>
          Enter mobile Number:<input type="number" name="mbleNo" maxlength="10"
