@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.dao.TransactionDAO;
-import com.megala.bankapp.dao.impl.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
 import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
@@ -64,6 +64,8 @@ public class BankController {
 		
 		
 }
+	//@GetMapping("/AddBeneficiary")
+	
 	 @GetMapping("/FundTransfer")
 	    public MessageDTO fundTransfer(@RequestParam("accNo") long accNum,@RequestParam("beneAccNo") long beneAccNo,@RequestParam("amount") int amount)  {
 

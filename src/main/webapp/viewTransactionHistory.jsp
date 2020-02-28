@@ -40,7 +40,7 @@ TransactionDAO dao=DAOFactory.getTransactionDAO();
 List<Transaction> c=dao.displayParTransaction(obj);
 %>
 <center>
-<div class="container">
+
 <table border="1" style="border-color:maroon;font-size:20">
 <center>
 <thead><tr><th>Transaction id</th><th>Account Number</th><th>Beneficiary Account Number</th><th>Transaction Date</th><th>Transaction Amount</th><th>status</th></tr></thead>
@@ -62,6 +62,6 @@ for(Transaction card:c){%>
 </tbody>
 </center>
 </table>
-</div>
+
 </center>
 </html>

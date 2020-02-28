@@ -1,6 +1,7 @@
 package com.megala.bankapp.factory;
 
 import com.megala.bankapp.dao.AccountDAO;
+import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.dao.BranchDAO;
 import com.megala.bankapp.dao.CreditCardDAO;
 import com.megala.bankapp.dao.CreditCardTransactionDAO;
@@ -8,7 +9,6 @@ import com.megala.bankapp.dao.CustomerDAO;
 import com.megala.bankapp.dao.LoanDAO;
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.dao.impl.AccountDAOImpl;
-import com.megala.bankapp.dao.impl.BeneficiaryDAO;
 import com.megala.bankapp.dao.impl.BeneficiaryDAOImpl;
 import com.megala.bankapp.dao.impl.BranchDAOImpl;
 import com.megala.bankapp.dao.impl.CreditCardDAOImpl;

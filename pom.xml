@@ -12,6 +12,7 @@
 	<artifactId>citibank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>citibank</name>
+	<packaging>war</packaging>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -66,6 +67,17 @@
    <artifactId>tomcat-embed-jasper</artifactId>
    <version>9.0.31</version>
 </dependency>
+<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

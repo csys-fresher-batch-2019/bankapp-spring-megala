@@ -1,0 +1,12 @@
+language: java
+deploy:
+  provider: cloudfoundry
+  username: megalajeeva1999@gmail.com
+  password: jeevaMEGALA@57
+  api: https://api.run.pivotal.io
+  organization: bankapp-meg
+  space: development
+  manifest: manifest.yml
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install

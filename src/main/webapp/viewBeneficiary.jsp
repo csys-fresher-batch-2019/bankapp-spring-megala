@@ -3,7 +3,7 @@
 
 
 <%@page import="com.megala.bankapp.domain.Beneficiary"%>
-<%@page import="com.megala.bankapp.dao.impl.BeneficiaryDAO"%>
+<%@page import="com.megala.bankapp.dao.BeneficiaryDAO"%>
 <%@page import="com.megala.bankapp.domain.CreditCardTransaction"%>
 <%@page import="java.util.List"%>
 <%@page import="com.megala.bankapp.factory.DAOFactory"%>
