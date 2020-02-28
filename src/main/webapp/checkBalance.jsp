@@ -1,7 +1,7 @@
 
 <!DOCTYPE html5>
-<%@page import="factory.DAOFactory"%>
-<%@page import="creditcard.CreditCardDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.CreditCardDAO"%>
 <html>
 <head>
 <h5><jsp:include page="creditCardPage.jsp"></jsp:include></h5>

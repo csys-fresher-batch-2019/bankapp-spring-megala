@@ -2,10 +2,10 @@
 <!DOCTYPE html5>
 
 
-<%@page import="creditcardtrans.CreditCardTransaction"%>
+<%@page import="com.megala.bankapp.domain.CreditCardTransaction"%>
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="creditcardtrans.CreditCardTransactionDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.CreditCardTransactionDAO"%>
  
 <html>
 <head>

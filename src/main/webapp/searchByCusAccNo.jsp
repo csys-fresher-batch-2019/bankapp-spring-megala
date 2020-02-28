@@ -1,8 +1,8 @@
 <!DOCTYPE html5>
-<%@page import="transaction.Transaction"%>
+<%@page import="com.megala.bankapp.domain.Transaction"%>
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="transaction.TransactionDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.TransactionDAO"%>
 <html>
 <head>
 <h5><jsp:include page="userfeatures.jsp"></jsp:include></h5>

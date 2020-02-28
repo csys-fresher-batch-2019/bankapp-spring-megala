@@ -1,8 +1,8 @@
 
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="beneficiary.Beneficiary"%>
-<%@page import="beneficiary.BeneficiaryDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.domain.Beneficiary"%>
+<%@page import="com.megala.bankapp.dao.impl.BeneficiaryDAO"%>
 <html>
 <head>
 <title>Search by AccNo</title>

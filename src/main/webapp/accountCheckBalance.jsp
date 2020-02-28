@@ -1,8 +1,8 @@
 
 <!DOCTYPE html5>
-<%@page import="account.Account"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="account.AccountDAO"%>
+<%@page import="com.megala.bankapp.domain.Account"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.AccountDAO"%>
 <html>
 <head>
 <h5><jsp:include page="userLogin.jsp"></jsp:include></h5>

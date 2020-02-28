@@ -1,10 +1,10 @@
 
 <!DOCTYPE html5>
  
- <%@page import="transaction.TransactionDAO"%>
-<%@page import="transaction.Transaction"%>
+ <%@page import="com.megala.bankapp.dao.TransactionDAO"%>
+<%@page import="com.megala.bankapp.domain.Transaction"%>
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
 <html>
 <head>
 <title>Transaction Details</title>

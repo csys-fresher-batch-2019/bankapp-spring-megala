@@ -1,7 +1,7 @@
-<%@page import="account.Account"%>
+<%@page import="com.megala.bankapp.domain.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="account.AccountDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.AccountDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html5>

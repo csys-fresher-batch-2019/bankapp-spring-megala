@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="transaction.Transaction"%>
-<%@page import="transaction.TransactionDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.domain.Transaction"%>
+<%@page import="com.megala.bankapp.dao.TransactionDAO"%>
 <html>
 <head>
 <h5><jsp:include page="userfeatures.jsp"></jsp:include></h5>

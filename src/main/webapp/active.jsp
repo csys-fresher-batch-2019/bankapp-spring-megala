@@ -1,7 +1,7 @@
-<%@page import="account.Account"%>
+<%@page import="com.megala.bankapp.domain.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="factory.DAOFactory"%>
-<%@page import="account.AccountDAO"%>
+<%@page import="com.megala.bankapp.factory.DAOFactory"%>
+<%@page import="com.megala.bankapp.dao.AccountDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
