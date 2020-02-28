@@ -14,12 +14,13 @@ font-family: cursive;
 text-align: center;
 font-family:cursive;
 font-size:30;
+color:white;
 }
 .b{
-font-size:20;
+font-size:22;
 font-style: italic;
 font-family: cursive;
-color:purple;
+color:white;
 }
 .c{
 font-size:20px;
@@ -61,7 +62,7 @@ placeholder="Enter password" required>
 <br/>
 <button type="submit" class="c" data-toggle="button" aria-pressed="false">
  Submit
-</button><br/>
+</button><a href="Register.jsp" class="b">New User?</a><br/>
 <a href="BankLogin.jsp" class="c">Back</a>
 <br/>
 <br/>

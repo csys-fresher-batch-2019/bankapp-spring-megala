@@ -17,9 +17,9 @@ public static Connection getconnection() throws Exception{
 		} catch (Exception e) {
 			LOGGER.error(e);
 		}
-		String server="13.235.147.120";
-		String userName="megala";
-		String password="megala";
+		String server="localhost";
+		String userName="system";
+		String password="oracle";
 		return DriverManager.getConnection("jdbc:oracle:thin:@"+server+":1521:XE", userName, password);
 		
 }}

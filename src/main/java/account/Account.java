@@ -1,11 +1,13 @@
 package account;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable{
 	private int customerId;
 	private long accNo;
 	private String accType;
 	private int availableBalance;
-	private String status;
+	transient private String status;
 	public int getCustomerId() {
 		return customerId;
 	}

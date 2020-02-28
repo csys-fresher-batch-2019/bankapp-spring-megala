@@ -129,7 +129,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 	public List<Beneficiary> displayParBeneficiary(long cusAccNo) {
 		List<Beneficiary> b= new ArrayList<>();
 
-		String sql ="select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list where acc_number=?";
+		String sql ="select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where acc_number=?";
 		LOGGER.info(sql);
 
 		try(
@@ -143,13 +143,19 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			String beneficiaryName = rows.getString("beneficiary_name");
 			long accNo = rows.getLong("acc_no_1");
 			String iFSCCode=rows.getString("IFSC_code");
+			int amount=rows.getInt("balance");
+			String comment=rows.getString("status");
 			LOGGER.getInput(beneficiaryName);
 			LOGGER.getInput(accNo);
 			LOGGER.getInput(iFSCCode);
+			LOGGER.getInput(amount);
+			LOGGER.getInput(comment);
 			Beneficiary bene=new Beneficiary();
 			bene.setBeneficiaryName(beneficiaryName);
 			bene.setAccNo(accNo);
 			bene.setiFSCCode(iFSCCode);
+			bene.setAmount(amount);
+			bene.setComments(comment);
 			b.add(bene);
 		}
 		}

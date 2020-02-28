@@ -41,7 +41,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 	public List<CreditCardTransaction> displayCreditCardPaymentList() {
 		List<CreditCardTransaction> c= new ArrayList<>();
 
-		String sql ="select transaction_id,card_id,amount,description_1,transaction_date,status,created_date from credit_card_transaction";
+		String sql ="select transaction_id,card_id,amount,description_1,transaction_date,status,created_date from credit_card_transaction order by transaction_id DESC";
 		LOGGER.info(sql);
 
 		try(Connection con = ConnectionUtil.getconnection();

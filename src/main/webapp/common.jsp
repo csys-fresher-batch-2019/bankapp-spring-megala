@@ -56,9 +56,7 @@ color:black;
       <li class="nav-item">
         <a class="nav-link" href="accountCheckBalance.jsp">Balance</a>
    </li>
-   <li class="nav-item">
-        <a class="nav-link" href="creditcard.jsp">Credit Card</a>
-        </li>
+  
     </ul>
 	<%}%> 
 	 

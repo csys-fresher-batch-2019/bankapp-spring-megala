@@ -30,7 +30,7 @@ color:purple;
 font-size:19;
 font-style: italic;
 font-family: cursive;
-
+color:red;
 }
 input[type="text"] {
   font-family:cursive;

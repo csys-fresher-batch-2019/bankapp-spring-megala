@@ -28,7 +28,7 @@ font-style: italic;
 font-size:20;
 font-family:monospace;
 font-style: italic;
-color: black;
+color: navy;
 }
 input[type="number"] {
 
@@ -36,6 +36,9 @@ font-style: italic;
   font-size: 16px;
   color:blue;
 }
+body{
+background-attachment: fixed;
+background-size:110%; }
 </style><body class="a">
 <body background="assets/images/side.jpg">
 <form action="searchByCardId.jsp">

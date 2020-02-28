@@ -5,6 +5,20 @@ public class Beneficiary {
 	private String beneficiaryName;
 	private long accNo;
 	private String iFSCCode;
+	private int amount;
+	private String comments;
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 	public String getBeneficiaryName() {
 		return beneficiaryName;
 	}

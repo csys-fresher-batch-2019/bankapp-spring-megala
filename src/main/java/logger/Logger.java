@@ -15,7 +15,7 @@ public class Logger {
 	public void debug(Object message) {
 		Logger.log(message);
 	}
-	public void info(Object message) {
+	public  void info(Object message) {
 		Logger.log(message);
 	}
 	public void error(Object message) {

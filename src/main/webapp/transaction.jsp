@@ -56,6 +56,7 @@ Enter AccNo:<input type="number" name="accNo">
 List<Transaction> t=dao.displayTransaction(); %>
 <center>
 <br/>
+
 <table border="1" style="border-color:maroon;font-size:24;font-style: italic;color:navy;">
 <thead class="b"><tr><th>TransactionId</th><th>AccountNo</th><th>BeneficiaryAccNo</th><th>TransactionDate</th><th>TransactionAmount</th><th>Status</th></tr></thead>
 <tbody>

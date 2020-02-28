@@ -27,7 +27,7 @@ input[type="number"] {
 Enter AccNo:<input type="number" name="accNo" placeholder="Account Number" required autofocus>
 <br/>
 <br/>
-Enter amount:<input type="number" name="price" placeholder="amount please" required>
+Enter amount:<input type="number" name="price" placeholder="amount" required>
         <br/>
         <br/>
         <%String errorMessage=(String)request.getAttribute("output");

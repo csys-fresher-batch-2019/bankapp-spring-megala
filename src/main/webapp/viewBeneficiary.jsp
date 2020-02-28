@@ -61,7 +61,7 @@ List<Beneficiary> c=dao.displayParBeneficiary(obj);
 <center>
 <table border="1" style="border-color:maroon;font-size:24;font-style:italic;">
 
-<thead><tr><th>Beneficiary Name</th><th>Account Number</th><th>IFSC code</th></tr></thead>
+<thead><tr><th>Beneficiary Name</th><th>Account Number</th><th>IFSC code</th><th>Amount</th><th>Status</th></tr></thead>
 <tbody>
 <%
 for(Beneficiary card:c){%>
@@ -69,6 +69,9 @@ for(Beneficiary card:c){%>
 <td><%=card.getBeneficiaryName()%></td>
 <td><%=card.getAccNo()%></td>
 <td><%=card.getiFSCCode()%></td>
+<td><%=card.getAmount()%></td>
+<td><%=card.getComments()%></td>
+
 </tr>
 <%}
 %>

@@ -74,8 +74,8 @@
             placeholder="Enter Account Type" required>(saving,salaried)
          <br/>
          <br/>
-         Enter mobile Number:<input type="number" name="mbleNo" maxlength="10"
-            placeholder="Enter mobile Number" required>
+         Enter mobile Number:<input type="text" name="mbleNo" 
+            placeholder="Enter mobile Number" required maxlength="10" pattern="\d{10}">
          <br/>
          <br/>
          Enter Email:<input type="text" name="email" 
@@ -88,11 +88,10 @@
          <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false">
          Submit
          </button>
+         <a href="User.jsp" class="c">Already Registered?</a>
          <br/>
          <br/>
-         <a href="BankLogin.jsp" class="c">Back</a>
-         <br/>
-         <br/>
+       
       </body>
    </form>
    </body>

@@ -37,7 +37,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public List<Transaction> displayTransaction() {
 		List<Transaction> t= new ArrayList<>();
 
-		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details";
+		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details order by transaction_id DESC";
 		LOGGER.info(sql);
 
 		try(Connection con = ConnectionUtil.getconnection();

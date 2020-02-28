@@ -47,9 +47,7 @@ body{
       <li class="nav-item">
         <a class="nav-link" href="Register.jsp">Register</a>
       </li> 
-       <li class="nav-item">
-        <a class="nav-link" href="BankLogin.jsp">Logout</a>
-      </li> 
+
     </ul>
   </div>  
 </nav>
