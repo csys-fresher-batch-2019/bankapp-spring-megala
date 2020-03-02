@@ -9,11 +9,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.megala.bankapp.dao.CreditCardDAO;
 import com.megala.bankapp.domain.CreditCard;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
-
+@Repository
 public class CreditCardDAOImpl implements CreditCardDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 

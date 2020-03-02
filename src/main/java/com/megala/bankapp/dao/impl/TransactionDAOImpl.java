@@ -10,11 +10,13 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
-
+@Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 

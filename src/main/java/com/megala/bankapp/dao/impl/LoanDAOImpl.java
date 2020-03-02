@@ -7,13 +7,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.megala.bankapp.dao.LoanDAO;
 import com.megala.bankapp.domain.Loan;
 import com.megala.bankapp.domain.LoanStatusEnum;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
 
-
+@Repository
 public class LoanDAOImpl implements LoanDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	public void addLoan(Loan loan)  {

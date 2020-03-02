@@ -2,12 +2,14 @@ package com.megala.bankapp.validator;
 
 import java.time.LocalDate;
 
-import com.megala.bankapp.exception.ValidateException;
+import org.springframework.stereotype.Component;
 
+import com.megala.bankapp.exception.ValidateException;
+@Component
 public class CreditCardValidator {
-	private CreditCardValidator() {
-		throw new IllegalStateException("Utility class");
-	}
+//	private CreditCardValidator() {
+//		throw new IllegalStateException("Utility class");
+//	}
 	
 	public static boolean validateCreditCard(long creditCardNo,LocalDate expiryDate,int cvvNo) throws ValidateException {
 		if(Long.toString(creditCardNo).length()<16 || Long.toString(creditCardNo).length()>16) {

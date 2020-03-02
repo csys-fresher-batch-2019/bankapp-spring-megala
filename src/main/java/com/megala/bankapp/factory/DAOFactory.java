@@ -1,5 +1,7 @@
 package com.megala.bankapp.factory;
 
+import org.springframework.stereotype.Component;
+
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.dao.BranchDAO;
@@ -16,12 +18,12 @@ import com.megala.bankapp.dao.impl.CreditCardTransactionDAOImpl;
 import com.megala.bankapp.dao.impl.CustomerDAOImpl;
 import com.megala.bankapp.dao.impl.LoanDAOImpl;
 import com.megala.bankapp.dao.impl.TransactionDAOImpl;
-
+@Component
 public class DAOFactory {
-	private DAOFactory() {
-		throw new IllegalStateException("Utility class");
-	}
-
+//	private DAOFactory() {
+//		throw new IllegalStateException("Utility class");
+//	}
+//
 	public static BranchDAO getBranchDAO() {
 		
 		return new BranchDAOImpl();

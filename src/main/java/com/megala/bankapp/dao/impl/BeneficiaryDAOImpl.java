@@ -7,11 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
-
+@Repository
 public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 

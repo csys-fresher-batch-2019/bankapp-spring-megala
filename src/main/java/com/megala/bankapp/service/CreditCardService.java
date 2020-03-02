@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.Types;
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Service;
+
 import com.megala.bankapp.dao.CreditCardDAO;
 import com.megala.bankapp.domain.CreditCard;
 import com.megala.bankapp.domain.Customer;
@@ -16,12 +18,11 @@ import com.megala.bankapp.factory.DAOFactory;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
 import com.megala.bankapp.validator.CreditCardValidator;
-
-
+@Service
 public class CreditCardService {
-	 private CreditCardService() {
-	    throw new IllegalStateException("Utility class");
-	  }
+//	 private CreditCardService() {
+//	    throw new IllegalStateException("Utility class");
+//	  }
 
 	private static final Logger LOGGER = Logger.getInstance();
 

@@ -3,11 +3,13 @@ package com.megala.bankapp.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.springframework.stereotype.Component;
+@Component
 public class ConnectionUtil {
 	private static final  Logger LOGGER = Logger.getInstance();
-	private ConnectionUtil() {
-		throw new IllegalStateException("Utility class");
-	}
+//	private ConnectionUtil() {
+//		throw new IllegalStateException("Utility class");
+//	}
 public static Connection getconnection() throws Exception{
 		
 		try {

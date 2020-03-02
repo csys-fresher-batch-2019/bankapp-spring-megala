@@ -14,6 +14,6 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.megala.citibank")).paths(PathSelectors.any()).build();
+				.apis(RequestHandlerSelectors.basePackage("com.megala.bankapp")).paths(PathSelectors.any()).build();
 	}
 }

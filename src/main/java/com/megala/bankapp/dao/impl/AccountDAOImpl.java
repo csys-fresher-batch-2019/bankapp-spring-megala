@@ -7,11 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
 import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
-
+@Repository
 public class AccountDAOImpl implements AccountDAO {
 	
 	private static final Logger LOGGER = Logger.getInstance();
