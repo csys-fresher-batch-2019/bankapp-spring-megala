@@ -6,8 +6,11 @@ import com.megala.bankapp.domain.Branch;
 
 public interface BranchDAO {
 	void addBranch(Branch branch);
-    List<Branch> list() ;
-    void updateBranch(String name,int id) ;
-    void delete(int id) ;
-    
+
+	List<Branch> list();
+
+	void updateBranch(String name, int id);
+
+	void delete(int id);
+
 }

@@ -8,9 +8,9 @@ public class PaymentResponse {
 	}
 
 	private boolean status;
-	
+
 	private Integer transactionId;
-	
+
 	private long accountNo;
 
 	public Integer getTransactionId() {

@@ -1,4 +1,5 @@
 package com.megala.bankapp.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

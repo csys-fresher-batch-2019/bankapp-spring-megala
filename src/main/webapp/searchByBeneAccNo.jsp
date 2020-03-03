@@ -9,35 +9,44 @@
 <h5><jsp:include page="userLogin.jsp"></jsp:include></h5>
 </head>
 <style>
-.a{
-font-size:20;
-font-family:monospace;
-font-style: italic;
-color:navy;
-}</style>
+.a {
+	font-size: 20;
+	font-family: monospace;
+	font-style: italic;
+	color: navy;
+}
+</style>
 <body class="a">
 
 
-<%
-BeneficiaryDAO dao = DAOFactory.getBeneficiaryDAO();
-String obj=request.getParameter("name");
-List<Beneficiary> b=dao.searchByBeneficiaryName(obj);
-%><center>
-<table border="1" style="border-color:maroon;font-size:20;font-family: monospace;font-style: italic;color:black;"
->
-<thead><tr><th>Beneficiary Name</th><th>Account Number</th><th>IFSC code</th></tr></thead>
-<tbody class="a">
-<%
-for(Beneficiary card:b){%>
-<tr>
-<td><%=card.getBeneficiaryName()%></td>
-<td><%=card.getAccNo()%></td>
-<td><%=card.getiFSCCode()%></td>
-</tr>
-<%}
-%>
-</tbody>
-</center>
-</table>
+	<%
+		BeneficiaryDAO dao = DAOFactory.getBeneficiaryDAO();
+		String obj = request.getParameter("name");
+		List<Beneficiary> b = dao.searchByBeneficiaryName(obj);
+	%><center>
+		<table border="1"
+			style="border-color: maroon; font-size: 20; font-family: monospace; font-style: italic; color: black;">
+			<thead>
+				<tr>
+					<th>Beneficiary Name</th>
+					<th>Account Number</th>
+					<th>IFSC code</th>
+				</tr>
+			</thead>
+			<tbody class="a">
+				<%
+					for (Beneficiary card : b) {
+				%>
+				<tr>
+					<td><%=card.getBeneficiaryName()%></td>
+					<td><%=card.getAccNo()%></td>
+					<td><%=card.getiFSCCode()%></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+			</center>
+		</table>
 </body>
 </html>

@@ -7,31 +7,37 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.BranchDAO;
 import com.megala.bankapp.domain.Branch;
-import com.megala.bankapp.util.ConnectionUtil;
-import com.megala.bankapp.util.Logger;
+
 @Repository
 public class BranchDAOImpl implements BranchDAO {
-	private static final Logger LOGGER = Logger.getInstance();
-
+	//private static final Logger LOGGER = Logger.getInstance();
+	private static final Logger logger =LoggerFactory.getLogger(BranchDAOImpl.class);
+	@Autowired
+	private DataSource dataSource;
 	public void addBranch(Branch branch) {
 		String sql = "insert into branch(branch_id,branch_name,branch_city)values(?,?,?)";
-		LOGGER.info(sql);
+		logger.info(sql);
 		try (
-			Connection con = ConnectionUtil.getconnection();
+			Connection con = dataSource.getConnection();
 			PreparedStatement pst = con.prepareStatement(sql)){
 			pst.setInt(1, branch.getId());
 			pst.setString(2, branch.getName());
 			pst.setString(3, branch.getCity());
 
 			int rows = pst.executeUpdate();
-			LOGGER.info("no of rows inserted:" + rows);
+			logger.debug("no of rows inserted:" + rows);
 		} catch (Exception e) {
 		
-			LOGGER.error(e);
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -40,9 +46,9 @@ public class BranchDAOImpl implements BranchDAO {
 		List<Branch> b = new ArrayList<>();
 
 		String sql = "select branch_id,branch_name,branch_city from branch";
-		LOGGER.info(sql);
+		logger.info(sql);
 
-		try(Connection con = ConnectionUtil.getconnection();
+		try(Connection con = dataSource.getConnection();
 		Statement stmt = con.createStatement()){
 		try(ResultSet rows = stmt.executeQuery(sql)){
 
@@ -50,7 +56,7 @@ public class BranchDAOImpl implements BranchDAO {
 			int id = rows.getInt("branch_id");
 			String name = rows.getString("branch_name");
 			String city = rows.getString("branch_city");
-			LOGGER.debug("id:"+id+",name:"+name+",city:"+city);
+			logger.debug("id:"+id+",name:"+name+",city:"+city);
 			Branch branch=new Branch();
 			branch.setId(id);
 			branch.setName(name);
@@ -59,42 +65,42 @@ public class BranchDAOImpl implements BranchDAO {
 		}
 		}
 		}catch(Exception e) {
-			LOGGER.error(e);
+			logger.error(e.getMessage());
 		}
 		return b;
 	}
 
 	public void updateBranch(String name, int id){
 		String sql = "update branch set branch_name=? where branch_id=?";
-		LOGGER.info(sql);
+		logger.info(sql);
 
-		try(Connection con = ConnectionUtil.getconnection();
+		try(Connection con = dataSource.getConnection();
 		PreparedStatement pst = con.prepareStatement(sql)){
 		pst.setString(1, name);
 		pst.setInt(2, id);
 
 		int rows = pst.executeUpdate();
-		LOGGER.info("no of rows updated:"+rows);
+		logger.info("no of rows updated:"+rows);
 	}
 		catch(Exception e) {
-			LOGGER.error(e);
+			logger.error(e.getMessage());
 		}
 	}
 
 	public void delete(int id) {
 		String sql = "delete from branch where branch_id=?";
-		LOGGER.info(sql);
+		logger.info(sql);
 		
 		try (
-			Connection con = ConnectionUtil.getconnection();
+			Connection con = dataSource.getConnection();
 			PreparedStatement pst = con.prepareStatement(sql)){
 			pst.setInt(1,id);
 
 			int rows = pst.executeUpdate();
-			LOGGER.info("no of rows deleted:" + rows);
+			logger.info("no of rows deleted:" + rows);
 		} catch (Exception e) {
 			
-			LOGGER.error(e);
+			logger.error(e.getMessage());
 		}
 
 	}

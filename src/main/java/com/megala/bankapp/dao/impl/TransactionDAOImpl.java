@@ -10,19 +10,22 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
-import com.megala.bankapp.util.ConnectionUtil;
 import com.megala.bankapp.util.Logger;
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	private static final Logger LOGGER = Logger.getInstance();
-
+	@Autowired
+	private DataSource dataSource;
 	public void addTransaction(Transaction transaction)  {
 		try 
-			(Connection con = ConnectionUtil.getconnection();
+			(Connection con = dataSource.getConnection();
 				CallableStatement pst=con.prepareCall("{call fund_transfer_procedure(?,?,?,?,?)}")){
 
 			pst.setInt(1, transaction.getTransactionId());
@@ -44,7 +47,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details order by transaction_id DESC";
 		LOGGER.info(sql);
 
-		try(Connection con = ConnectionUtil.getconnection();
+		try(Connection con = dataSource.getConnection();
 		Statement stmt = con.createStatement()){
 		try(ResultSet rows = stmt.executeQuery(sql)){
 
@@ -83,7 +86,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		String sql = "update transaction_details set transaction_amount=? where beneficiary_acc_no=?";
 		LOGGER.info(sql);
 
-		try(Connection con = ConnectionUtil.getconnection();
+		try(Connection con = dataSource.getConnection();
 		PreparedStatement pst = con.prepareStatement(sql)){
 		pst.setInt(1, transactionAmount);
 		pst.setLong (2, beneficiaryAccNo);
@@ -100,7 +103,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		LOGGER.info(sql);
 		
 		try 
-			(Connection con = ConnectionUtil.getconnection();
+			(Connection con = dataSource.getConnection();
 			PreparedStatement pst = con.prepareStatement(sql)){
 			pst.setLong(1,beneficiaryAccNo);
 
@@ -112,6 +115,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		}
 
 	}
+
 	public List<Transaction> displayParTransaction(long accNo) {
 		List<Transaction> t= new ArrayList<>();
 
@@ -119,7 +123,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		LOGGER.info(sql);
 
 		try 
-		(Connection con = ConnectionUtil.getconnection();
+		(Connection con = dataSource.getConnection();
 		PreparedStatement pst = con.prepareStatement(sql)){
 		pst.setLong(1,accNo);
 		try(ResultSet rows = pst.executeQuery()){

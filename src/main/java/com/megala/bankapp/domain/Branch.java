@@ -4,13 +4,14 @@ public class Branch {
 	private int id;
 	private String name;
 	private String city;
+
 	public void setId(int id) throws IllegalAccessException {
-		if(id<0) {
+		if (id < 0) {
 			throw new IllegalAccessException("invalid number");
 		}
-		this.id=id;
-		}
-	
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -30,6 +31,5 @@ public class Branch {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
-	
+
 }

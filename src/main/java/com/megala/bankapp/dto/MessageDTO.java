@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class MessageDTO {
-   	private String errorMessage;
-	
+	private String errorMessage;
+
 	private String infoMessage;
 
 	public String getErrorMessage() {

@@ -49,9 +49,9 @@ Enter CardId:<input type="number" name="number">
          Submit
          </button></form>
 </body>
-<% 
-CreditCardTransactionDAO  dao=DAOFactory.getCreditCardTransactionDAO();
-List<CreditCardTransaction> c=dao.displayCreditCardPaymentList();
+<%
+	CreditCardTransactionDAO dao = DAOFactory.getCreditCardTransactionDAO();
+	List<CreditCardTransaction> c = dao.displayCreditCardPaymentList();
 %>
 <center>
 <table border="1" style="border-color:maroon;font-size:20;font-family:monospace; italic;color:black">
