@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html5>
 <html>
 <head>
@@ -54,11 +55,10 @@ input[type="password"] {
 </style>
 <form action="bankLoginServlet" class="a" method="post">
 	<body background="assets/images/adminl.jpg">
-		<%String errorMessage=(String)request.getAttribute("error message");
-if(errorMessage!=null)
-{%>
-		<font color="red" style="font-size: 20px"><%=errorMessage %></font>
-		<%} %>
+	
+		<c:if test="${not empty error message}">
+			<font color="red" style="font-style: normal" " class="a">${error message}
+		</c:if>
 		<br /> Enter Username:
 		<input type="text" name="name" placeholder="Enter Username" required
 			autofocus>

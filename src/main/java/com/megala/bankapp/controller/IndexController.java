@@ -1,27 +1,9 @@
 package com.megala.bankapp.controller;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.megala.bankapp.domain.Customer;
-import com.megala.bankapp.domain.Register;
-import com.megala.bankapp.domain.Transaction;
-import com.megala.bankapp.dto.MessageDTO;
-import com.megala.bankapp.dto.PaymentResponse;
-import com.megala.bankapp.service.CreditCardService;
 
 @Controller
 public class IndexController {
