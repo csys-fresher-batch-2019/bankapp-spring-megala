@@ -38,22 +38,26 @@ body {
 	font-family: cursive;
 	color: red;
 }
-
+#accType{
+font-family: cursive;
+	font-size: 18px;
+	color: blue;
+}
 input[type="text"] {
 	font-family: cursive;
-	font-size: 14px;
+	font-size: 18px;
 	color: blue;
 }
 
 input[type="password"] {
 	font-family: cursive;
-	font-size: 14px;
+	font-size: 18px;
 	color: blue;
 }
 
 input[type="number"] {
 	font-family: cursive;
-	font-size: 14px;
+	font-size: 18px;
 	color: blue;
 }
 </style>
@@ -81,8 +85,10 @@ input[type="number"] {
 			required>
 		<br />
 		<br /> Enter Account Type:
-		<input type="text" name="accType" placeholder="Enter Account Type"
-			required>(saving,salaried)
+		<select id="accType" name="accType">
+			<option value="saving">saving</option>
+			<option value="salaried">salaried</option>
+		</select>
 		<br />
 		<br /> Enter mobile Number:
 		<input type="text" name="mbleNo" placeholder="Enter mobile Number"

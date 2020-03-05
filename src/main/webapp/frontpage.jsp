@@ -51,15 +51,15 @@ body {
 				<li class="nav-item"><a class="nav-link"
 					href="addBeneficiary.jsp">Add beneficiary</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="viewBeneficiary.jsp">Beneficiaries</a></li>
+					href="ListBeneficiaryDetailsServlet">Beneficiaries</a></li>
 				<li></li>
 				<li></li>
 				<li class="nav-item"><a class="nav-link"
 					href="fundTransfer.jsp">Fund Transfer</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="viewTransactionHistory.jsp">Transactions</a></li>
+					href="ListFundTransferDetailsServlet">Transactions</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="accountCheckBalance.jsp">Balance</a></li>
+					href="balanceServlet">Balance</a></li>
 			</ul>
 			<%
 				}

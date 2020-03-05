@@ -18,6 +18,8 @@ public interface AccountDAO {
 	public void displayAccount1(int id);
 
 	public int displayBalance(long accNo);
+	
+	public String status(long accNo);
 
 	public int activeAccount(long accNo, String status);
 }

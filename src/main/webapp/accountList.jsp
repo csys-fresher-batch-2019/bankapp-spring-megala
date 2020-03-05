@@ -1,4 +1,5 @@
 <!DOCTYPE html5>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.megala.bankapp.domain.Account"%>
 <%@page import="java.util.List"%>
 <%@page import="com.megala.bankapp.factory.DAOFactory"%>
@@ -46,14 +47,15 @@ input[type="number"] {
 }
 </style>
 <body class="a">
-	<form action="searchByAccNo.jsp">
+	<form action="ListAccountDetailsServlet">
 		Search <br /> Enter AccNo:<input type="number" name="number">
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>
 	</form>
 	<%
-		AccountDAO dao = DAOFactory.getAccountDAO();
-		List<Account> a = dao.displayAcc();
+		
+		ArrayList<Account> a = (ArrayList)request.getAttribute("accountList");
+
 	%>
 	<center>
 		<table border="1"

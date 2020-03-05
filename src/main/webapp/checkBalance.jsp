@@ -15,7 +15,6 @@
 }
 </style>
 <body class="a">
-	<center>
 		<marquee>
 			<h2>
 				<p
@@ -29,6 +28,5 @@
 			float c = dao.displayBalance(cardNo);
 		%>
 		<br /> <br /> Rs.<%=c%>
-	</center>
 </body>
 </html>

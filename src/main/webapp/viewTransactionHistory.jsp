@@ -1,6 +1,7 @@
 
 <!DOCTYPE html5>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.megala.bankapp.dao.TransactionDAO"%>
 <%@page import="com.megala.bankapp.domain.Transaction"%>
 <%@page import="java.util.List"%>
@@ -23,6 +24,7 @@ h3 {
 
 body {
 	font-size: 20;
+	
 }
 
 input[type="number"] {
@@ -43,13 +45,12 @@ input[type="text"] {
 <body>
 </body>
 <%
-	TransactionDAO dao = DAOFactory.getTransactionDAO();
-	List<Transaction> c = dao.displayParTransaction(obj);
-%>
-<center>
+ArrayList<Transaction> c =(ArrayList)request.getAttribute("fundTransfer"); 
 
-	<table border="1" style="border-color: maroon; font-size: 20">
-		<center>
+%>
+	
+	<div class="container">
+	<table border="1" style="border-color: maroon; font-size: 20;color:black">
 			<thead>
 				<tr>
 					<th>Transaction id</th>
@@ -78,8 +79,7 @@ input[type="text"] {
 					}
 				%>
 			</tbody>
-		</center>
-	</table>
 
-</center>
+	</table>
+</div>
 </html>

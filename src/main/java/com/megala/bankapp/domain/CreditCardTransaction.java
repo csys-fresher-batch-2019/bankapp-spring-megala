@@ -4,6 +4,13 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class CreditCardTransaction {
+	@Override
+	public String toString() {
+		return "CreditCardTransaction [cardId=" + cardId + ", transactionId=" + transactionId + ", amount=" + amount
+				+ ", transactionDate=" + transactionDate + ", status=" + status + ", merchantId=" + merchantId
+				+ ", createdDate=" + createdDate + "]";
+	}
+
 	private long cardId;
 	private int transactionId;
 	private float amount;

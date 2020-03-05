@@ -104,7 +104,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 
 	public List<Beneficiary> searchByBeneficiaryName(String name) {
 		List<Beneficiary> a = new ArrayList<>();
-		String sql = "select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list where beneficiary_name=?";
+		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where beneficiary_name=?";
 		logger.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, name);
@@ -113,13 +113,19 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String beneName = rows.getString("beneficiary_name");
 					long accNumber = rows.getLong("acc_no_1");
 					String ifsc = rows.getString("IFSC_code");
+					int balance=rows.getInt("balance");
+					String status=rows.getString("status");
 					logger.debug("beneName"+beneName);
 					logger.debug("accNumber"+accNumber);
 					logger.debug("ifsc"+ifsc);
+					logger.debug("balance"+balance);
+					logger.debug("comments"+status);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneName);
 					bene.setAccNo(accNumber);
 					bene.setiFSCCode(ifsc);
+					bene.setAmount(balance);
+					bene.setComments(status);
 					a.add(bene);
 
 				}

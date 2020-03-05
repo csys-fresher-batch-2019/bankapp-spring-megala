@@ -204,4 +204,22 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		return availableBalance;
 	}
+	public String status(long accNo) {
+		String sql = "select status from account_details where acc_no=?";
+		logger.info(sql);
+		String status=null;
+		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setLong(1, accNo);
+			try (ResultSet rows = pst.executeQuery()) {
+				if (rows.next()) {
+					status = rows.getString("status");
+
+					logger.debug("Balance"+status);
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return status;
+	}
 }

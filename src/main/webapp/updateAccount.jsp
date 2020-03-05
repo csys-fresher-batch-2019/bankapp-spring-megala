@@ -24,7 +24,7 @@ input[type="number"] {
 }
 </style>
 <body class="a">
-	<form action="update.jsp">
+	<form action="updateAmountServlet">
 		<br /> Enter AccNo:<input type="number" name="accNo"
 			placeholder="Account Number" required autofocus> <br /> <br />
 		Enter amount:<input type="number" name="price" placeholder="amount"

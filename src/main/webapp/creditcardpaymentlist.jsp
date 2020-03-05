@@ -2,6 +2,7 @@
 <!DOCTYPE html5>
 
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.megala.bankapp.domain.CreditCardTransaction"%>
 <%@page import="java.util.List"%>
 <%@page import="com.megala.bankapp.factory.DAOFactory"%>
@@ -41,7 +42,7 @@ background-attachment: fixed;
 background-size:110%; }
 </style><body class="a">
 <body background="assets/images/side.jpg">
-<form action="searchByCardId.jsp">
+<form action="ListCreditCardTransactionServlet">
 <bold>Search</bold>
 <br/>
 Enter CardId:<input type="number" name="number">
@@ -50,8 +51,7 @@ Enter CardId:<input type="number" name="number">
          </button></form>
 </body>
 <%
-	CreditCardTransactionDAO dao = DAOFactory.getCreditCardTransactionDAO();
-	List<CreditCardTransaction> c = dao.displayCreditCardPaymentList();
+	ArrayList<CreditCardTransaction> c = (ArrayList)request.getAttribute("list");
 %>
 <center>
 <table border="1" style="border-color:maroon;font-size:20;font-family:monospace; italic;color:black">

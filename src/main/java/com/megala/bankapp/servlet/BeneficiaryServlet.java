@@ -10,14 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
-import com.megala.bankapp.factory.DAOFactory;
 
 @SuppressWarnings("serial")
 @WebServlet("/BeneficiaryServlet")
 public class BeneficiaryServlet extends HttpServlet {
-
+	@Autowired
+	BeneficiaryDAO c;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String cusAcc = request.getParameter("acc");
@@ -33,7 +35,6 @@ public class BeneficiaryServlet extends HttpServlet {
 		b.setiFSCCode(ifscNo);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("beneName", beneficiaryName);
-		BeneficiaryDAO c = DAOFactory.getBeneficiaryDAO();
 		int a = c.addBeneficiary(b);
 		System.out.println(a);
 		if (a == 1) {

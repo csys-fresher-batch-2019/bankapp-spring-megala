@@ -44,12 +44,12 @@ body {
 			<% if(user!=null){%>
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
-					href="creditcardpaymentlist.jsp">CreditCard Transactions</a></li>
-				<li class="nav-item"><a class="nav-link" href="accountList.jsp">Account
+					href="ListCreditCardTransactionServlet">CreditCard Transactions</a></li>
+				<li class="nav-item"><a class="nav-link" href="ListAccountDetailsServlet">Account
 						Details</a></li>
 				<li></li>
 				<li></li>
-				<li class="nav-item"><a class="nav-link" href="transaction.jsp">Account
+				<li class="nav-item"><a class="nav-link" href="ListAccountTransactionServlet">Account
 						Transactions</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="activeAccount.jsp">Active/Deactive Account</a></li>

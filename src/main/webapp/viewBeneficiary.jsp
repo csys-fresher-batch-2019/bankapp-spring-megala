@@ -2,6 +2,7 @@
 <!DOCTYPE html5>
 
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.megala.bankapp.domain.Beneficiary"%>
 <%@page import="com.megala.bankapp.dao.BeneficiaryDAO"%>
 <%@page import="com.megala.bankapp.domain.CreditCardTransaction"%>
@@ -29,6 +30,8 @@ h3 {
 	font-size: 20;
 	font-family: monospace;
 	font-style: italic;
+	text-align:center;
+	
 }
 
 .b {
@@ -55,20 +58,20 @@ input[type="text"] {
 	Long obj = (Long) session.getAttribute("accNumber");
 %>
 <body class="a">
-	<form action="searchByBeneAccNo.jsp">
+	<form action="ListBeneficiaryDetailsServlet">
 		Search <br /> Enter Beneficiary Name:<input type="text" name="name">
 		<button type="submit" class="b">Submit</button>
 	</form>
-</body>
-<%
-	BeneficiaryDAO dao = DAOFactory.getBeneficiaryDAO();
-	List<Beneficiary> c = dao.displayParBeneficiary(obj);
-%>
-<center>
-	<table border="1"
-		style="border-color: maroon; font-size: 24; font-style: italic;">
 
-		<thead>
+<%
+	ArrayList<Beneficiary> c =(ArrayList)request.getAttribute("bene"); 
+%>
+	<div class="container">
+
+	<table border="1"
+		style="border-color: maroon; font-size: 24; font-style: italic;text-align:center;">
+
+		<thead class="a">
 			<tr>
 				<th>Beneficiary Name</th>
 				<th>Account Number</th>
@@ -94,5 +97,6 @@ input[type="text"] {
 			%>
 		</tbody>
 	</table>
-</center>
+	</div>
+	</body>
 </html>

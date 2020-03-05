@@ -16,9 +16,13 @@
 	font-family: monospace;
 	font-style: italic;
 	color: navy;
-	text-align: center;
+	text-align:center;
 }
-
+#status{
+font-family: cursive;
+	font-size: 20px;
+	color: blue;
+}
 input[type="text"] {
 	font-family: cursive;
 	font-size: 18px;
@@ -32,17 +36,22 @@ input[type="number"] {
 }
 </style>
 <body class="a">
-	<form action="active.jsp">
+	<form action="activeServlet">
 		<br /> Enter AccNo:<input type="number" name="accNo"
 			placeholder="Account Number" required autofocus> <br /> <br />
-		Enter Status:<input type="text" name="status" placeholder="Status"
-			required> <br /> <br />
-		<%String errorMessage=(String)request.getAttribute("output");
-            if(errorMessage!=null)
-            {%>
-		<font color="red" style="font-size: 20px"><%=errorMessage %></font>
-		<%} %>
-		<br /> <br />
+		Enter Status:<select id="status" name="status">
+			<option value="active">Active</option>
+			<option value="inactive">InActive</option>
+		</select><br /> <br />
+		<%
+			String errorMessage = (String) request.getAttribute("output");
+			if (errorMessage != null) {
+		%>
+		<font color="red" style="font-size: 20px"><%=errorMessage%></font>
+		<%
+			}
+		%>
+		<br /> 
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>
 	</form>

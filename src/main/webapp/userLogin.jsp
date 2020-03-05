@@ -19,7 +19,7 @@
 }
 
 body {
-	background-size: cover;
+	background-size: 90%;
 	background-attachment: fixed;
 }
 
@@ -34,7 +34,7 @@ body {
 </head>
 <% String user=(String)session.getAttribute("email"); %>
 <body class="a">
-<body background="assets/images/userf.jpg">
+<body background="assets/images/side.jpg">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 		<a class="navbar-brand" href="BankLogin.jsp">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -47,15 +47,15 @@ body {
 				<li class="nav-item"><a class="nav-link"
 					href="addBeneficiary.jsp">Add beneficiary</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="viewBeneficiary.jsp">Beneficiaries</a></li>
+					href="ListBeneficiaryDetailsServlet">Beneficiaries</a></li>
 				<li></li>
 				<li></li>
 				<li class="nav-item"><a class="nav-link"
 					href="fundTransfer.jsp">Fund Transfer</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="viewTransactionHistory.jsp">Transactions</a></li>
+					href="ListFundTransferDetailsServlet">Transactions</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="accountCheckBalance.jsp">Balance</a></li>
+					href="balanceServlet">Balance</a></li>
 			</ul>
 			<%}%>
 

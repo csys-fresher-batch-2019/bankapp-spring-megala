@@ -22,10 +22,8 @@
 		</h2>
 	</marquee>
 	<%
-		AccountDAO dao = DAOFactory.getAccountDAO();
-		Long acc = (Long) session.getAttribute("accNumber");
-		int c = dao.displayBalance(acc);
-	%>
+		
+		int c = (Integer)request.getAttribute("output");%>
 	<center>
 		Rs.
 		<%=c%></center>

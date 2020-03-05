@@ -1,4 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.megala.bankapp.factory.DAOFactory"%>
 <%@page import="com.megala.bankapp.domain.Transaction"%>
@@ -53,14 +54,14 @@ input[type="number"] {
 }
 </style>
 <body class="a">
-	<form action="searchByCusAccNo.jsp">
+	<form action="ListAccountTransactionServlet">
 		Search <br /> Enter AccNo:<input type="number" name="accNo">
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>
 	</form>
 	<%
-		TransactionDAO dao = DAOFactory.getTransactionDAO();
-		List<Transaction> t = dao.displayTransaction();
+		
+		ArrayList<Transaction> t = (ArrayList)request.getAttribute("account");
 	%>
 	<center>
 		<br />

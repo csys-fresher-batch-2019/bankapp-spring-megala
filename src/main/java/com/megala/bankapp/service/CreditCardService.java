@@ -52,10 +52,14 @@ public class CreditCardService {
 			stmt.registerOutParameter(3, Types.VARCHAR);
 			stmt.executeUpdate();
 			String status = stmt.getString(3);
-			if (status.equals("Login Successfull")) {
+			if (status.equals("Login Successful")) {
 				result = true;
 			}
+			else {
+				result=false;
+			}
 		} catch (Exception e) {
+			
 			LOGGER.error(e);
 		}
 
