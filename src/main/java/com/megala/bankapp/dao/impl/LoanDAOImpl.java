@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import com.megala.bankapp.dao.LoanDAO;
 import com.megala.bankapp.domain.Loan;
 import com.megala.bankapp.domain.LoanStatusEnum;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -22,7 +24,8 @@ public class LoanDAOImpl implements LoanDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void addLoan(Loan loan) {
+
+	public void addLoan(Loan loan) throws DbException {
 		String sql = "insert into loan_details(customer_id,branch_name,loan_no,amount,loan_status)values(?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -35,11 +38,11 @@ public class LoanDAOImpl implements LoanDAO {
 			LOGGER.info("no of rows inserted:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 	}
 
-	public List<Loan> displayLoan() {
+	public List<Loan> displayLoan() throws DbException {
 		List<Loan> l = new ArrayList<>();
 
 		String sql = "select customer_id,branch_name,loan_no,amount from loan_details";
@@ -65,12 +68,12 @@ public class LoanDAOImpl implements LoanDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return l;
 	}
 
-	public void updateLoan(LoanStatusEnum status, int id) {
+	public void updateLoan(LoanStatusEnum status, int id) throws DbException {
 		String sql = "update loan_details set loan_status=? where customer_id=?";
 		LOGGER.info(sql);
 
@@ -82,11 +85,11 @@ public class LoanDAOImpl implements LoanDAO {
 			LOGGER.info("no of rows updated:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_UPDATE);
 		}
 	}
 
-	public void deleteLoan(String loanNo) {
+	public void deleteLoan(String loanNo) throws DbException {
 		String sql = "delete from loan_details where loan_no=?";
 		LOGGER.info(sql);
 
@@ -96,7 +99,7 @@ public class LoanDAOImpl implements LoanDAO {
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows deleted:" + rows);
 		} catch (Exception e) {
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -59,10 +60,6 @@ input[type="number"] {
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>
 	</form>
-	<%
-		
-		ArrayList<Transaction> t = (ArrayList)request.getAttribute("account");
-	%>
 	<center>
 		<br />
 
@@ -79,20 +76,18 @@ input[type="number"] {
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					for (Transaction trans : t) {
-				%>
-				<tr>
-					<td><%=trans.getTransactionId()%></td>
-					<td><%=trans.getAccNo()%></td>
-					<td><%=trans.getBeneficiaryAccNo()%></td>
-					<td><%=trans.getTransactionDate()%></td>
-					<td><%=trans.getTransactionAmount()%></td>
-					<td><%=trans.getStatus()%></td>
-				</tr>
-				<%
-					}
-				%>
+			<c:forEach items="${account}" var="acc">
+
+					<tr>
+						<td>${acc.transactionId}</td>
+						<td>${acc.accNo}</td>
+						<td>${acc.beneficiaryAccNo}</td>
+						<td>${acc.transactionDate}</td>
+						<td>${acc.transactionAmount}</td>
+						<td>${acc.status}</td>
+				</c:forEach>
+			
+				
 			</tbody>
 		</table>
 	</center>

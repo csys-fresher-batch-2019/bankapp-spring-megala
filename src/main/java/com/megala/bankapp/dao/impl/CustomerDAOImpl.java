@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.CustomerDAO;
 import com.megala.bankapp.domain.Customer;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -21,7 +23,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer) throws DbException{
 		String sql = "insert into customer_details(customer_name,customer_street,customer_city,mobile_no,email,password,acc_type)values(?,?,?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -36,11 +38,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows inserted:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 	}
 
-	public List<Customer> display() {
+	public List<Customer> display() throws DbException{
 		List<Customer> c = new ArrayList<>();
 
 		String sql = "select customer_name,customer_id,customer_street,customer_city,mobile_no,email,password from customer_details";
@@ -70,12 +72,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return c;
 	}
 
-	public void updateCustomer(String name, int id) {
+	public void updateCustomer(String name, int id) throws DbException{
 		String sql = "update Customer_details set customer_name=? where customer_id=?";
 		LOGGER.info(sql);
 
@@ -87,11 +89,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows updated:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_UPDATE);
 		}
 	}
 
-	public void deleteCustomer(int id) {
+	public void deleteCustomer(int id) throws DbException {
 		String sql = "delete from customer_details where customer_id=?";
 		LOGGER.info(sql);
 
@@ -102,7 +104,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows deleted:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
 
 	}

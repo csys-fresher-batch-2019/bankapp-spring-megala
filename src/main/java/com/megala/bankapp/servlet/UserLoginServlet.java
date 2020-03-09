@@ -38,7 +38,7 @@ public class UserLoginServlet extends HttpServlet {
 			response.sendRedirect("frontpage.jsp");
 
 		} else {
-			request.setAttribute("error message", "Invalid MailId or Password");
+			request.setAttribute("errormessage", "Invalid MailId or Password");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("User.jsp");
 			dispatcher.forward(request, response);
 

@@ -1,10 +1,10 @@
 package com.megala.bankapp.exception;
 
-public class BankException extends Exception {
+public class DbException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public BankException(String message) {
+	public DbException(String message) {
 		super(message);
 	}
 }

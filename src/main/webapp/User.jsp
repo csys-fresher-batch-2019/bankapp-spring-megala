@@ -54,11 +54,6 @@ input[type="password"] {
 </style>
 <form action="UserLoginServlet" class="a" method="post">
 	<body background="assets/images/userlog.jpg">
-		<%String errorMessage=(String)request.getAttribute("error message");
-if(errorMessage!=null)
-{%>
-		<font color="red" style="font-size: 20px"><%=errorMessage %></font>
-		<%} %>
 		<br /> Enter MailId:
 		<input type="text" name="name" placeholder="Enter mail id" required
 			autofocus>
@@ -67,13 +62,17 @@ if(errorMessage!=null)
 		<input type="password" name="pin" placeholder="Enter password"
 			required>
 		<br />
-		<br />
+		<br/>
+			<c:if test="${not empty errormessage}">
+<font color="black" style="font-style: normal;font-size:24px;">
+${errormessage}
+</c:if>
+	<br/>
 		<button type="submit" class="c" data-toggle="button"
 			aria-pressed="false">Submit</button>
 		<a href="Register.jsp" class="b">New User?</a>
 		<br />
-		<a href="BankLogin.jsp" class="c">Back</a>
-		<br />
+
 		<br />
 
 	</body>

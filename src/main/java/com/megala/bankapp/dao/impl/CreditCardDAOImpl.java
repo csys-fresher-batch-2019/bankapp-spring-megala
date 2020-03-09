@@ -16,6 +16,8 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.CreditCardDAO;
 import com.megala.bankapp.domain.CreditCard;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -23,7 +25,7 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void addCreditCard(CreditCard creditCard) {
+	public void addCreditCard(CreditCard creditCard) throws DbException{
 		String sql = "insert into credit_card(credit_card_no,credit_card_pin,acc_no,card_limit,cvv_no,expiry_date,available_balance)values(?,?,?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -37,12 +39,11 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows inserted:" + rows);
 		} catch (Exception e) {
-
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 	}
 
-	public int displayCreditCard(long cardNo, LocalDate expiryDate, int cvvNo) {
+	public int displayCreditCard(long cardNo, LocalDate expiryDate, int cvvNo) throws DbException{
 		String sql = "select credit_card_id from credit_card where credit_card_no=? and expiry_date=? and cvv_no=? ";
 		int creditCardId = 0;
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -57,12 +58,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return creditCardId;
 	}
 
-	public List<CreditCard> displayCreditCards() {
+	public List<CreditCard> displayCreditCards() throws DbException  {
 		List<CreditCard> c = new ArrayList<>();
 
 		String sql = "select credit_card_no,acc_no,card_limit,expiry_date from credit_card";
@@ -87,12 +88,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return c;
 	}
 
-	public List<CreditCard> displayCreditCardsByAccNo(long accNo) {
+	public List<CreditCard> displayCreditCardsByAccNo(long accNo) throws DbException{
 		List<CreditCard> c = new ArrayList<>();
 
 		String sql = "select credit_card_id,credit_card_no,card_limit,expiry_date,cvv_no,available_balance,credit_card_pin from credit_card where acc_no=?";
@@ -132,12 +133,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return c;
 	}
 
-	public void deleteCreditCard(long accNo) {
+	public void deleteCreditCard(long accNo) throws DbException{
 		String sql = "delete from credit_card where acc_no=?";
 		LOGGER.info(sql);
 
@@ -148,12 +149,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			LOGGER.info("no of rows deleted:" + rows);
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
 
 	}
 
-	public void updateCreditCard1(String comments, long creditCardNo, boolean blocked) {
+	public void updateCreditCard1(String comments, long creditCardNo, boolean blocked) throws DbException{
 
 		String sql = "update credit_card set comments=?,blocked=? where credit_card_no=?";
 		LOGGER.info(sql);
@@ -166,12 +167,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_UPDATE);
 		}
 
 	}
 
-	public float displayBalance(long cardNo) {
+	public float displayBalance(long cardNo) throws DbException{
 		String sql = "select available_balance from credit_card where credit_card_no=?";
 		float availableBalance = 0;
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -184,8 +185,10 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return availableBalance;
 	}
+
+
 }

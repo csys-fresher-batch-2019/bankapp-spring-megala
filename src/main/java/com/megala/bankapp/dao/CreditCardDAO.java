@@ -4,19 +4,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.megala.bankapp.domain.CreditCard;
+import com.megala.bankapp.exception.DbException;
 
 public interface CreditCardDAO {
-	public void addCreditCard(CreditCard creditCard);
+	public void addCreditCard(CreditCard creditCard) throws DbException;
 
-	public List<CreditCard> displayCreditCards();
+	public List<CreditCard> displayCreditCards() throws DbException;
 
-	public void updateCreditCard1(String comments, long creditCardNo, boolean blocked);
+	public void updateCreditCard1(String comments, long creditCardNo, boolean blocked) throws DbException;
 
-	public void deleteCreditCard(long accNo);
+	public void deleteCreditCard(long accNo) throws DbException;
 
-	public int displayCreditCard(long cardNo, LocalDate expiryDate, int cvvNo);
+	public int displayCreditCard(long cardNo, LocalDate expiryDate, int cvvNo) throws DbException;
 
-	public float displayBalance(long cardNo);
+	public float displayBalance(long cardNo) throws DbException;
 
-	public List<CreditCard> displayCreditCardsByAccNo(long accNo);
+	public List<CreditCard> displayCreditCardsByAccNo(long accNo) throws DbException;
 }

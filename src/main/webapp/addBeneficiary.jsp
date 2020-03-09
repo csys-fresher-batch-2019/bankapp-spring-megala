@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,26 +39,26 @@ input[type="text"] {
 	<center>
 		<form action="BeneficiaryServlet">
 			<br /> <br />
-			<%long obj=(Long)session.getAttribute("accNumber"); %>
+			
 
-			<%String output=(String)request.getAttribute("output message");
-if(output!=null)
-{%>
-			<font color="red" style="font-size: 25"><%=output %></font>
-			<%} %>
 			<br /> Enter Account Number:<input type="number" name="acc"
-				value="<%=obj%>" readonly> <br /> <br /> Enter Beneficiary
+				value="${accNumber}" readonly> <br /> <br /> Enter Beneficiary
 			Name:<input type="text" name="name" placeholder="Beneficiary Name"
 				required autofocus> <br /> <br /> Enter Account No:<input
 				type="number" name="accNo" placeholder="Account Number" required>
 			<br /> <br /> Enter IFSC Code:<input type="text" name="ifsc"
 				placeholder="IFSC Code" required> <br /> <br />
-			<%String errorMessage=(String)request.getAttribute("errormessage");
-if(errorMessage!=null)
-{%>
-			<font color="red" style="font-size: 20"><%=errorMessage %></font>
-			<%} %>
+						<c:if test="${not empty errormessage}">
+<font color="red" style="font-style: italic;">
+${errormessage}
+</c:if>
+
+			<c:if test="${not empty outputmessage}">
+<font color="red" style="font-style: italic; ">
+${outputmessage}
+</c:if>
 			<br />
+			<br/>
 			<button type="submit" class="btn btn-primary" data-toggle="button"
 				aria-pressed="false">Submit</button>
 			<br /> <br />

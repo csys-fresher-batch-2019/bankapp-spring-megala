@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
+import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.factory.DAOFactory;
 
 @SuppressWarnings("serial")
@@ -34,7 +35,12 @@ public class accountCreationServlet extends HttpServlet {
 		acc.setAccType(accType);
 		acc.setAvailableBalance(price);
 		AccountDAO a=DAOFactory.getAccountDAO();
-		a.addAccount(acc);
+		try {
+			a.addAccount(acc);
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ public class bankLoginServlet extends HttpServlet {
 		if (userName.equalsIgnoreCase("admin") && password.equals("admin")) {
 			response.sendRedirect("homepage.jsp");
 		} else {
-			request.setAttribute("error message", "Invalid username or password");
+			request.setAttribute("errormessage", "Invalid username or password");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("banklog.jsp");
 			dispatcher.forward(request, response);
 		}

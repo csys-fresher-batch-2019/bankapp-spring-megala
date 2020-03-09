@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
 import com.megala.bankapp.dto.MessageDTO;
+import com.megala.bankapp.exception.DbException;
 
 @RestController
 @RequestMapping("api")
@@ -25,8 +26,8 @@ public class AccountController {
 	@Autowired
 	AccountDAO u;
 
-	@PutMapping("/activeAccount")
-	public MessageDTO activeAccount(@RequestParam("accNo") long accNum, @RequestParam("status") String status) {
+	@PostMapping("/activeAccount")
+	public MessageDTO activeAccount(@RequestParam("accNo") long accNum, @RequestParam("status") String status) throws DbException {
 		MessageDTO msg = new MessageDTO();
 
 		int account = a.activeAccount(accNum, status);
@@ -39,8 +40,8 @@ public class AccountController {
 
 	}
 
-	@PutMapping("/updateBalance")
-	public MessageDTO updateBalance(@RequestParam("accNo") long accNum, @RequestParam("amount") int amount) {
+	@PostMapping("/updateBalance")
+	public MessageDTO updateBalance(@RequestParam("accNo") long accNum, @RequestParam("amount") int amount) throws DbException {
 		MessageDTO msg = new MessageDTO();
 		int account = u.updateAccount(accNum, amount);
 		if (account == 1) {
@@ -56,21 +57,23 @@ public class AccountController {
 	public MessageDTO adminLogin(@RequestParam("name") String name, @RequestParam("password") String password) {
 		MessageDTO msg = new MessageDTO();
 		if (name.equalsIgnoreCase("admin") && password.equals("admin")) {
+			System.out.println("Login success");
 			msg.setInfoMessage("Login successsful");
 		} else {
+			System.out.println("Login failed");
 			msg.setErrorMessage("Login failed");
 		}
 		return msg;
 	}
 
 	@GetMapping("/listAccountDetails")
-	public List<Account> listAccountDetails() {
+	public List<Account> listAccountDetails() throws DbException {
 		List<Account> account = u.displayAcc();
 		return account;
 	}
 
 	@GetMapping("/listAccountDetailsByAccNo")
-	public List<Account> listAccountDetailsByAccNo(@RequestParam("accNo") long accNum) {
+	public List<Account> listAccountDetailsByAccNo(@RequestParam("accNo") long accNum) throws DbException {
 		List<Account> account = u.searchByAccountNo(accNum);
 		return account;
 	}

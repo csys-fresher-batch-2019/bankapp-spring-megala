@@ -55,11 +55,11 @@ input[type="password"] {
 </style>
 <form action="bankLoginServlet" class="a" method="post">
 	<body background="assets/images/adminl.jpg">
-	
-		<c:if test="${not empty error message}">
-			<font color="red" style="font-style: normal" " class="a">${error message}
-		</c:if>
-		<br /> Enter Username:
+
+<c:if test="${not empty errormessage}">
+<font color="red" style="font-style: normal">
+${errormessage}
+</c:if>	<br /> Enter Username:
 		<input type="text" name="name" placeholder="Enter Username" required
 			autofocus>
 		<br />

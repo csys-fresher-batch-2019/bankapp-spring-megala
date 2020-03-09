@@ -39,8 +39,10 @@ public class CustomerController {
 
 		result = reg.isStatus();
 		if (result) {
+			System.out.println("Registration success");;
 			msg.setInfoMessage("Registered successfully");
 		} else {
+			System.out.println("Registration failed");;
 			msg.setErrorMessage("Failed to register");
 		}
 		return msg;
@@ -53,8 +55,10 @@ public class CustomerController {
 		PaymentResponse result = creditCardService.login(email, password);
 		status = result.isStatus();
 		if (status) {
+			System.out.println("Login success");
 			msg.setInfoMessage("Login success");
 		} else {
+			System.out.println("Invalid mail Id or password");
 			msg.setErrorMessage("Invalid mail Id or password");
 		}
 		return msg;

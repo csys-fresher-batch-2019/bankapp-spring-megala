@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html5>
 <html>
 <head>
@@ -29,11 +28,10 @@ input[type="number"] {
 			placeholder="Account Number" required autofocus> <br /> <br />
 		Enter amount:<input type="number" name="price" placeholder="amount"
 			required> <br /> <br />
-		<%String errorMessage=(String)request.getAttribute("output");
-            if(errorMessage!=null)
-            {%>
-		<font color="red" style="font-size: 20px"><%=errorMessage %></font>
-		<%} %>
+			<c:if test="${not empty output}">
+			<font color="red" style="font-style: normal">
+${output}
+</c:if>	
 		<br /> <br />
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>

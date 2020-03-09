@@ -33,7 +33,7 @@ public class ListAccountDetailsServlet extends HttpServlet {
 		{
 			a= dao.displayAcc();
 		}
-		request.setAttribute("accountList", a);
+		request.setAttribute("accountlist", a);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("accountList.jsp");
 		dispatcher.forward(request, response);
 }

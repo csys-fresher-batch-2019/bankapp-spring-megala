@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html5>
 
 <%@page import="java.util.ArrayList"%>
@@ -24,61 +24,57 @@ h3 {
 
 body {
 	font-size: 20;
-	
+	font-style: italic;
+	font-family: cursive;
 }
 
 input[type="number"] {
 	font-family: cursive;
 	font-size: 10px;
 	color: blue;
+	font-style: italic;
+	font-family: cursive;
 }
 
 input[type="text"] {
 	font-family: cursive;
 	font-size: 10px;
 	color: blue;
+	font-style: italic;
+	font-family: cursive;
 }
 </style>
-<%
-	Long obj = (Long) session.getAttribute("accNumber");
-%>
 <body>
 </body>
-<%
-ArrayList<Transaction> c =(ArrayList)request.getAttribute("fundTransfer"); 
+<div class="container">
+	<table border="1"
+		style="border-color: maroon; font-size: 20; color: black; font-style: italic; font-family: cursive">
+		<thead>
+			<tr>
+				<th>Transaction id</th>
+				<th>Account Number</th>
+				<th>Beneficiary Account Number</th>
+				<th>Transaction Date</th>
+				<th>Transaction Amount</th>
+				<th>status</th>
+			</tr>
 
-%>
-	
-	<div class="container">
-	<table border="1" style="border-color: maroon; font-size: 20;color:black">
-			<thead>
+		</thead>
+		<tbody>
+			<c:forEach items="${fundTransfer}" var="fund">
 				<tr>
-					<th>Transaction id</th>
-					<th>Account Number</th>
-					<th>Beneficiary Account Number</th>
-					<th>Transaction Date</th>
-					<th>Transaction Amount</th>
-					<th>status</th>
-				</tr>
-			</thead>
-			<tbody>
+					<td>${fund.transactionId}</td>
+					<td>${fund.accNo}</td>
+					<td>${fund.beneficiaryAccNo}</td>
+					<td>${fund.transactionDate}</td>
+					<td>${fund.transactionAmount}</td>
+					<td>${fund.status}</td>
+			</c:forEach>
+		</tbody>
+		<tbody>
 
-				<%
-					for (Transaction card : c) {
-				%>
-				<tr>
-					<td><%=card.getTransactionId()%></td>
-					<td><%=card.getAccNo()%></td>
-					<td><%=card.getBeneficiaryAccNo()%></td>
-					<td><%=card.getTransactionDate()%></td>
-					<td><%=card.getTransactionAmount()%></td>
-					<td><%=card.getStatus()%></td>
 
-				</tr>
-				<%
-					}
-				%>
-			</tbody>
+		</tbody>
 
 	</table>
 </div>

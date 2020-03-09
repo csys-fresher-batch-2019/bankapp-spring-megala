@@ -1,6 +1,12 @@
 package com.megala.bankapp.domain;
 
 public class Account /* implements Serializable */ {
+	@Override
+	public String toString() {
+		return "Account [customerId=" + customerId + ", accNo=" + accNo + ", accType=" + accType + ", availableBalance="
+				+ availableBalance + ", status=" + status + "]";
+	}
+
 	private int customerId;
 	private long accNo;
 	private String accType;

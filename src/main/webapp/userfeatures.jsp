@@ -35,7 +35,7 @@ body {
 <body class="a">
 <body background="assets/images/adminfeatures.jpg">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<a class="navbar-brand" href="BankLogin.jsp">Home</a>
+		<a class="navbar-brand" href="homepage.jsp">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#collapsibleNavbar">
 			<span class="navbar-toggler-icon"></span>

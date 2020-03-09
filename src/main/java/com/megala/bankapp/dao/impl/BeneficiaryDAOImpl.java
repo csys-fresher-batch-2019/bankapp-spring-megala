@@ -16,14 +16,17 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 
 @Repository
 public class BeneficiaryDAOImpl implements BeneficiaryDAO {
-	//private static final Logger LOGGER = Logger.getInstance();
-	private static final Logger logger =LoggerFactory.getLogger(BeneficiaryDAOImpl.class);
+	// private static final Logger LOGGER = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(BeneficiaryDAOImpl.class);
 	@Autowired
 	private DataSource dataSource;
-	public int addBeneficiary(Beneficiary beneficiary) {
+
+	public int addBeneficiary(Beneficiary beneficiary) throws DbException {
 		String sql = "insert into beneficiary_list(acc_number,beneficiary_name,acc_no_1,IFSC_code)values(?,?,?,?)";
 		logger.info(sql);
 		int rows = 0;
@@ -36,12 +39,12 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			logger.debug("no of rows inserted:" + rows);
 		} catch (Exception e) {
 
-			logger.error(e.getMessage());
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 		return rows;
 	}
 
-	public List<Beneficiary> displayBeneficiary() {
+	public List<Beneficiary> displayBeneficiary() throws DbException {
 		List<Beneficiary> b = new ArrayList<>();
 
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list";
@@ -54,9 +57,9 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String beneficiaryName = rows.getString("beneficiary_name");
 					long accNo = rows.getLong("acc_no_1");
 					String iFSCCode = rows.getString("IFSC_code");
-					logger.debug("beneficiaryName"+beneficiaryName);
-					logger.debug("accNo"+accNo);
-					logger.debug("iFSCCode"+iFSCCode);
+					logger.debug("beneficiaryName" + beneficiaryName);
+					logger.debug("accNo" + accNo);
+					logger.debug("iFSCCode" + iFSCCode);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneficiaryName);
 					bene.setAccNo(accNo);
@@ -65,13 +68,13 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 
 		}
 		return b;
 	}
 
-	public void updateBeneficiary(String beneficiaryName, long accNo) {
+	public void updateBeneficiary(String beneficiaryName, long accNo) throws DbException {
 		String sql = "update beneficiary_list set beneficiary_name=? where acc_no_1=?";
 		logger.info(sql);
 
@@ -82,12 +85,12 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows updated:" + rows);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			throw new DbException(ErrorConstants.INVALID_UPDATE);
 
 		}
 	}
 
-	public int deleteBeneficiary(long accNo) {
+	public int deleteBeneficiary(long accNo) throws DbException {
 		String sql = "delete from beneficiary_list where acc_no_1=?";
 		logger.info(sql);
 		int rows = 0;
@@ -97,12 +100,12 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			rows = pst.executeUpdate();
 			logger.debug("no of rows deleted:" + rows);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
 		return rows;
 	}
 
-	public List<Beneficiary> searchByBeneficiaryName(String name) {
+	public List<Beneficiary> searchByBeneficiaryName(String name) throws DbException {
 		List<Beneficiary> a = new ArrayList<>();
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where beneficiary_name=?";
 		logger.info(sql);
@@ -113,13 +116,13 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String beneName = rows.getString("beneficiary_name");
 					long accNumber = rows.getLong("acc_no_1");
 					String ifsc = rows.getString("IFSC_code");
-					int balance=rows.getInt("balance");
-					String status=rows.getString("status");
-					logger.debug("beneName"+beneName);
-					logger.debug("accNumber"+accNumber);
-					logger.debug("ifsc"+ifsc);
-					logger.debug("balance"+balance);
-					logger.debug("comments"+status);
+					int balance = rows.getInt("balance");
+					String status = rows.getString("status");
+					logger.debug("beneName" + beneName);
+					logger.debug("accNumber" + accNumber);
+					logger.debug("ifsc" + ifsc);
+					logger.debug("balance" + balance);
+					logger.debug("comments" + status);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneName);
 					bene.setAccNo(accNumber);
@@ -131,13 +134,13 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return a;
 
 	}
 
-	public List<Beneficiary> displayParBeneficiary(long cusAccNo) {
+	public List<Beneficiary> displayParBeneficiary(long cusAccNo) throws DbException {
 		List<Beneficiary> b = new ArrayList<>();
 
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where acc_number=?";
@@ -153,11 +156,11 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String iFSCCode = rows.getString("IFSC_code");
 					int amount = rows.getInt("balance");
 					String comment = rows.getString("status");
-					logger.debug("beneficiaryName"+beneficiaryName);
-					logger.debug("accNo"+accNo);
-					logger.debug("iFSCCode"+iFSCCode);
-					logger.debug("amount"+amount);
-					logger.debug("comment"+comment);
+					logger.debug("beneficiaryName" + beneficiaryName);
+					logger.debug("accNo" + accNo);
+					logger.debug("iFSCCode" + iFSCCode);
+					logger.debug("amount" + amount);
+					logger.debug("comment" + comment);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneficiaryName);
 					bene.setAccNo(accNo);
@@ -168,8 +171,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return b;
 	}

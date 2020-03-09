@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html5>
 
 
@@ -50,28 +50,25 @@ Enter CardId:<input type="number" name="number">
          Submit
          </button></form>
 </body>
-<%
-	ArrayList<CreditCardTransaction> c = (ArrayList)request.getAttribute("list");
-%>
-<center>
+<div class="container">
 <table border="1" style="border-color:maroon;font-size:20;font-family:monospace; italic;color:black">
 
-<thead clas="c"><tr><th>TransactionId</th><th>CardId</th><th>Amount</th><th>Description</th><th>TransactionDate</th><th>Success</th></tr></thead>
+<thead clas="c"><tr><th>TransactionId</th><th>CardId</th><th>Amount</th><th>Description</th><th>TransactionDate</th><th>Status</th></tr></thead>
 <tbody class="a">
-<%
-for(CreditCardTransaction card:c){%>
-<tr>
-<td><%=card.getTransactionId()%></td>
-<td><%=card.getCardId()%></td>
-<td><%=card.getAmount() %></td>
-<td><%=card.getMerchantId()%></td>
-<td><%=card.getTransactionDate()%></td>
-<td><%=card.getStatus()%></td>
-</tr>
-<%}
-%>
+<c:forEach items="${list}" var="l">
+			
+		<tr>
+			<td>${l.transactionId}</td>
+			<td>${l.cardId}</td>
+			<td>${l.amount}</td>
+			<td>${l.merchantId}</td>
+			<td>${l.transactionDate}</td>
+			<td>${l.status}</td>
+	</c:forEach>
+			
+
 </tbody>
 </table>
-</center>
+</div>
 </body>
 </html>

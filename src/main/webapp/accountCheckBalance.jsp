@@ -12,6 +12,7 @@
 	font-family: monospace;
 	font-size: 26;
 	font-style: italic;
+	text-align: center;
 }
 </style>
 <body class="a">
@@ -24,8 +25,7 @@
 	<%
 		
 		int c = (Integer)request.getAttribute("output");%>
-	<center>
 		Rs.
-		<%=c%></center>
+		<%=c%>
 </body>
 </html>

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCardTransaction;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -22,7 +24,8 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public int addCreditCardTransaction(CreditCardTransaction creditCardTransaction) {
+
+	public int addCreditCardTransaction(CreditCardTransaction creditCardTransaction) throws DbException {
 		String sql = "insert into credit_card_transaction(card_id,amount,description_1,transaction_date,status)values(?,?,?,?,?)";
 		LOGGER.info(sql);
 		int rows = 0;
@@ -37,14 +40,14 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 
 		return rows;
 
 	}
 
-	public List<CreditCardTransaction> displayCreditCardPaymentList() {
+	public List<CreditCardTransaction> displayCreditCardPaymentList() throws DbException {
 		List<CreditCardTransaction> c = new ArrayList<>();
 
 		String sql = "select transaction_id,card_id,amount,description_1,transaction_date,status,created_date from credit_card_transaction order by transaction_id DESC";
@@ -82,12 +85,12 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return c;
 	}
 
-	public List<CreditCardTransaction> displayTransactionHistory(long cardId) {
+	public List<CreditCardTransaction> displayTransactionHistory(long cardId) throws DbException {
 		List<CreditCardTransaction> history = new ArrayList<>();
 		String sql = "select card_id,transaction_id,amount,description_1,transaction_date,status from credit_card_transaction where card_id=((select credit_card_id from credit_card where credit_card_no = ?))";
 		LOGGER.info(sql);
@@ -121,12 +124,12 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return history;
 	}
 
-	public List<CreditCardTransaction> displayTransactionHistoryByCardId(int cardId) {
+	public List<CreditCardTransaction> displayTransactionHistoryByCardId(int cardId) throws DbException {
 		List<CreditCardTransaction> history = new ArrayList<>();
 		String sql = "select card_id,transaction_id,amount,description_1,transaction_date,status from credit_card_transaction where card_id=?";
 		LOGGER.info(sql);
@@ -160,7 +163,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (Exception e) {
 
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return history;
 	}

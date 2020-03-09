@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html5>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.megala.bankapp.domain.Account"%>
@@ -52,40 +53,38 @@ input[type="number"] {
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>
 	</form>
-	<%
-		
-		ArrayList<Account> a = (ArrayList)request.getAttribute("accountList");
 
-	%>
-	<center>
+	<div class="container">
+
 		<table border="1"
 			style="border-color: maroon; font-size: 20; font-family: monospace; font-style: italic; color: navy;">
+
 			</center>
 
 			<thead class="a">
-				<tr>
-					<th>CustomerId</th>
-					<th>AccountNo</th>
-					<th>AccountType</th>
-					<th>AvailableBalance</th>
-					<th>Status</th>
-				</tr>
+
+				<th>CustomerId</th>
+				<th>AccountNo</th>
+				<th>AccountType</th>
+				<th>AvailableBalance</th>
+				<th>Status</th>
+
+
 			</thead>
-			<tbody>
-				<%
-					for (Account acc : a) {
-				%>
-				<tr>
-					<td><%=acc.getCustomerId()%></td>
-					<td><%=acc.getAccNo()%></td>
-					<td><%=acc.getAccType()%></td>
-					<td><%=acc.getAvailableBalance()%></td>
-					<td><%=acc.getStatus()%></td>
-				</tr>
-				<%
-					}
-				%>
+			<body>
+				<c:forEach items="${accountlist}" var="acc">
+
+					<tr>
+						<td>${acc.customerId}</td>
+						<td>${acc.accNo}</td>
+						<td>${acc.accType}</td>
+						<td>${acc.availableBalance}</td>
+						<td>${acc.status}</td>
+				</c:forEach>
+
+			</body>
 			</tbody>
 		</table>
+	</div>
 </body>
 </html>

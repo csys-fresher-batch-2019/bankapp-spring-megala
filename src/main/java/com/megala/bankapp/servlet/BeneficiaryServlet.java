@@ -35,10 +35,12 @@ public class BeneficiaryServlet extends HttpServlet {
 		b.setiFSCCode(ifscNo);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("beneName", beneficiaryName);
+		String s=String.valueOf(acc);
+		if(s.length()==10) {
 		int a = c.addBeneficiary(b);
 		System.out.println(a);
 		if (a == 1) {
-			request.setAttribute("output message", "Beneficiary successfully added");
+			request.setAttribute("outputmessage", "Beneficiary successfully added");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
 			dispatcher.forward(request, response);
 		} else {
@@ -48,5 +50,11 @@ public class BeneficiaryServlet extends HttpServlet {
 		}
 
 	}
+		else {
+			request.setAttribute("errormessage", "Invalid Account Number!!");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
+			dispatcher.forward(request, response);
+		}
 
+}
 }

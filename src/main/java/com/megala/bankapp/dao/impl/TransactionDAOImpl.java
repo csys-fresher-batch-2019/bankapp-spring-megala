@@ -17,13 +17,15 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void addTransaction(Transaction transaction)  {
+	public void addTransaction(Transaction transaction) throws DbException {
 		try 
 			(Connection con = dataSource.getConnection();
 				CallableStatement pst=con.prepareCall("{call fund_transfer_procedure(?,?,?,?,?)}")){
@@ -38,10 +40,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 			LOGGER.debug(status);
 		} catch (Exception e) {
 			
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 }
-	public List<Transaction> displayTransaction() {
+	public List<Transaction> displayTransaction() throws DbException{
 		List<Transaction> t= new ArrayList<>();
 
 		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details order by transaction_id DESC";
@@ -77,12 +79,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 		}
 		} catch (Exception e) {
 		
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		
 		return t;
 	}
-	public void updateTransaction(int transactionAmount,long beneficiaryAccNo) {
+	public void updateTransaction(int transactionAmount,long beneficiaryAccNo) throws DbException {
 		String sql = "update transaction_details set transaction_amount=? where beneficiary_acc_no=?";
 		LOGGER.info(sql);
 
@@ -95,10 +97,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 		LOGGER.info("no of rows updated:"+rows);
 	}catch (Exception e) {
 		
-		LOGGER.error(e);
+		throw new DbException(ErrorConstants.INVALID_UPDATE);
 	}
 	}
-	public void deleteTransaction(long beneficiaryAccNo){
+	public void deleteTransaction(long beneficiaryAccNo) throws DbException{
 		String sql = "delete from transaction_details where beneficiary_acc_no=?";
 		LOGGER.info(sql);
 		
@@ -111,15 +113,15 @@ public class TransactionDAOImpl implements TransactionDAO {
 			LOGGER.info("no of rows deleted:" + rows);
 		} catch (Exception e) {
 			
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
 
 	}
 
-	public List<Transaction> displayParTransaction(long accNo) {
+	public List<Transaction> displayParTransaction(long accNo) throws DbException {
 		List<Transaction> t= new ArrayList<>();
 
-		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details where acc_no=?";
+		String sql ="select transaction_id,acc_no,beneficiary_acc_no,transaction_date,transaction_amount,status from transaction_details where acc_no=? order by transaction_id DESC";
 		LOGGER.info(sql);
 
 		try 
@@ -154,7 +156,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		}
 		} catch (Exception e) {
 		
-			LOGGER.error(e);
+			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		
 		return t;

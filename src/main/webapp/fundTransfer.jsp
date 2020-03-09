@@ -46,15 +46,7 @@ input[type="text"] {
 				placeholder="Beneficiary Account Number" required> <br /> <br />
 			Enter Amount:<input type="text" name="amount" placeholder="Amount"
 				required> <br />
-			<%
-				String errorMessage = (String) request.getAttribute("errormessage");
-				if (errorMessage != null) {
-			%>
-
-			<font color="red" style="font-size: 20"><%=errorMessage%></font>
-			<%
-				}
-			%>
+			
 			<br />
 			<button type="submit" class="btn btn-primary" data-toggle="button"
 				aria-pressed="false">Submit</button>
