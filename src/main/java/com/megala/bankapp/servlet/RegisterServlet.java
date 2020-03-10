@@ -1,7 +1,6 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
+import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.service.CreditCardService;
 
 @SuppressWarnings("serial")
@@ -78,23 +78,27 @@ public class RegisterServlet extends HttpServlet {
 		Register reg = null;
 		try {
 			reg = creditCardService.register(c);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		result = reg.isStatus();
-		if (result) {
-			System.out.println(reg.getAccNo());
-			System.out.println(reg.isStatus());
-			HttpSession sess = request.getSession();
-			sess.setAttribute("accNo", reg.getAccNo());
-			sess.setAttribute("accName", cusName);
-			response.sendRedirect("AccountCreated.jsp");
 
-		} else {
+			result = reg.isStatus();
+			if (result) {
+				System.out.println(reg.getAccNo());
+				System.out.println(reg.isStatus());
+				HttpSession sess = request.getSession();
+				sess.setAttribute("accNo", reg.getAccNo());
+				sess.setAttribute("accName", cusName);
+				response.sendRedirect("AccountCreated.jsp");
+
+			} else {
+				request.setAttribute("errormessage", "Registration Failed");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+				dispatcher.forward(request, response);
+
+			}
+		} catch (ServiceException e) {
+			e.printStackTrace();
 			request.setAttribute("errormessage", "Registration Failed");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
 			dispatcher.forward(request, response);
-
 		}
 	}
 }

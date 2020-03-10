@@ -1,6 +1,5 @@
 package com.megala.bankapp.controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.service.CreditCardService;
 
 @RestController
@@ -37,11 +37,10 @@ public class FundTransferController {
 		t.setBeneficiaryAccNo(beneAccNo);
 		t.setTransactionAmount(amount);
 		boolean result = false;
-		PaymentResponse fund=null;
+		PaymentResponse fund = null;
 		try {
 			fund = creditCardService.fundTransaction(t);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 		System.out.println(fund.getTransactionId());

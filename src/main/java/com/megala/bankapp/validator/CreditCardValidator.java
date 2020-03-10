@@ -8,9 +8,6 @@ import com.megala.bankapp.exception.ValidateException;
 
 @Component
 public class CreditCardValidator {
-	// private CreditCardValidator() {
-	// throw new IllegalStateException("Utility class");
-	// }
 
 	public static boolean validateCreditCard(long creditCardNo, LocalDate expiryDate, int cvvNo)
 			throws ValidateException {

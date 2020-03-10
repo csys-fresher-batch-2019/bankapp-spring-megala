@@ -34,7 +34,6 @@ public class AccountController {
 		try {
 			account = a.activeAccount(accNum, status);
 		} catch (DbException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (account == 1) {

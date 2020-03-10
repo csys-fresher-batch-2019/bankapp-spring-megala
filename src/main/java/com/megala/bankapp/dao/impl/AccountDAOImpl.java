@@ -18,18 +18,16 @@ import org.springframework.stereotype.Repository;
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 
 @Repository
 public class AccountDAOImpl implements AccountDAO {
 
-	// private static final Logger LOGGER = Logger.getInstance();
 	private static final Logger logger = LoggerFactory.getLogger(AccountDAOImpl.class);
 
-	private static final String ACTION1 = "customer_id";
-	private static final String ACTION2 = "acc_type";
-	private static final String ACTION3 = "acc_no";
-	private static final String ACTION4 = "available_balance";
+	private static final String CUSTOMERID = "customer_id";
+	private static final String ACCTYPE = "acc_type";
+	private static final String ACCNO = "acc_no";
+	private static final String AVAILABLEBALANCE = "available_balance";
 
 	@Autowired
 	private DataSource dataSource;
@@ -43,8 +41,8 @@ public class AccountDAOImpl implements AccountDAO {
 			pst.setInt(3, account.getAvailableBalance());
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows inserted:" + rows);
-		} catch (SQLException e) {			
-			throw new DbException(ErrorConstants.INVALID_ADD, e);
+		} catch (SQLException e) {
+			throw new DbException("Unable to add account", e);
 		}
 
 	}
@@ -58,16 +56,11 @@ public class AccountDAOImpl implements AccountDAO {
 			try (ResultSet rows = stmt.executeQuery(sql)) {
 
 				while (rows.next()) {
-					int customerId = rows.getInt(ACTION1);
-					long accNo = rows.getLong(ACTION3);
-					String accType = rows.getString(ACTION2);
-					int availableBalance = rows.getInt(ACTION4);
+					int customerId = rows.getInt(CUSTOMERID);
+					long accNo = rows.getLong(ACCNO);
+					String accType = rows.getString(ACCTYPE);
+					int availableBalance = rows.getInt(AVAILABLEBALANCE);
 					String accStatus = rows.getString("status");
-					logger.debug("customerId" + customerId);
-					logger.debug("accNo" + accNo);
-					logger.debug("accType" + accType);
-					logger.debug("availableBalance" + availableBalance);
-					logger.debug("accStatus" + accStatus);
 
 					Account account = new Account();
 					account.setCustomerId(customerId);
@@ -80,7 +73,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display account details", e);
 		}
 		return a;
 
@@ -97,17 +90,11 @@ public class AccountDAOImpl implements AccountDAO {
 			try (ResultSet rows = pst.executeQuery()) {
 
 				if (rows.next()) {
-					int customerId = rows.getInt(ACTION1);
-					long accNo = rows.getLong(ACTION3);
-					String accType = rows.getString(ACTION2);
-					int availableBalance = rows.getInt(ACTION4);
+					int customerId = rows.getInt(CUSTOMERID);
+					long accNo = rows.getLong(ACCNO);
+					String accType = rows.getString(ACCTYPE);
+					int availableBalance = rows.getInt(AVAILABLEBALANCE);
 					String accStatus = rows.getString("status");
-					logger.debug("customerId" + customerId);
-					logger.debug("accNo" + accNo);
-					logger.debug("accType" + accType);
-					logger.debug("availableBalance" + availableBalance);
-					logger.debug("accStatus" + accStatus);
-
 					account = new Account();
 					account.setCustomerId(customerId);
 					account.setAccNo(accNo);
@@ -118,7 +105,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display account details", e);
 		}
 		return account;
 
@@ -134,7 +121,7 @@ public class AccountDAOImpl implements AccountDAO {
 			rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
 		} catch (Exception e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to update account", e);
 		}
 		return rows;
 	}
@@ -150,25 +137,9 @@ public class AccountDAOImpl implements AccountDAO {
 			rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to active account", e);
 		}
 		return rows;
-	}
-
-	public void delete(long accNo) throws DbException {
-		String sql = "delete from account_details where acc_no=?";
-		logger.info(sql);
-
-		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setLong(1, accNo);
-
-			int rows = pst.executeUpdate();
-			logger.info("no of rows deleted:" + rows);
-		} catch (SQLException e) {
-
-			throw new DbException(ErrorConstants.INVALID_DELETE,e);
-		}
-
 	}
 
 	public List<Account> findByAccNo(long accNo) throws DbException {
@@ -179,10 +150,10 @@ public class AccountDAOImpl implements AccountDAO {
 			pst.setLong(1, accNo);
 			try (ResultSet rows = pst.executeQuery()) {
 				if (rows.next()) {
-					int customerId = rows.getInt(ACTION1);
-					long accNumber = rows.getLong(ACTION3);
-					String accType = rows.getString(ACTION2);
-					int availableBalance = rows.getInt(ACTION4);
+					int customerId = rows.getInt(CUSTOMERID);
+					long accNumber = rows.getLong(ACCNO);
+					String accType = rows.getString(ACCTYPE);
+					int availableBalance = rows.getInt(AVAILABLEBALANCE);
 					String status = rows.getString("status");
 
 					Account account = new Account();
@@ -192,37 +163,13 @@ public class AccountDAOImpl implements AccountDAO {
 					account.setAvailableBalance(availableBalance);
 					account.setStatus(status);
 					a.add(account);
-
-					logger.debug("account"+account);
-
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display account", e);
 		}
 		return a;
 
-	}
-
-	public void findById(int id) throws DbException {
-		String sql = "select acc_no,acc_type,available_balance from account_details where customer_id=?";
-		logger.info(sql);
-		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setInt(1, id);
-			try (ResultSet rows = pst.executeQuery()) {
-				if (rows.next()) {
-					long accNo = rows.getLong(ACTION3);
-					String accType = rows.getString(ACTION2);
-					int availableBalance = rows.getInt(ACTION4);
-
-					logger.debug("accNo" + accNo);
-					logger.debug("accType" + accType);
-					logger.debug("Balance" + availableBalance);
-				}
-			}
-		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
-		}
 	}
 
 	public int findBalanceByAccNo(long accNo) throws DbException {
@@ -233,13 +180,11 @@ public class AccountDAOImpl implements AccountDAO {
 			pst.setLong(1, accNo);
 			try (ResultSet rows = pst.executeQuery()) {
 				if (rows.next()) {
-					availableBalance = rows.getInt(ACTION4);
-
-					logger.debug("Balance" + availableBalance);
+					availableBalance = rows.getInt(AVAILABLEBALANCE);
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display balance", e);
 		}
 		return availableBalance;
 	}
@@ -253,12 +198,10 @@ public class AccountDAOImpl implements AccountDAO {
 			try (ResultSet rows = pst.executeQuery()) {
 				if (rows.next()) {
 					status = rows.getString("status");
-
-					logger.debug("Balance" + status);
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display status", e);
 		}
 		return status;
 	}

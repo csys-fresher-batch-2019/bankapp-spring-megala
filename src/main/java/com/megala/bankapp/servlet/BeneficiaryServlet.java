@@ -21,6 +21,7 @@ import com.megala.bankapp.exception.DbException;
 public class BeneficiaryServlet extends HttpServlet {
 	@Autowired
 	BeneficiaryDAO c;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String cusAcc = request.getParameter("acc");
@@ -36,31 +37,30 @@ public class BeneficiaryServlet extends HttpServlet {
 		b.setiFSCCode(ifscNo);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("beneName", beneficiaryName);
-		String s=String.valueOf(acc);
-		if(s.length()==10) {
-		int a=0;
-		try {
-			a = c.save(b);
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
-		System.out.println(a);
-		if (a == 1) {
-			request.setAttribute("outputmessage", "Beneficiary successfully added");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			request.setAttribute("errormessage", "Beneficiary already exists");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
-			dispatcher.forward(request, response);
-		}
+		String s = String.valueOf(acc);
+		if (s.length() == 10) {
+			int a = 0;
+			try {
+				a = c.save(b);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
+			System.out.println(a);
+			if (a == 1) {
+				request.setAttribute("outputmessage", "Beneficiary successfully added");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
+				dispatcher.forward(request, response);
+			} else {
+				request.setAttribute("errormessage", "Beneficiary already exists");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
+				dispatcher.forward(request, response);
+			}
 
-	}
-		else {
+		} else {
 			request.setAttribute("errormessage", "Invalid Account Number!!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
 			dispatcher.forward(request, response);
 		}
 
-}
+	}
 }

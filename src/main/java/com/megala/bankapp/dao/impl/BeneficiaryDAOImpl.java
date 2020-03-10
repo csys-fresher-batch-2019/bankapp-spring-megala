@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 
 @Repository
 public class BeneficiaryDAOImpl implements BeneficiaryDAO {
@@ -40,7 +39,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			logger.debug("no of rows inserted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD,e);
+			throw new DbException("Unable to add beneficiary", e);
 		}
 		return rows;
 	}
@@ -58,9 +57,6 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String beneficiaryName = rows.getString("beneficiary_name");
 					long accNo = rows.getLong("acc_no_1");
 					String iFSCCode = rows.getString("IFSC_code");
-					logger.debug("beneficiaryName" + beneficiaryName);
-					logger.debug("accNo" + accNo);
-					logger.debug("iFSCCode" + iFSCCode);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneficiaryName);
 					bene.setAccNo(accNo);
@@ -69,7 +65,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display beneficiary", e);
 
 		}
 		return b;
@@ -86,7 +82,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows updated:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to update beneficiary", e);
 
 		}
 	}
@@ -101,12 +97,12 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			rows = pst.executeUpdate();
 			logger.debug("no of rows deleted:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_DELETE,e);
+			throw new DbException("Unable to delete beneficiary", e);
 		}
 		return rows;
 	}
 
-	public List<Beneficiary> findByAccNo(long acc,String ifscCode) throws DbException {
+	public List<Beneficiary> findByAccNoAndIfsc(long acc, String ifscCode) throws DbException {
 		List<Beneficiary> a = new ArrayList<>();
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list where acc_no_1=? and IFSC_code=?";
 		logger.info(sql);
@@ -118,9 +114,6 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String beneName = rows.getString("beneficiary_name");
 					long accNumber = rows.getLong("acc_no_1");
 					String ifsc = rows.getString("IFSC_code");
-					logger.debug("beneName" + beneName);
-					logger.debug("accNumber" + accNumber);
-					logger.debug("ifsc" + ifsc);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneName);
 					bene.setAccNo(accNumber);
@@ -130,7 +123,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display beneficiary", e);
 		}
 		return a;
 
@@ -152,11 +145,6 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 					String iFSCCode = rows.getString("IFSC_code");
 					int amount = rows.getInt("balance");
 					String comment = rows.getString("status");
-					logger.debug("beneficiaryName" + beneficiaryName);
-					logger.debug("accNo" + accNo);
-					logger.debug("iFSCCode" + iFSCCode);
-					logger.debug("amount" + amount);
-					logger.debug("comment" + comment);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneficiaryName);
 					bene.setAccNo(accNo);
@@ -167,7 +155,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display beneficiary", e);
 		}
 		return b;
 	}

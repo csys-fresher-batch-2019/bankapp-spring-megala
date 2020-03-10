@@ -41,19 +41,12 @@ public class PayServlet extends HttpServlet {
 		String comments = request.getParameter("comments");
 		String amount = request.getParameter("amount");
 		float price = Float.parseFloat(amount);
-
-		System.out.println("Name : " + name);
-		System.out.println("expiryDate : " + expirydate);
-		System.out.println("cvv:" + cvv);
-		System.out.println("pin:" + pin);
-		System.out.println("amount:" + amount);
 		CreditCard creditCard = new CreditCard();
 		creditCard.setCardNo(card);
 		creditCard.setExpiryDate(LocalDate.parse(expirydate));
 		creditCard.setCvvNo(cvvNo);
 		creditCard.setPin(pinNo);
 
-		
 		try {
 			boolean status = CreditCardService.validateCreditCard(card, date, cvvNo);
 			System.out.println("validateCC status: " + status);

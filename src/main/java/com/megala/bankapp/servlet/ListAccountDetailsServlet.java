@@ -21,23 +21,22 @@ import com.megala.bankapp.exception.DbException;
 public class ListAccountDetailsServlet extends HttpServlet {
 	@Autowired
 	AccountDAO dao;
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Account> a =null;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Account> a = null;
 		System.out.println(a);
 		String obj = request.getParameter("number");
-		if(obj!=null && !"".equals(obj.trim()))
-		{
+		if (obj != null && !"".equals(obj.trim())) {
 			long val = Long.valueOf(obj);
 			try {
-				a=dao.findByAccNo(val);
+				a = dao.findByAccNo(val);
 			} catch (DbException e) {
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			try {
-				a= dao.findAll();
+				a = dao.findAll();
 			} catch (DbException e) {
 				e.printStackTrace();
 			}
@@ -45,5 +44,5 @@ public class ListAccountDetailsServlet extends HttpServlet {
 		request.setAttribute("accountlist", a);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("accountList.jsp");
 		dispatcher.forward(request, response);
-}
+	}
 }

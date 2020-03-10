@@ -1,11 +1,13 @@
 package com.megala.bankapp.dao.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.CreditCardDAO;
 import com.megala.bankapp.domain.CreditCard;
+import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -26,7 +28,8 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void save(CreditCard creditCard) throws DbException{
+
+	public void save(CreditCard creditCard) throws DbException {
 		String sql = "insert into credit_card(credit_card_no,credit_card_pin,acc_no,card_limit,cvv_no,expiry_date,available_balance)values(?,?,?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -40,11 +43,32 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows inserted:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_ADD,e);
+			throw new DbException("Unable to add creditcard", e);
 		}
 	}
 
-	public int findId(long cardNo, LocalDate expiryDate, int cvvNo) throws DbException{
+	public boolean checkLogin(CreditCard creditCard) throws DbException {
+		boolean result = false;
+
+		try (Connection con = dataSource.getConnection();
+				CallableStatement stmt = con.prepareCall("{call login_procedure1(?,?,?)}")) {
+			stmt.setLong(1, creditCard.getCardNo());
+			stmt.setInt(2, creditCard.getPin());
+			stmt.registerOutParameter(3, Types.VARCHAR);
+			stmt.executeUpdate();
+			String status = stmt.getString(3);
+			if (status.equals("Login Successful")) {
+				result = true;
+			} else {
+				result = false;
+			}
+		} catch (SQLException e) {
+			throw new DbException("Unable to add creditcard", e);
+		}
+		return result;
+	}
+
+	public int findId(long cardNo, LocalDate expiryDate, int cvvNo) throws DbException {
 		String sql = "select credit_card_id from credit_card where credit_card_no=? and expiry_date=? and cvv_no=? ";
 		int creditCardId = 0;
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -55,16 +79,91 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
 					creditCardId = rs.getInt("credit_card_id");
+					System.out.println(creditCardId);
 				}
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display cardid", e);
 		}
 		return creditCardId;
 	}
 
-	public List<CreditCard> findAll() throws DbException  {
+	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments)
+			throws DbException {
+		PaymentResponse response = new PaymentResponse();
+		boolean result = false;
+
+		int ccId = 0;
+		try {
+			ccId = findId(creditCard.getCardNo(), creditCard.getExpiryDate(), creditCard.getCvvNo());
+			System.out.println(ccId);
+		} catch (DbException e1) {
+			throw new DbException(e1.getMessage());
+		}
+		System.out.println("CCDisplayCard:" + ccId);
+		if (ccId > 0) {
+			try (Connection con = dataSource.getConnection();
+					CallableStatement stmt = con.prepareCall("{call trans_procedure1(?,?,?,?,?,?)}")) {
+				stmt.setLong(1, creditCard.getCardNo());
+				stmt.setFloat(2, amount);
+				stmt.setString(3, merchantId);
+				stmt.setString(4, comments);
+				stmt.registerOutParameter(5, Types.VARCHAR);
+				stmt.registerOutParameter(6, Types.INTEGER);
+				stmt.executeUpdate();
+				String status = stmt.getString(5);
+				Integer transactionId = stmt.getInt(6);
+
+				if (status.equals("Transaction Successfull")) {
+					LOGGER.info("Transaction successful");
+					result = true;
+					response.setTransactionId(transactionId);
+					response.setStatus(result);
+				} else {
+					response.setStatus(false);
+					LOGGER.debug(response);
+				}
+			} catch (SQLException e) {
+				response.setStatus(result);
+				LOGGER.debug(response);
+				throw new DbException(e.getMessage());
+
+			}
+		} else {
+			response.setStatus(false);
+			LOGGER.debug(response);
+		}
+		return response;
+
+	}
+
+	public boolean refundAmount(int transactionId, float amount, String comments) throws DbException {
+		boolean result = false;
+		try (Connection con = dataSource.getConnection();
+				CallableStatement stmt = con.prepareCall("{call refund_procedure(?,?,?,?)}")) {
+			stmt.setInt(1, transactionId);
+			stmt.setFloat(2, amount);
+			stmt.setString(3, comments);
+			stmt.registerOutParameter(4, Types.VARCHAR);
+			stmt.executeUpdate();
+			String status = stmt.getString(4);
+			if (status.equals("Amount Refunded")) {
+				LOGGER.info("Amount successfully refunded");
+				result = true;
+				LOGGER.debug(result);
+
+			} else {
+				LOGGER.info("Amount refund failed");
+
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		return result;
+	}
+
+	public List<CreditCard> findAll() throws DbException {
 		List<CreditCard> c = new ArrayList<>();
 
 		String sql = "select credit_card_no,acc_no,card_limit,expiry_date from credit_card";
@@ -76,25 +175,24 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 				while (rows.next()) {
 					long creditCardNo = rows.getLong("credit_card_no");
 					long accNo = rows.getLong("acc_no");
-					String limitNo = rows.getString("card_limit");
+					int limitNo = rows.getInt("card_limit");
 					LocalDate expiryDate = rows.getDate("expiry_date").toLocalDate();
-					LOGGER.debug(creditCardNo);
-					LOGGER.debug(accNo);
-					LOGGER.debug(limitNo);
-					LOGGER.debug(expiryDate);
-
-					CreditCard creditcard = new CreditCard();
-					c.add(creditcard);
+					CreditCard creditCard = new CreditCard();
+					creditCard.setCardNo(creditCardNo);
+					creditCard.setAccNo(accNo);
+					creditCard.setLimitNo(limitNo);
+					creditCard.setExpiryDate(expiryDate);
+					c.add(creditCard);
 				}
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display creditcard details", e);
 		}
 		return c;
 	}
 
-	public List<CreditCard> findAllByAccNo(long accNo) throws DbException{
+	public List<CreditCard> findAllByAccNo(long accNo) throws DbException {
 		List<CreditCard> c = new ArrayList<>();
 
 		String sql = "select credit_card_id,credit_card_no,card_limit,expiry_date,cvv_no,available_balance,credit_card_pin from credit_card where acc_no=?";
@@ -113,13 +211,6 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 					int cvv = rows.getInt("cvv_no");
 					float balance = rows.getFloat("available_balance");
 					int pin = rows.getInt("credit_card_pin");
-					LOGGER.debug(cardId);
-					LOGGER.debug(creditCardNo);
-					LOGGER.debug(limitNo);
-					LOGGER.debug(expiryDate);
-					LOGGER.debug(cvv);
-					LOGGER.debug(balance);
-					LOGGER.debug(pin);
 
 					CreditCard creditCard = new CreditCard();
 					creditCard.setCreditcardId(cardId);
@@ -134,28 +225,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display creditcard details", e);
 		}
 		return c;
 	}
 
-	public void delete(long accNo) throws DbException{
-		String sql = "delete from credit_card where acc_no=?";
-		LOGGER.info(sql);
-
-		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setLong(1, accNo);
-
-			int rows = pst.executeUpdate();
-			LOGGER.info("no of rows deleted:" + rows);
-		} catch (SQLException e) {
-
-			throw new DbException(ErrorConstants.INVALID_DELETE,e);
-		}
-
-	}
-
-	public void update(String comments, long creditCardNo, boolean blocked) throws DbException{
+	public void update(String comments, long creditCardNo, boolean blocked) throws DbException {
 
 		String sql = "update credit_card set comments=?,blocked=? where credit_card_no=?";
 		LOGGER.info(sql);
@@ -168,12 +243,12 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to update creditcard", e);
 		}
 
 	}
 
-	public float findBalance(long cardNo) throws DbException{
+	public float findBalance(long cardNo) throws DbException {
 		String sql = "select available_balance from credit_card where credit_card_no=?";
 		float availableBalance = 0;
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -186,10 +261,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display balance", e);
 		}
 		return availableBalance;
 	}
-
 
 }

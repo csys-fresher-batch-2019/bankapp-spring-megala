@@ -1,4 +1,4 @@
-package com.megala.bankapp.exception;
+package com.megala.bankapp.util;
 
 public class ErrorConstants {
 	public static final String INVALID_CON

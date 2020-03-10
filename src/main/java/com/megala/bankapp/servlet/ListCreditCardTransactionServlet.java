@@ -25,22 +25,20 @@ public class ListCreditCardTransactionServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		List<CreditCardTransaction> c = null;
-		
+
 		System.out.println(c);
-		
-		
+
 		String cardId = request.getParameter("number");
-		if ( cardId !=null && !"".equals(cardId.trim())) {
+		if (cardId != null && !"".equals(cardId.trim())) {
 			Integer ccId = Integer.parseInt(cardId);
 			try {
 				c = dao.findByCardId(ccId);
 			} catch (DbException e) {
 				e.printStackTrace();
 			}
-		}
-		else {
+		} else {
 			try {
 				c = dao.findAll();
 			} catch (DbException e) {

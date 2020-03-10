@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
+import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -42,7 +42,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			LOGGER.debug(status);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD,e);
+			throw new DbException("Unable to add transaction", e);
 		}
 	}
 
@@ -62,12 +62,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 					LocalDateTime transactionDate = rows.getTimestamp("transaction_date").toLocalDateTime();
 					int transactionAmount = rows.getInt("transaction_amount");
 					String status = rows.getString("status");
-					LOGGER.debug(transactionId);
-					LOGGER.debug(accNo);
-					LOGGER.debug(beneficiaryAccNo);
-					LOGGER.debug(transactionDate);
-					LOGGER.debug(transactionAmount);
-					LOGGER.debug(status);
 					Transaction transaction = new Transaction();
 					transaction.setTransactionId(transactionId);
 					transaction.setAccNo(accNo);
@@ -81,7 +75,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display transactions", e);
 		}
 
 		return t;
@@ -99,24 +93,38 @@ public class TransactionDAOImpl implements TransactionDAO {
 			LOGGER.info("no of rows updated:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to update amount", e);
 		}
 	}
 
-	public void delete(long beneficiaryAccNo) throws DbException {
-		String sql = "delete from transaction_details where beneficiary_acc_no=?";
-		LOGGER.info(sql);
+	public PaymentResponse fundTransaction(Transaction transaction) throws DbException {
+		PaymentResponse response = new PaymentResponse();
+		boolean result = false;
+		try (Connection con = dataSource.getConnection();
+				CallableStatement stmt = con.prepareCall("{call fund_transfer_procedure(?,?,?,?,?)}")) {
+			stmt.setLong(1, transaction.getAccNo());
+			stmt.setLong(2, transaction.getBeneficiaryAccNo());
+			stmt.setInt(3, transaction.getTransactionAmount());
+			stmt.registerOutParameter(4, Types.INTEGER);
+			stmt.registerOutParameter(5, Types.VARCHAR);
+			stmt.executeUpdate();
+			Integer transactionId = stmt.getInt(4);
+			String status = stmt.getString(5);
 
-		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setLong(1, beneficiaryAccNo);
-
-			int rows = pst.executeUpdate();
-			LOGGER.info("no of rows deleted:" + rows);
+			if (status.equals("Transaction success")) {
+				LOGGER.info("Transaction successful");
+				result = true;
+				response.setTransactionId(transactionId);
+				response.setStatus(result);
+			} else {
+				response.setTransactionId(transactionId);
+				response.setStatus(result);
+			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE,e);
+			throw new DbException("Unable to update amount", e);
 		}
-
+		return response;
 	}
 
 	public List<Transaction> findByAccNo(long accNo) throws DbException {
@@ -136,12 +144,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 					LocalDateTime transactionDate = rows.getTimestamp("transaction_date").toLocalDateTime();
 					int transactionAmount = rows.getInt("transaction_amount");
 					String status = rows.getString("status");
-					LOGGER.debug(transactionId);
-					LOGGER.debug(accNum);
-					LOGGER.debug(beneficiaryAccNo);
-					LOGGER.debug(transactionDate);
-					LOGGER.debug(transactionAmount);
-					LOGGER.debug(status);
 					Transaction transaction = new Transaction();
 					transaction.setTransactionId(transactionId);
 					transaction.setAccNo(accNum);
@@ -155,7 +157,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display transactions", e);
 		}
 
 		return t;

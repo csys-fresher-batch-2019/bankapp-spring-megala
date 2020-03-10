@@ -1,7 +1,6 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.service.CreditCardService;
 
 @SuppressWarnings("serial")
@@ -21,6 +21,7 @@ import com.megala.bankapp.service.CreditCardService;
 public class FundTransferServlet extends HttpServlet {
 	@Autowired
 	private CreditCardService creditCardService;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String acc = request.getParameter("no");
@@ -39,18 +40,20 @@ public class FundTransferServlet extends HttpServlet {
 		HttpSession sess = request.getSession();
 		sess.setAttribute("accNo", acc);
 		boolean result = false;
-		PaymentResponse fund=null;
+		PaymentResponse fund = null;
 		try {
 			fund = creditCardService.fundTransaction(t);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ServiceException e) {
+			try {
+				throw new ServiceException(e.getMessage());
+			} catch (ServiceException e1) {
+				e1.printStackTrace();
+			}
 		}
 		System.out.println(fund.getTransactionId());
 		System.out.println(fund.isStatus());
 		result = fund.isStatus();
 		if (result) {
-			// request.setAttribute("output msg","fund Transferred successfully");
 			response.sendRedirect("successfullPayment.jsp");
 
 		} else {

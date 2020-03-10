@@ -14,9 +14,7 @@
 <head>
 <title>beneficiary Details</title>
 <h5><jsp:include page="userLogin.jsp"></jsp:include></h5>
-<h3>
-	Beneficiary Details
-</h3>
+<h3>Beneficiary Details</h3>
 </head>
 <style>
 h3 {
@@ -39,7 +37,8 @@ h3 {
 	font-family: monospace;
 	font-style: italic;
 	font-family: cursive;
-	color:red;
+	color: red;
+	text-align: justify;
 }
 
 input[type="text"] {
@@ -47,40 +46,47 @@ input[type="text"] {
 	font-size: 16px;
 	color: blue;
 	font-style: italic;
+	text-align: justify;
+}
+
+input[type="number"] {
+	font-family: monospace;
+	font-size: 16px;
+	color: blue;
+	font-style: italic;
+	text-align: justify;
 }
 </style>
 
 <body class="b">
 	<form action="ListBeneficiaryDetailsServlet" class="b">
-		Search <br />
-		Enter Ifsc Code:<input type="text" name="ifsc" required>
-		<br/>
-		 Enter AccNo:<input type="number" name="acc" required>
+		Search <br /> Enter Ifsc Code:<input type="text" name="ifsc" required>
+		<br /> Enter AccNo:<input type="number" name="acc" required>
 		<button type="submit" class="b">Submit</button>
 	</form>
 
 	<div class="container">
 
-	<table border="1"
-		style="border-color: maroon; font-size: 20; font-style: italic;text-align:center;">
+		<table border="1"
+			style="border-color: maroon; font-size: 20; font-style: italic; text-align: center;">
 
-		<thead class="a">
-			<tr>
-				<th>Beneficiary Name</th>
-				<th>Account Number</th>
-				<th>IFSC code</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${bene}" var="acc">
+			<thead class="a">
+				<tr>
+					<th>Beneficiary Name</th>
+					<th>Account Number</th>
+					<th>IFSC code</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${bene}" var="acc">
 
 					<tr>
 						<td>${acc.beneficiaryName}</td>
 						<td>${acc.accNo}</td>
 						<td>${acc.iFSCCode}</td>
 				</c:forEach>
-		</tbody>
-	</table>
+			</tbody>
+		</table>
 	</div>
-	</body>
+</body>
 </html>

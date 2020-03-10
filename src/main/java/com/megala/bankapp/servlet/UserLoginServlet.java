@@ -1,7 +1,6 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.service.CreditCardService;
 
 @SuppressWarnings("serial")
@@ -34,22 +34,25 @@ public class UserLoginServlet extends HttpServlet {
 		PaymentResponse result = null;
 		try {
 			result = creditCardService.login(mail, pass);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		status = result.isStatus();
-		System.out.println(status);
-		if (status) {
-			System.out.println(result.getAccountNo());
-			System.out.println(result.isStatus());
-			sess.setAttribute("accNumber", result.getAccountNo());
-			response.sendRedirect("frontpage.jsp");
+			status = result.isStatus();
+			System.out.println(status);
+			if (status) {
+				System.out.println(result.getAccountNo());
+				System.out.println(result.isStatus());
+				sess.setAttribute("accNumber", result.getAccountNo());
+				response.sendRedirect("frontpage.jsp");
 
-		} else {
+			} else {
+				request.setAttribute("errormessage", "Invalid MailId or Password");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("User.jsp");
+				dispatcher.forward(request, response);
+
+			}
+		} catch (ServiceException e) {
 			request.setAttribute("errormessage", "Invalid MailId or Password");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("User.jsp");
 			dispatcher.forward(request, response);
-
+			e.printStackTrace();
 		}
 
 	}

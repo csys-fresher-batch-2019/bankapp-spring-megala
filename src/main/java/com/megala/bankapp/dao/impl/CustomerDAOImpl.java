@@ -1,10 +1,12 @@
 package com.megala.bankapp.dao.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import com.megala.bankapp.dao.CustomerDAO;
 import com.megala.bankapp.domain.Customer;
+import com.megala.bankapp.domain.Register;
+import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -40,7 +43,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows inserted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD,e);
+			throw new DbException("Unable to add customer", e);
 		}
 	}
 
@@ -61,20 +64,20 @@ public class CustomerDAOImpl implements CustomerDAO {
 					long mbleNo = rows.getLong("mobile_no");
 					String mail = rows.getString("email");
 					String password = rows.getString("password");
-					LOGGER.debug(name);
-					LOGGER.debug(id);
-					LOGGER.debug(street);
-					LOGGER.debug(city);
-					LOGGER.debug(mbleNo);
-					LOGGER.debug(mail);
-					LOGGER.debug(password);
 					Customer customer = new Customer();
+					customer.setName(name);
+					customer.setId(id);
+					customer.setStreet(street);
+					customer.setCity(city);
+					customer.setMobileNo(mbleNo);
+					customer.setEmail(mail);
+					customer.setPassword(password);
 					c.add(customer);
 				}
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display customer", e);
 		}
 		return c;
 	}
@@ -91,10 +94,78 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows updated:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
+			throw new DbException("Unable to update customer name", e);
 		}
 	}
 
+	public Register register(Customer c) throws DbException {
+		Register reg = new Register();
+		boolean result = false;
+		try (Connection con = dataSource.getConnection();
+				CallableStatement stmt = con.prepareCall("{call register_procedure(?,?,?,?,?,?,?,?,?)}")) {
+			stmt.setString(1, c.getName());
+			stmt.setString(2, c.getStreet());
+			stmt.setString(3, c.getCity());
+			stmt.setLong(4, c.getMobileNo());
+			stmt.setString(5, c.getEmail());
+			stmt.setString(6, c.getPassword());
+			stmt.setString(7, c.getAccType());
+			stmt.registerOutParameter(8, Types.INTEGER);
+			stmt.registerOutParameter(9, Types.VARCHAR);
+			stmt.executeUpdate();
+			String output = stmt.getString(9);
+			long accountNo = stmt.getLong(8);
+
+			if (output.equals("registered")) {
+				LOGGER.info("Registered Successfully");
+				result = true;
+				reg.setAccNo(accountNo);
+				reg.setStatus(result);
+
+			} else {
+				LOGGER.info("Registration failed");
+				reg.setAccNo(accountNo);
+				reg.setStatus(result);
+			}
+		}catch(SQLException e) {
+			throw new DbException("Unable to register", e);
+
+		}
+			return reg;
+	}
+	
+	public PaymentResponse login(String email, String password) throws DbException {
+		PaymentResponse response = new PaymentResponse();
+		boolean result = false;
+		try (Connection con = dataSource.getConnection();
+				CallableStatement stmt = con.prepareCall("{call login_procedure(?,?,?,?)}")) {
+			stmt.setString(1, email);
+			stmt.setString(2, password);
+			stmt.registerOutParameter(3, Types.INTEGER);
+			stmt.registerOutParameter(4, Types.VARCHAR);
+			stmt.executeUpdate();
+			Long acc = stmt.getLong(3);
+			String status = stmt.getString(4);
+			if (status.equals("Login Successfull")) {
+				LOGGER.info("Login Successfull");
+				result = true;
+				response.setAccountNo(acc);
+				response.setStatus(result);
+
+			} else {
+				LOGGER.info("Login failed");
+				result = false;
+				response.setAccountNo(acc);
+				response.setStatus(result);
+			}
+		} catch (SQLException e) {
+			result = false;
+			response.setStatus(result);
+			throw new DbException(e.getMessage());
+		}
+		return response;
+
+	}
 	public void delete(int id) throws DbException {
 		String sql = "delete from customer_details where customer_id=?";
 		LOGGER.info(sql);
@@ -106,7 +177,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			LOGGER.info("no of rows deleted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE,e);
+			throw new DbException("Unable to delete customer details", e);
 		}
 
 	}

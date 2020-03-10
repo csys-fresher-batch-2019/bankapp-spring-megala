@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.megala.bankapp.domain.CreditCard;
 import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
-import com.megala.bankapp.exception.ValidateException;
+import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.service.CreditCardService;
 
 @RestController
@@ -61,8 +62,8 @@ public class CreditCardController {
 		creditCard.setCardNo(cardNo);
 		creditCard.setPin(pin);
 		try {
-			result = creditCardService.checkLogin1(creditCard);
-		} catch (ValidateException e) {
+			result = creditCardService.checkLogin(creditCard);
+		} catch (ServiceException | DbException e) {
 			e.printStackTrace();
 		}
 

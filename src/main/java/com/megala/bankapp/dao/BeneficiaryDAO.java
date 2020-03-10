@@ -14,7 +14,7 @@ public interface BeneficiaryDAO {
 
 	public int delete(long accNo) throws DbException;
 
-	public List<Beneficiary> findByAccNo(long acc,String ifsc) throws DbException;
+	public List<Beneficiary> findByAccNoAndIfsc(long acc,String ifsc) throws DbException;
 
 	public List<Beneficiary> findByCusAccNo(long cusAccNo) throws DbException;
 }

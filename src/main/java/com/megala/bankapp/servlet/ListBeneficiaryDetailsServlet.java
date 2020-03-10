@@ -34,7 +34,7 @@ public class ListBeneficiaryDetailsServlet extends HttpServlet {
 		{
 			try {
 				long accNo=Long.valueOf(obj);
-				a= dao.findByAccNo(accNo,ifscCode);
+				a= dao.findByAccNoAndIfsc(accNo,ifscCode);
 			} catch (DbException e) {
 				e.printStackTrace();
 			}

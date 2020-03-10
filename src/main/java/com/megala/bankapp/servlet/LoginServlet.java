@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		try {
-			creditCardService.checkLogin1(creditCard);
+			creditCardService.checkLogin(creditCard);
 			response.sendRedirect("creditCardPage.jsp");
 
 		} catch (Exception e) {

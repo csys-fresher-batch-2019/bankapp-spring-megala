@@ -12,14 +12,10 @@ public interface AccountDAO {
 
 	public int update(long accNo, int amount) throws DbException;
 
-	public void delete(long accNo) throws DbException;
-
 	public List<Account> findByAccNo(long accNo) throws DbException;
 
-	public void findById(int id) throws DbException;
-
 	public int findBalanceByAccNo(long accNo) throws DbException;
-	
+
 	public String findStatusByAccNo(long accNo) throws DbException;
 
 	public int activeAccount(long accNo, String status) throws DbException;

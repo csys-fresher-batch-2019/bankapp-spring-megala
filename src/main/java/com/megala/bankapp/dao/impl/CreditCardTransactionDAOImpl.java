@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCardTransaction;
 import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.exception.ErrorConstants;
 import com.megala.bankapp.util.Logger;
 
 @Repository
@@ -41,7 +40,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD,e);
+			throw new DbException("Unable to add creditcard transactions", e);
 		}
 
 		return rows;
@@ -65,14 +64,6 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					Timestamp transactionDate = rows.getTimestamp("transaction_date");
 					String status = rows.getString("status");
 					Timestamp createdDate = rows.getTimestamp("created_date");
-					LOGGER.debug(transactionId);
-					LOGGER.debug(cardId);
-					LOGGER.debug(amount);
-					LOGGER.debug(description1);
-					LOGGER.debug(transactionDate);
-					LOGGER.debug(status);
-					LOGGER.debug(createdDate);
-
 					CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
 					creditCardTransaction.setTransactionId(transactionId);
 					creditCardTransaction.setCardId(cardId);
@@ -86,7 +77,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to display creditcard transactions", e);
 		}
 		return c;
 	}
@@ -107,12 +98,6 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					String description1 = rs.getString("description_1");
 					Timestamp transactionDate = rs.getTimestamp("transaction_date");
 					String status = rs.getString("status");
-					LOGGER.debug(creditCardId);
-					LOGGER.debug(transactionId);
-					LOGGER.debug(balance);
-					LOGGER.debug(description1);
-					LOGGER.debug(transactionDate);
-					LOGGER.debug(status);
 					CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
 					creditCardTransaction.setCardId(creditCardId);
 					creditCardTransaction.setTransactionId(transactionId);
@@ -125,7 +110,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to add creditcard transactions", e);
 		}
 		return history;
 	}
@@ -146,12 +131,6 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					String description1 = rs.getString("description_1");
 					Timestamp transactionDate = rs.getTimestamp("transaction_date");
 					String status = rs.getString("status");
-					LOGGER.debug(creditCardId);
-					LOGGER.debug(transactionId);
-					LOGGER.debug(balance);
-					LOGGER.debug(description1);
-					LOGGER.debug(transactionDate);
-					LOGGER.debug(status);
 					CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
 					creditCardTransaction.setCardId(creditCardId);
 					creditCardTransaction.setTransactionId(transactionId);
@@ -164,7 +143,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			}
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT,e);
+			throw new DbException("Unable to add creditcard transactions", e);
 		}
 		return history;
 	}

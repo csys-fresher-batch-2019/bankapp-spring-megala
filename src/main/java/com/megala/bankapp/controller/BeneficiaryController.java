@@ -64,7 +64,7 @@ public class BeneficiaryController {
 	public List<Beneficiary> listBeneDetailsByName(@RequestParam("acc") long accNo,@RequestParam("ifsc") String ifsc) {
 		List<Beneficiary> d = null;
 		try {
-			d = b.findByAccNo(accNo,ifsc);
+			d = b.findByAccNoAndIfsc(accNo,ifsc);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
