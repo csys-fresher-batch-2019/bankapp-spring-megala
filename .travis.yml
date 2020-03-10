@@ -1,4 +1,9 @@
 language: java
+addons:
+  sonarcloud:
+    organization: "csys-fresher-batch-2019"
+    token:
+      secure: "087a9cf44ccfd10662b66e05feae0c3770ecd2c4"
 deploy:
   provider: cloudfoundry
   username: megalajeeva1999@gmail.com
@@ -9,4 +14,4 @@ deploy:
   manifest: manifest.yml
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=csys-fresher-batch-2019_bankapp-spring-megala
