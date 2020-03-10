@@ -6,13 +6,13 @@ import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.exception.DbException;
 
 public interface TransactionDAO {
-	public void addTransaction(Transaction transaction) throws DbException;
+	public void save(Transaction transaction) throws DbException;
 
-	public List<Transaction> displayTransaction() throws DbException;
+	public List<Transaction> findAll() throws DbException;
 
-	public void updateTransaction(int transactionAmount, long beneficiaryAccNo) throws DbException;
+	public void update(int transactionAmount, long beneficiaryAccNo) throws DbException;
 
-	public void deleteTransaction(long beneficiaryAccNo) throws DbException;
+	public void delete(long beneficiaryAccNo) throws DbException;
 
-	public List<Transaction> displayParTransaction(long accNo) throws DbException;
+	public List<Transaction> findByAccNo(long accNo) throws DbException;
 }

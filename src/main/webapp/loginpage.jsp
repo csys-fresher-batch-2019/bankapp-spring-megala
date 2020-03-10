@@ -30,8 +30,7 @@
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<ul class="navbar-nav ml-auto">
 
-				<li class="nav-item"><a class="nav-link" href="User.jsp">User
-						Login</a></li>
+				<li class="nav-item"><a class="nav-link" href="User.jsp">UserLogin</a></li>
 				<li></li>
 				<li></li>
 				<li class="nav-item"><a class="nav-link" href="BankLogin.jsp">logout</a>

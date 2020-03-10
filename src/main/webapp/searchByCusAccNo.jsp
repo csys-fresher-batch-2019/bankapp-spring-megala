@@ -18,9 +18,9 @@
 <body>
 	<%
 		TransactionDAO dao = DAOFactory.getTransactionDAO();
-		String obj = request.getParameter("accNo");
-		long val = Long.valueOf(obj);
-		List<Transaction> trans = dao.displayParTransaction(val);
+			String obj = request.getParameter("accNo");
+			long val = Long.valueOf(obj);
+			List<Transaction> trans = dao.findByAccNo(val);
 	%><center>
 		<table border="1"
 			style="border-color: maroon; font-size: 20; font-family: monospace; font-style: italic; color: black">

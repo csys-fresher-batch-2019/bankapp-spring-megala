@@ -26,7 +26,7 @@ public class BranchDAOImpl implements BranchDAO {
 	@Autowired
 	private DataSource dataSource;
 
-	public void addBranch(Branch branch) throws DbException {
+	public void save(Branch branch) throws DbException {
 		String sql = "insert into branch(branch_id,branch_name,branch_city)values(?,?,?)";
 		logger.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class BranchDAOImpl implements BranchDAO {
 
 	}
 
-	public List<Branch> list() throws DbException {
+	public List<Branch> findAll() throws DbException {
 		List<Branch> b = new ArrayList<>();
 
 		String sql = "select branch_id,branch_name,branch_city from branch";
@@ -70,7 +70,7 @@ public class BranchDAOImpl implements BranchDAO {
 		return b;
 	}
 
-	public void updateBranch(String name, int id) throws DbException {
+	public void update(String name, int id) throws DbException {
 		String sql = "update branch set branch_name=? where branch_id=?";
 		logger.info(sql);
 

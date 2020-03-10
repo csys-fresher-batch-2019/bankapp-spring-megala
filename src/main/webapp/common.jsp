@@ -49,13 +49,13 @@ body {
 			%>
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
-					href="addBeneficiary.jsp">Add beneficiary</a></li>
+					href="addBeneficiary.jsp">AddBeneficiary</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="ListBeneficiaryDetailsServlet">Beneficiaries</a></li>
 				<li></li>
 				<li></li>
 				<li class="nav-item"><a class="nav-link"
-					href="fundTransfer.jsp">Fund Transfer</a></li>
+					href="fundTransfer.jsp">FundTransfer</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="ListFundTransferDetailsServlet">Transactions</a></li>
 				<li class="nav-item"><a class="nav-link"

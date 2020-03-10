@@ -25,7 +25,7 @@ public class LoanDAOImpl implements LoanDAO {
 	@Autowired
 	private DataSource dataSource;
 
-	public void addLoan(Loan loan) throws DbException {
+	public void save(Loan loan) throws DbException {
 		String sql = "insert into loan_details(customer_id,branch_name,loan_no,amount,loan_status)values(?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class LoanDAOImpl implements LoanDAO {
 		}
 	}
 
-	public List<Loan> displayLoan() throws DbException {
+	public List<Loan> findAll() throws DbException {
 		List<Loan> l = new ArrayList<>();
 
 		String sql = "select customer_id,branch_name,loan_no,amount from loan_details";
@@ -73,7 +73,7 @@ public class LoanDAOImpl implements LoanDAO {
 		return l;
 	}
 
-	public void updateLoan(LoanStatusEnum status, int id) throws DbException {
+	public void update(LoanStatusEnum status, int id) throws DbException {
 		String sql = "update loan_details set loan_status=? where customer_id=?";
 		LOGGER.info(sql);
 
@@ -89,7 +89,7 @@ public class LoanDAOImpl implements LoanDAO {
 		}
 	}
 
-	public void deleteLoan(String loanNo) throws DbException {
+	public void delete(String loanNo) throws DbException {
 		String sql = "delete from loan_details where loan_no=?";
 		LOGGER.info(sql);
 

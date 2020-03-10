@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListAccountTransactionServlet")
@@ -28,9 +29,17 @@ public class ListAccountTransactionServlet extends HttpServlet {
 		String obj = request.getParameter("accNo");
 		if (obj != null && !"".equals(obj.trim())) {
 			long val = Long.valueOf(obj);
-			t = dao.displayParTransaction(val);
+			try {
+				t = dao.findByAccNo(val);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		} else {
-			t = dao.displayTransaction();
+			try {
+				t = dao.findAll();
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		}
 		request.setAttribute("account", t);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("transaction.jsp");

@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
 import com.megala.bankapp.dto.MessageDTO;
+import com.megala.bankapp.exception.DbException;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 public class BeneficiaryController {
 	@Autowired
 	BeneficiaryDAO c;
@@ -33,7 +34,12 @@ public class BeneficiaryController {
 		b.setAccNo(acc);
 		b.setiFSCCode(ifscNo);
 
-		int a = c.addBeneficiary(b);
+		int a = 0;
+		try {
+			a = c.save(b);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		if (a == 1) {
 			msg.setInfoMessage("Beneficiary added");
 		} else {
@@ -45,13 +51,23 @@ public class BeneficiaryController {
 
 	@GetMapping("/listBeneDetailsByAccNo")
 	public List<Beneficiary> listBeneDetailsByAccNo(@RequestParam("accNo") long accNum) {
-		List<Beneficiary> d = b.displayParBeneficiary(accNum);
+		List<Beneficiary> d = null;
+		try {
+			d = b.findByCusAccNo(accNum);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return d;
 	}
 
 	@GetMapping("/listBeneDetailsByName")
 	public List<Beneficiary> listBeneDetailsByName(@RequestParam("name") String name) {
-		List<Beneficiary> d = b.searchByBeneficiaryName(name);
+		List<Beneficiary> d = null;
+		try {
+			d = b.findByName(name);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return d;
 	}
 

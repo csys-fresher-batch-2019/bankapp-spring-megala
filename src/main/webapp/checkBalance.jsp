@@ -25,7 +25,7 @@
 		<%
 			CreditCardDAO dao = DAOFactory.getCreditCardDAO();
 			Long cardNo = (Long) session.getAttribute("card");
-			float c = dao.displayBalance(cardNo);
+			float c = dao.findBalance(cardNo);
 		%>
 		<br /> <br /> Rs.<%=c%>
 </body>

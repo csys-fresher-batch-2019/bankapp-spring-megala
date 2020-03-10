@@ -21,8 +21,8 @@
 
 	<%
 		BeneficiaryDAO dao = DAOFactory.getBeneficiaryDAO();
-		String obj = request.getParameter("name");
-		List<Beneficiary> b = dao.searchByBeneficiaryName(obj);
+			String obj = request.getParameter("name");
+			List<Beneficiary> b = dao.findByName(obj);
 	%><center>
 		<table border="1"
 			style="border-color: maroon; font-size: 20; font-family: monospace; font-style: italic; color: black;">

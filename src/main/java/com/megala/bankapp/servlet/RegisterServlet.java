@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.megala.bankapp.dao.CustomerDAO;
 import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.service.CreditCardService;
@@ -21,9 +22,12 @@ import com.megala.bankapp.service.CreditCardService;
 public class RegisterServlet extends HttpServlet {
 	@Autowired
 	private CreditCardService creditCardService;
+	@Autowired
+	private CustomerDAO customer;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String cusName = request.getParameter("name");
 		String street = request.getParameter("street");
 		String city = request.getParameter("city");
@@ -47,6 +51,31 @@ public class RegisterServlet extends HttpServlet {
 		c.setMobileNo(num);
 		c.setEmail(emailId);
 		c.setPassword(password);
+		// List<Customer> list=null;
+		// try {
+		// list=customer.findAll();
+		// for(Customer cus:list) {
+		// String name=cus.getName();
+		// long mble=cus.getMobileNo();
+		// String email=cus.getEmail();
+		// if(name.equals(cusName)) {
+		// request.setAttribute("errormessage", "Customer Name already exists!!");
+		// RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+		// dispatcher.forward(request, response);
+		//
+		// }
+		// if(mble==num) {
+		// request.setAttribute("errormessage", "Mobile Number already exists!!");
+		// RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+		// dispatcher.forward(request, response);
+		// }
+		// if(email.equals(emailId)) {
+		// request.setAttribute("errormessage", "Mail Id already exists!!");
+		// RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+		// dispatcher.forward(request, response);
+		// }
+		// }
+		//
 		boolean result = false;
 		Register reg = creditCardService.register(c);
 		result = reg.isStatus();
@@ -64,7 +93,5 @@ public class RegisterServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 
 		}
-
 	}
-
 }

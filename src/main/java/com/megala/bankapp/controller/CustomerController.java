@@ -15,7 +15,7 @@ import com.megala.bankapp.service.CreditCardService;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 public class CustomerController {
 	@Autowired
 	private CreditCardService creditCardService;
@@ -39,10 +39,12 @@ public class CustomerController {
 
 		result = reg.isStatus();
 		if (result) {
-			System.out.println("Registration success");;
+			System.out.println("Registration success");
+			;
 			msg.setInfoMessage("Registered successfully");
 		} else {
-			System.out.println("Registration failed");;
+			System.out.println("Registration failed");
+			;
 			msg.setErrorMessage("Failed to register");
 		}
 		return msg;

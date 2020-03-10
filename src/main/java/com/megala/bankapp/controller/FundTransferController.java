@@ -14,11 +14,12 @@ import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.service.CreditCardService;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 public class FundTransferController {
 	@Autowired
 	TransactionDAO dao;
@@ -53,14 +54,24 @@ public class FundTransferController {
 	@GetMapping("/fundTransferDetails")
 	public List<Transaction> fundTransferDetails() {
 
-		List<Transaction> c = dao.displayTransaction();
+		List<Transaction> c = null;
+		try {
+			c = dao.findAll();
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return c;
 	}
 
 	@GetMapping("/fundTransferDetailsByAccNo")
 	public List<Transaction> fundTransferDetailsByAccNo(@RequestParam("accNo") long accNum) {
 
-		List<Transaction> c = dao.displayParTransaction(accNum);
+		List<Transaction> c = null;
+		try {
+			c = dao.findByAccNo(accNum);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return c;
 	}
 

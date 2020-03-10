@@ -44,17 +44,15 @@ body {
 			<% if(user!=null){%>
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
-					href="ListCreditCardTransactionServlet">CreditCard Transactions</a></li>
-				<li class="nav-item"><a class="nav-link" href="ListAccountDetailsServlet">Account
-						Details</a></li>
+					href="ListCreditCardTransactionServlet">CreditCardTransactions</a></li>
+				<li class="nav-item"><a class="nav-link" href="ListAccountDetailsServlet">AccountDetails</a></li>
 				<li></li>
 				<li></li>
-				<li class="nav-item"><a class="nav-link" href="ListAccountTransactionServlet">Account
-						Transactions</a></li>
+				<li class="nav-item"><a class="nav-link" href="ListAccountTransactionServlet">AccountTransactions</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="activeAccount.jsp">Active/Deactive Account</a></li>
+					href="activeAccount.jsp">Active/DeactiveAccount</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="updateAccount.jsp">Update Account</a></li>
+					href="updateAccount.jsp">UpdateAccount</a></li>
 			</ul>
 			<%}%>
 			<ul class="navbar-nav ml-auto">

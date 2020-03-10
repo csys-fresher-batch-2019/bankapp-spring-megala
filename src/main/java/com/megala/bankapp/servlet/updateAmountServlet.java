@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.AccountDAO;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/updateAmountServlet")
@@ -23,7 +24,12 @@ public class updateAmountServlet extends HttpServlet {
 		long val = Long.valueOf(obj);
 		String price = request.getParameter("price");
 		int amount = Integer.valueOf(price);
-		int account = dao.updateAccount(val, amount);
+		int account=0;
+		try {
+			account = dao.update(val, amount);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		String status=null;
 		if (account == 1) {
 			status="Amount Successfully added";

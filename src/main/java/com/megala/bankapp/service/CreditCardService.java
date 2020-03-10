@@ -2,6 +2,7 @@ package com.megala.bankapp.service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.time.LocalDate;
 
@@ -16,6 +17,8 @@ import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.DbException;
+//import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.exception.ValidateException;
 import com.megala.bankapp.factory.DAOFactory;
 import com.megala.bankapp.util.Logger;
@@ -43,8 +46,14 @@ public class CreditCardService {
 
 	}
 
-	public  boolean checkLogin1(CreditCard creditCard) {
+	public boolean checkLogin1(CreditCard creditCard) {
 		boolean result = false;
+		boolean validate = false;
+		try {
+
+			validate = CreditCardValidator.validateCreditCard(creditCard.getCardNo(), creditCard.getPin());
+		 
+		if(validate) {
 		try (Connection con = dataSource.getConnection();
 				CallableStatement stmt = con.prepareCall("{call login_procedure1(?,?,?)}")) {
 			stmt.setLong(1, creditCard.getCardNo());
@@ -54,15 +63,19 @@ public class CreditCardService {
 			String status = stmt.getString(3);
 			if (status.equals("Login Successful")) {
 				result = true;
+			} else {
+				result = false;
 			}
-			else {
-				result=false;
-			}
-		} catch (Exception e) {
-			
+		} 
+		catch (SQLException e) {
+
 			LOGGER.error(e);
 		}
-
+		}
+		}catch (ValidateException e) {
+			e.printStackTrace();
+			LOGGER.error(e);
+		}
 		return result;
 
 	}
@@ -137,7 +150,8 @@ public class CreditCardService {
 		return response;
 	}
 
-	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments) {
+	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments)
+			 {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean validate = false;
@@ -162,7 +176,11 @@ public class CreditCardService {
 		if (validate || validate1) {
 			CreditCardDAO c1 = DAOFactory.getCreditCardDAO();
 			int ccId = 0;
-			ccId = c1.displayCreditCard(creditCard.getCardNo(), creditCard.getExpiryDate(), creditCard.getCvvNo());
+			try {
+				ccId = c1.findId(creditCard.getCardNo(), creditCard.getExpiryDate(), creditCard.getCvvNo());
+			} catch (DbException e1) {
+				e1.printStackTrace();
+			}
 			System.out.println("CCDisplayCard:" + ccId);
 			if (ccId > 0) {
 				try (Connection con = dataSource.getConnection();
@@ -200,7 +218,7 @@ public class CreditCardService {
 		return response;
 	}
 
-	public  PaymentResponse fundTransaction(Transaction transaction) {
+	public PaymentResponse fundTransaction(Transaction transaction) {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean result = false;

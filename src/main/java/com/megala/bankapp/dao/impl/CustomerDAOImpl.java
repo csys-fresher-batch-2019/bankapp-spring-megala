@@ -23,7 +23,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private static final Logger LOGGER = Logger.getInstance();
 	@Autowired
 	private DataSource dataSource;
-	public void addCustomer(Customer customer) throws DbException{
+
+	public void save(Customer customer) throws DbException {
 		String sql = "insert into customer_details(customer_name,customer_street,customer_city,mobile_no,email,password,acc_type)values(?,?,?,?,?,?,?)";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -42,7 +43,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 	}
 
-	public List<Customer> display() throws DbException{
+	public List<Customer> findAll() throws DbException {
 		List<Customer> c = new ArrayList<>();
 
 		String sql = "select customer_name,customer_id,customer_street,customer_city,mobile_no,email,password from customer_details";
@@ -77,7 +78,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return c;
 	}
 
-	public void updateCustomer(String name, int id) throws DbException{
+	public void update(String name, int id) throws DbException {
 		String sql = "update Customer_details set customer_name=? where customer_id=?";
 		LOGGER.info(sql);
 
@@ -93,7 +94,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 	}
 
-	public void deleteCustomer(int id) throws DbException {
+	public void delete(int id) throws DbException {
 		String sql = "delete from customer_details where customer_id=?";
 		LOGGER.info(sql);
 

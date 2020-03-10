@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCardTransaction;
+import com.megala.bankapp.exception.DbException;
 
 @RestController
 @RequestMapping("api")
@@ -21,13 +22,23 @@ public class CreditCardTransactionController {
 
 	@GetMapping("/creditCardTransDetails")
 	public List<CreditCardTransaction> creditCardTransDetails() {
-		List<CreditCardTransaction> d = credit.displayCreditCardPaymentList();
+		List<CreditCardTransaction> d=null;
+		try {
+			d = credit.findAll();
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return d;
 	}
 
 	@GetMapping("/creditCardTransDetailsByCardId")
 	public List<CreditCardTransaction> creditCardTransDetailsByCardId(@RequestParam("cardId") int cardId) {
-		List<CreditCardTransaction> d = credit.displayTransactionHistoryByCardId(cardId);
+		List<CreditCardTransaction> d=null;
+		try {
+			d = credit.findByCardId(cardId);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return d;
 	}
 

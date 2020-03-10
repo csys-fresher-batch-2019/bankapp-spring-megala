@@ -1,6 +1,7 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +19,7 @@ import com.megala.bankapp.service.CreditCardService;
 public class LoginServlet extends HttpServlet {
 	@Autowired
 	private CreditCardService creditCardService;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String cardNo = request.getParameter("number");

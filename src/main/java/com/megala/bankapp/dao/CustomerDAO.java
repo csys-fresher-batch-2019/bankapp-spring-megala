@@ -6,12 +6,12 @@ import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.exception.DbException;
 
 public interface CustomerDAO {
-	public void addCustomer(Customer customer) throws DbException;
+	public void save(Customer customer) throws DbException;
 
-	public List<Customer> display() throws DbException;
+	public List<Customer> findAll() throws DbException;
 
-	public void deleteCustomer(int id) throws DbException;
+	public void delete(int id) throws DbException;
 
-	public void updateCustomer(String name, int id) throws DbException;
+	public void update(String name, int id) throws DbException;
 
 }

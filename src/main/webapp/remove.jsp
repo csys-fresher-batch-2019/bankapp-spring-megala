@@ -11,18 +11,18 @@ f<%@page import="com.megala.bankapp.factory.DAOFactory"%>
 <body>
 	<%
 		BeneficiaryDAO dao = DAOFactory.getBeneficiaryDAO();
-		String obj = request.getParameter("accNo");
-		long val = Long.valueOf(obj);
-		long bene = dao.deleteBeneficiary(val);
-		if (bene == 1) {
-			request.setAttribute("output", "Beneficiary Removed");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("activeAccount.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			request.setAttribute("output", "Invalid Account Number");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("activeAccount.jsp");
-			dispatcher.forward(request, response);
-		}
+			String obj = request.getParameter("accNo");
+			long val = Long.valueOf(obj);
+			long bene = dao.delete(val);
+			if (bene == 1) {
+		request.setAttribute("output", "Beneficiary Removed");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("activeAccount.jsp");
+		dispatcher.forward(request, response);
+			} else {
+		request.setAttribute("output", "Invalid Account Number");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("activeAccount.jsp");
+		dispatcher.forward(request, response);
+			}
 	%>
 </body>
 </html>

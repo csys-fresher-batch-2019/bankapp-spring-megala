@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListBeneficiaryDetailsServlet")
@@ -28,12 +29,20 @@ public class ListBeneficiaryDetailsServlet extends HttpServlet {
 		String obj = request.getParameter("name");
 		if(obj!=null && !"".equals(obj.trim()))
 		{
-			a= dao.searchByBeneficiaryName(obj);
+			try {
+				a= dao.findByName(obj);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 			System.out.println(a);
 		}
 		else
 		{
-			a=dao.displayParBeneficiary(obj1);
+			try {
+				a=dao.findByCusAccNo(obj1);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 			System.out.println(a);
 			
 		}

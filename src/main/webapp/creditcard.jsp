@@ -15,8 +15,8 @@
 
 	<%
 		CreditCardDAO dao = DAOFactory.getCreditCardDAO();
-		long acc = (Long) session.getAttribute("accNumber");
-		List<CreditCard> c = dao.displayCreditCardsByAccNo(acc);
+			long acc = (Long) session.getAttribute("accNumber");
+			List<CreditCard> c = dao.findAllByAccNo(acc);
 	%><center>
 		<table border="1"
 			style="border-color: navy; font-size: 30px; color: navy;">

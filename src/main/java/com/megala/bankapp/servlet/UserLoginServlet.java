@@ -20,6 +20,7 @@ import com.megala.bankapp.service.CreditCardService;
 public class UserLoginServlet extends HttpServlet {
 	@Autowired
 	private CreditCardService creditCardService;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mail = request.getParameter("name");

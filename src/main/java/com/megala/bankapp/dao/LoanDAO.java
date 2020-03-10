@@ -7,12 +7,12 @@ import com.megala.bankapp.domain.LoanStatusEnum;
 import com.megala.bankapp.exception.DbException;
 
 public interface LoanDAO {
-	void addLoan(Loan loan) throws DbException;
+	void save(Loan loan) throws DbException;
 
-	public List<Loan> displayLoan() throws DbException;
+	public List<Loan> findAll() throws DbException;
 
-	public void updateLoan(LoanStatusEnum status, int id) throws DbException;
+	public void update(LoanStatusEnum status, int id) throws DbException;
 
-	public void deleteLoan(String loanNo) throws DbException;
+	public void delete(String loanNo) throws DbException;
 
 }

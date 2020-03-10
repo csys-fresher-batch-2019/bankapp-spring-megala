@@ -25,7 +25,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 	@Autowired
 	private DataSource dataSource;
 
-	public int addCreditCardTransaction(CreditCardTransaction creditCardTransaction) throws DbException {
+	public int save(CreditCardTransaction creditCardTransaction) throws DbException {
 		String sql = "insert into credit_card_transaction(card_id,amount,description_1,transaction_date,status)values(?,?,?,?,?)";
 		LOGGER.info(sql);
 		int rows = 0;
@@ -47,7 +47,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 
 	}
 
-	public List<CreditCardTransaction> displayCreditCardPaymentList() throws DbException {
+	public List<CreditCardTransaction> findAll() throws DbException {
 		List<CreditCardTransaction> c = new ArrayList<>();
 
 		String sql = "select transaction_id,card_id,amount,description_1,transaction_date,status,created_date from credit_card_transaction order by transaction_id DESC";
@@ -90,12 +90,12 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 		return c;
 	}
 
-	public List<CreditCardTransaction> displayTransactionHistory(long cardId) throws DbException {
+	public List<CreditCardTransaction> findByCardNo(long cardNo) throws DbException {
 		List<CreditCardTransaction> history = new ArrayList<>();
 		String sql = "select card_id,transaction_id,amount,description_1,transaction_date,status from credit_card_transaction where card_id=((select credit_card_id from credit_card where credit_card_no = ?))";
 		LOGGER.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setLong(1, cardId);
+			pst.setLong(1, cardNo);
 
 			try (ResultSet rs = pst.executeQuery()) {
 
@@ -129,7 +129,7 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 		return history;
 	}
 
-	public List<CreditCardTransaction> displayTransactionHistoryByCardId(int cardId) throws DbException {
+	public List<CreditCardTransaction> findByCardId(int cardId) throws DbException {
 		List<CreditCardTransaction> history = new ArrayList<>();
 		String sql = "select card_id,transaction_id,amount,description_1,transaction_date,status from credit_card_transaction where card_id=?";
 		LOGGER.info(sql);

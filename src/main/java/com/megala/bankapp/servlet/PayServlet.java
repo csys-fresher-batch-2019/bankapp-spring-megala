@@ -23,8 +23,10 @@ public class PayServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
+
 	@Autowired
 	private CreditCardService creditCardService;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String name = request.getParameter("name");
@@ -51,6 +53,7 @@ public class PayServlet extends HttpServlet {
 		creditCard.setCvvNo(cvvNo);
 		creditCard.setPin(pinNo);
 
+		
 		try {
 			boolean status = CreditCardService.validateCreditCard(card, date, cvvNo);
 			System.out.println("validateCC status: " + status);

@@ -6,11 +6,11 @@ import com.megala.bankapp.domain.Branch;
 import com.megala.bankapp.exception.DbException;
 
 public interface BranchDAO {
-	void addBranch(Branch branch) throws DbException;
+	void save(Branch branch) throws DbException;
 
-	List<Branch> list() throws DbException;
+	List<Branch> findAll() throws DbException;
 
-	void updateBranch(String name, int id) throws DbException;
+	void update(String name, int id) throws DbException;
 
 	void delete(int id) throws DbException;
 

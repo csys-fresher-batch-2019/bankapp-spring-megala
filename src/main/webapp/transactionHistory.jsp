@@ -28,7 +28,7 @@ h2 {
 	<%
 		CreditCardTransactionDAO dao = DAOFactory.getCreditCardTransactionDAO();
 		Long obj = (Long) session.getAttribute("card");
-		List<CreditCardTransaction> c = dao.displayTransactionHistory(obj);
+		List<CreditCardTransaction> c = dao.findByCardNo(obj);
 	%><center>
 		<table border="2"
 			style="border-color: maroon; font-size: 25; color: navy;">

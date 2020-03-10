@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/BeneficiaryServlet")
@@ -37,7 +38,12 @@ public class BeneficiaryServlet extends HttpServlet {
 		sess.setAttribute("beneName", beneficiaryName);
 		String s=String.valueOf(acc);
 		if(s.length()==10) {
-		int a = c.addBeneficiary(b);
+		int a=0;
+		try {
+			a = c.save(b);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		System.out.println(a);
 		if (a == 1) {
 			request.setAttribute("outputmessage", "Beneficiary successfully added");

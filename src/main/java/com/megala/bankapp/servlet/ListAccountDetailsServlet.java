@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListAccountDetailsServlet")
@@ -27,11 +28,19 @@ public class ListAccountDetailsServlet extends HttpServlet {
 		if(obj!=null && !"".equals(obj.trim()))
 		{
 			long val = Long.valueOf(obj);
-			a=dao.searchByAccountNo(val);
+			try {
+				a=dao.findByAccNo(val);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		}
 		else
 		{
-			a= dao.displayAcc();
+			try {
+				a= dao.findAll();
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		}
 		request.setAttribute("accountlist", a);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("accountList.jsp");

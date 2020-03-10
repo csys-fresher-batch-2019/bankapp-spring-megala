@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,7 @@ import com.megala.bankapp.exception.DbException;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 public class AccountController {
 
 	@Autowired
@@ -27,7 +26,8 @@ public class AccountController {
 	AccountDAO u;
 
 	@PostMapping("/activeAccount")
-	public MessageDTO activeAccount(@RequestParam("accNo") long accNum, @RequestParam("status") String status) throws DbException {
+	public MessageDTO activeAccount(@RequestParam("accNo") long accNum, @RequestParam("status") String status)
+			throws DbException {
 		MessageDTO msg = new MessageDTO();
 
 		int account = a.activeAccount(accNum, status);
@@ -41,9 +41,10 @@ public class AccountController {
 	}
 
 	@PostMapping("/updateBalance")
-	public MessageDTO updateBalance(@RequestParam("accNo") long accNum, @RequestParam("amount") int amount) throws DbException {
+	public MessageDTO updateBalance(@RequestParam("accNo") long accNum, @RequestParam("amount") int amount)
+			throws DbException {
 		MessageDTO msg = new MessageDTO();
-		int account = u.updateAccount(accNum, amount);
+		int account = u.update(accNum, amount);
 		if (account == 1) {
 			msg.setInfoMessage("Amount Successfully added");
 		} else {
@@ -66,15 +67,28 @@ public class AccountController {
 		return msg;
 	}
 
+	@GetMapping("/getAccount")
+	public Account userLogin(@RequestParam("email") String email) {
+
+		Account account = null;
+		try {
+			account = u.getAccount(email);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+
+		return account;
+	}
+
 	@GetMapping("/listAccountDetails")
 	public List<Account> listAccountDetails() throws DbException {
-		List<Account> account = u.displayAcc();
+		List<Account> account = u.findAll();
 		return account;
 	}
 
 	@GetMapping("/listAccountDetailsByAccNo")
 	public List<Account> listAccountDetailsByAccNo(@RequestParam("accNo") long accNum) throws DbException {
-		List<Account> account = u.searchByAccountNo(accNum);
+		List<Account> account = u.findByAccNo(accNum);
 		return account;
 	}
 

@@ -16,7 +16,7 @@ import com.megala.bankapp.service.CreditCardService;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 public class CreditCardController {
 	@Autowired
 	private CreditCardService creditCardService;

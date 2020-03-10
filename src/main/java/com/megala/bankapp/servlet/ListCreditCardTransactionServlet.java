@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCardTransaction;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListCreditCardTransactionServlet")
@@ -33,10 +34,18 @@ public class ListCreditCardTransactionServlet extends HttpServlet {
 		String cardId = request.getParameter("number");
 		if ( cardId !=null && !"".equals(cardId.trim())) {
 			Integer ccId = Integer.parseInt(cardId);
-			c = dao.displayTransactionHistoryByCardId(ccId);
+			try {
+				c = dao.findByCardId(ccId);
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		}
 		else {
-			c = dao.displayCreditCardPaymentList();
+			try {
+				c = dao.findAll();
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 		}
 		request.setAttribute("list", c);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("creditcardpaymentlist.jsp");

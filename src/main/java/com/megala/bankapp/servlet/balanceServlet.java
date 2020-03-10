@@ -13,19 +13,26 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dao.AccountDAO;
-import com.megala.bankapp.dao.CreditCardDAO;
+import com.megala.bankapp.exception.DbException;
 
 @SuppressWarnings("serial")
 @WebServlet("/balanceServlet")
 public class balanceServlet extends HttpServlet {
 	@Autowired
-	AccountDAO dao ;
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	AccountDAO dao;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Long cardNo = (Long) session.getAttribute("accNumber");
-		int c = dao.displayBalance(cardNo);
+		int c = 0;
+		try {
+			c = dao.findBalanceByAccNo(cardNo);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		request.setAttribute("output", c);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("accountCheckBalance.jsp");
 		dispatcher.forward(request, response);
-}
+	}
 }

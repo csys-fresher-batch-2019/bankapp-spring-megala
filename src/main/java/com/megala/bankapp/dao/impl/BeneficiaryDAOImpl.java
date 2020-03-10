@@ -26,7 +26,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 	@Autowired
 	private DataSource dataSource;
 
-	public int addBeneficiary(Beneficiary beneficiary) throws DbException {
+	public int save(Beneficiary beneficiary) throws DbException {
 		String sql = "insert into beneficiary_list(acc_number,beneficiary_name,acc_no_1,IFSC_code)values(?,?,?,?)";
 		logger.info(sql);
 		int rows = 0;
@@ -44,7 +44,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 		return rows;
 	}
 
-	public List<Beneficiary> displayBeneficiary() throws DbException {
+	public List<Beneficiary> findAll() throws DbException {
 		List<Beneficiary> b = new ArrayList<>();
 
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list";
@@ -74,7 +74,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 		return b;
 	}
 
-	public void updateBeneficiary(String beneficiaryName, long accNo) throws DbException {
+	public void update(String beneficiaryName, long accNo) throws DbException {
 		String sql = "update beneficiary_list set beneficiary_name=? where acc_no_1=?";
 		logger.info(sql);
 
@@ -90,7 +90,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 		}
 	}
 
-	public int deleteBeneficiary(long accNo) throws DbException {
+	public int delete(long accNo) throws DbException {
 		String sql = "delete from beneficiary_list where acc_no_1=?";
 		logger.info(sql);
 		int rows = 0;
@@ -105,7 +105,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 		return rows;
 	}
 
-	public List<Beneficiary> searchByBeneficiaryName(String name) throws DbException {
+	public List<Beneficiary> findByName(String name) throws DbException {
 		List<Beneficiary> a = new ArrayList<>();
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where beneficiary_name=?";
 		logger.info(sql);
@@ -140,7 +140,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 
 	}
 
-	public List<Beneficiary> displayParBeneficiary(long cusAccNo) throws DbException {
+	public List<Beneficiary> findByCusAccNo(long cusAccNo) throws DbException {
 		List<Beneficiary> b = new ArrayList<>();
 
 		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where acc_number=?";
