@@ -27,10 +27,16 @@ public class AccountController {
 
 	@PostMapping("/activeAccount")
 	public MessageDTO activeAccount(@RequestParam("accNo") long accNum, @RequestParam("status") String status)
-			throws DbException {
+			 {
 		MessageDTO msg = new MessageDTO();
 
-		int account = a.activeAccount(accNum, status);
+		int account=0;
+		try {
+			account = a.activeAccount(accNum, status);
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (account == 1) {
 			msg.setInfoMessage("Account Updated");
 		} else {
@@ -42,9 +48,15 @@ public class AccountController {
 
 	@PostMapping("/updateBalance")
 	public MessageDTO updateBalance(@RequestParam("accNo") long accNum, @RequestParam("amount") int amount)
-			throws DbException {
+			 {
 		MessageDTO msg = new MessageDTO();
-		int account = u.update(accNum, amount);
+		int account=0;
+		try {
+			account = u.update(accNum, amount);
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (account == 1) {
 			msg.setInfoMessage("Amount Successfully added");
 		} else {
@@ -81,14 +93,24 @@ public class AccountController {
 	}
 
 	@GetMapping("/listAccountDetails")
-	public List<Account> listAccountDetails() throws DbException {
-		List<Account> account = u.findAll();
+	public List<Account> listAccountDetails()  {
+		List<Account> account=null;
+		try {
+			account = u.findAll();
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return account;
 	}
 
 	@GetMapping("/listAccountDetailsByAccNo")
-	public List<Account> listAccountDetailsByAccNo(@RequestParam("accNo") long accNum) throws DbException {
-		List<Account> account = u.findByAccNo(accNum);
+	public List<Account> listAccountDetailsByAccNo(@RequestParam("accNo") long accNum) {
+		List<Account> account=null;
+		try {
+			account = u.findByAccNo(accNum);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		return account;
 	}
 

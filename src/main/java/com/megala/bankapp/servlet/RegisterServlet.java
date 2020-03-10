@@ -1,6 +1,7 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -77,7 +78,12 @@ public class RegisterServlet extends HttpServlet {
 		// }
 		//
 		boolean result = false;
-		Register reg = creditCardService.register(c);
+		Register reg = null;
+		try {
+			reg = creditCardService.register(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		result = reg.isStatus();
 		if (result) {
 			System.out.println(reg.getAccNo());

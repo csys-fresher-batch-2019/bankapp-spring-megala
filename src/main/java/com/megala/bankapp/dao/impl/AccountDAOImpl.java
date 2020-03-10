@@ -43,7 +43,7 @@ public class AccountDAOImpl implements AccountDAO {
 			pst.setInt(3, account.getAvailableBalance());
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows inserted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 
@@ -79,7 +79,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return a;
@@ -149,7 +149,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 			rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_UPDATE);
 		}
 		return rows;
@@ -164,7 +164,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 			int rows = pst.executeUpdate();
 			logger.info("no of rows deleted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
 			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}
@@ -197,7 +197,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return a;
@@ -220,7 +220,7 @@ public class AccountDAOImpl implements AccountDAO {
 					logger.debug("Balance" + availableBalance);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 	}
@@ -238,7 +238,7 @@ public class AccountDAOImpl implements AccountDAO {
 					logger.debug("Balance" + availableBalance);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return availableBalance;
@@ -257,7 +257,7 @@ public class AccountDAOImpl implements AccountDAO {
 					logger.debug("Balance" + status);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return status;

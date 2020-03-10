@@ -1,6 +1,7 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,13 @@ public class FundTransferServlet extends HttpServlet {
 		HttpSession sess = request.getSession();
 		sess.setAttribute("accNo", acc);
 		boolean result = false;
-		PaymentResponse fund = creditCardService.fundTransaction(t);
+		PaymentResponse fund=null;
+		try {
+			fund = creditCardService.fundTransaction(t);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(fund.getTransactionId());
 		System.out.println(fund.isStatus());
 		result = fund.isStatus();

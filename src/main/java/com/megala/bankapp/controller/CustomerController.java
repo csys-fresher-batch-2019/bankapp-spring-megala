@@ -1,5 +1,7 @@
 package com.megala.bankapp.controller;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +37,12 @@ public class CustomerController {
 		c.setEmail(mailId);
 		c.setPassword(passWord);
 		boolean result = false;
-		Register reg = creditCardService.register(c);
+		Register reg=null;
+		try {
+			reg = creditCardService.register(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		result = reg.isStatus();
 		if (result) {
@@ -54,7 +61,12 @@ public class CustomerController {
 	public MessageDTO userLogin(@RequestParam("email") String email, @RequestParam("pass") String password) {
 		MessageDTO msg = new MessageDTO();
 		boolean status = false;
-		PaymentResponse result = creditCardService.login(email, password);
+		PaymentResponse result=null;
+		try {
+			result = creditCardService.login(email, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		status = result.isStatus();
 		if (status) {
 			System.out.println("Login success");

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.megala.bankapp.domain.CreditCard;
 import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.ValidateException;
 import com.megala.bankapp.service.CreditCardService;
 
 @RestController
@@ -59,7 +60,11 @@ public class CreditCardController {
 		CreditCard creditCard = new CreditCard();
 		creditCard.setCardNo(cardNo);
 		creditCard.setPin(pin);
-		result = creditCardService.checkLogin1(creditCard);
+		try {
+			result = creditCardService.checkLogin1(creditCard);
+		} catch (ValidateException e) {
+			e.printStackTrace();
+		}
 
 		if (result) {
 			msg.setInfoMessage("login successful");

@@ -1,6 +1,7 @@
 package com.megala.bankapp.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,7 +31,12 @@ public class UserLoginServlet extends HttpServlet {
 		HttpSession sess = request.getSession();
 		sess.setAttribute("email", mail);
 		boolean status = false;
-		PaymentResponse result = creditCardService.login(mail, pass);
+		PaymentResponse result = null;
+		try {
+			result = creditCardService.login(mail, pass);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		status = result.isStatus();
 		if (status) {
 			System.out.println(result.getAccountNo());

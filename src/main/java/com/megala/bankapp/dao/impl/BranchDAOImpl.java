@@ -3,6 +3,7 @@ package com.megala.bankapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +37,14 @@ public class BranchDAOImpl implements BranchDAO {
 
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows inserted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
 			throw new DbException(ErrorConstants.INVALID_ADD);
 		}
 
 	}
 
-	public List<Branch> findAll() throws DbException {
+	public List<Branch> findAll() throws DbException, SQLException, IllegalAccessException {
 		List<Branch> b = new ArrayList<>();
 
 		String sql = "select branch_id,branch_name,branch_city from branch";
@@ -64,7 +65,10 @@ public class BranchDAOImpl implements BranchDAO {
 					b.add(branch);
 				}
 			}
-		} catch (Exception e) {
+			catch (SQLException e) {
+				throw new DbException(ErrorConstants.INVALID_CON);
+			}
+		} catch (RuntimeException e) {
 			throw new DbException(ErrorConstants.INVALID_SELECT);
 		}
 		return b;
@@ -80,7 +84,7 @@ public class BranchDAOImpl implements BranchDAO {
 
 			int rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException(ErrorConstants.INVALID_UPDATE);
 		}
 	}
@@ -94,7 +98,7 @@ public class BranchDAOImpl implements BranchDAO {
 
 			int rows = pst.executeUpdate();
 			logger.info("no of rows deleted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
 			throw new DbException(ErrorConstants.INVALID_DELETE);
 		}

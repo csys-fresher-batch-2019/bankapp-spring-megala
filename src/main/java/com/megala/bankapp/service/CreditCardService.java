@@ -33,65 +33,62 @@ public class CreditCardService {
 	private DataSource dataSource;
 	private static final Logger LOGGER = Logger.getInstance();
 
-	public static boolean validateCreditCard(long creditCardNo, LocalDate expiryDate, int cvvNo) {
+	public static boolean validateCreditCard(long creditCardNo, LocalDate expiryDate, int cvvNo)
+			throws ValidateException {
 		try {
 			CreditCardValidator.validateCreditCard(creditCardNo, expiryDate, cvvNo);
 			return true;
 
-		} catch (Exception e) {
+		} catch (ValidateException e) {
 
-			LOGGER.error(e);
+			throw new ValidateException(e.getMessage());
 		}
-		return false;
 
 	}
 
-	public boolean checkLogin1(CreditCard creditCard) {
+	public boolean checkLogin1(CreditCard creditCard) throws ValidateException {
 		boolean result = false;
 		boolean validate = false;
 		try {
 
 			validate = CreditCardValidator.validateCreditCard(creditCard.getCardNo(), creditCard.getPin());
-		 
-		if(validate) {
-		try (Connection con = dataSource.getConnection();
-				CallableStatement stmt = con.prepareCall("{call login_procedure1(?,?,?)}")) {
-			stmt.setLong(1, creditCard.getCardNo());
-			stmt.setInt(2, creditCard.getPin());
-			stmt.registerOutParameter(3, Types.VARCHAR);
-			stmt.executeUpdate();
-			String status = stmt.getString(3);
-			if (status.equals("Login Successful")) {
-				result = true;
-			} else {
-				result = false;
-			}
-		} 
-		catch (SQLException e) {
 
-			LOGGER.error(e);
-		}
-		}
-		}catch (ValidateException e) {
-			e.printStackTrace();
-			LOGGER.error(e);
+			if (validate) {
+				try (Connection con = dataSource.getConnection();
+						CallableStatement stmt = con.prepareCall("{call login_procedure1(?,?,?)}")) {
+					stmt.setLong(1, creditCard.getCardNo());
+					stmt.setInt(2, creditCard.getPin());
+					stmt.registerOutParameter(3, Types.VARCHAR);
+					stmt.executeUpdate();
+					String status = stmt.getString(3);
+					if (status.equals("Login Successful")) {
+						result = true;
+					} else {
+						result = false;
+					}
+				} catch (SQLException e) {
+
+					LOGGER.error(e);
+				}
+			}
+		} catch (ValidateException e) {
+			throw new ValidateException(e.getMessage());
 		}
 		return result;
 
 	}
 
-	public static boolean validateCreditCard(long creditCardNo, int creditCardPin) {
+	public static boolean validateCreditCard(long creditCardNo, int creditCardPin) throws ValidateException {
 		try {
 			CreditCardValidator.validateCreditCard(creditCardNo, creditCardPin);
 			return true;
 
-		} catch (Exception e) {
-			LOGGER.error(e);
+		} catch (ValidateException e) {
+			throw new ValidateException(e.getMessage());
 		}
-		return false;
 	}
 
-	public boolean refundAmount(int transactionId, float amount, String comments) {
+	public boolean refundAmount(int transactionId, float amount, String comments) throws Exception {
 		boolean result = false;
 		try (Connection con = dataSource.getConnection();
 				CallableStatement stmt = con.prepareCall("{call refund_procedure(?,?,?,?)}")) {
@@ -110,14 +107,15 @@ public class CreditCardService {
 				LOGGER.info("Amount refund failed");
 
 			}
-		} catch (Exception e) {
-			LOGGER.error(e);
+		}
+		catch (SQLException e) {
+			throw new Exception(e.getMessage());
 		}
 
 		return result;
 	}
 
-	public PaymentResponse login(String email, String password) {
+	public PaymentResponse login(String email, String password) throws SQLException {
 		boolean result = false;
 		PaymentResponse response = new PaymentResponse();
 		try (Connection con = dataSource.getConnection();
@@ -141,17 +139,17 @@ public class CreditCardService {
 				response.setAccountNo(acc);
 				response.setStatus(result);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			result = false;
 			response.setStatus(result);
-			e.printStackTrace();
-		}
+				throw new SQLException(e.getMessage());
+			}
+		
 
 		return response;
 	}
 
-	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments)
-			 {
+	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments) throws SQLException {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean validate = false;
@@ -204,9 +202,11 @@ public class CreditCardService {
 						response.setStatus(false);
 						LOGGER.debug(response);
 					}
-				} catch (Exception e) {
+				} catch (SQLException e) {
 					response.setStatus(result);
 					LOGGER.debug(response);
+					throw new SQLException(e.getMessage());
+
 
 				}
 			} else {
@@ -218,7 +218,7 @@ public class CreditCardService {
 		return response;
 	}
 
-	public PaymentResponse fundTransaction(Transaction transaction) {
+	public PaymentResponse fundTransaction(Transaction transaction) throws SQLException {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean result = false;
@@ -242,13 +242,13 @@ public class CreditCardService {
 				response.setTransactionId(transactionId);
 				response.setStatus(result);
 			}
-		} catch (Exception e) {
-			LOGGER.error(e);
+		} catch (SQLException e) {
+			throw new SQLException(e.getMessage());
 		}
 		return response;
 	}
 
-	public Register register(Customer c) {
+	public Register register(Customer c) throws SQLException {
 		Register reg = new Register();
 		boolean result = false;
 		try (Connection con = dataSource.getConnection();
@@ -277,8 +277,8 @@ public class CreditCardService {
 				reg.setAccNo(accountNo);
 				reg.setStatus(result);
 			}
-		} catch (Exception e) {
-			LOGGER.error(e);
+		} catch (SQLException e) {
+			throw new SQLException(e.getMessage());
 		}
 
 		return reg;
