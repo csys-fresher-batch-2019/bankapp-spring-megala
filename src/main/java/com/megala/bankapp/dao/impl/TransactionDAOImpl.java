@@ -4,9 +4,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 			pst.executeUpdate();
 			String status = pst.getString(5);
 			LOGGER.debug(status);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD);
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 	}
 
@@ -58,7 +59,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 					int transactionId = rows.getInt("transaction_id");
 					long accNo = rows.getLong("acc_no");
 					long beneficiaryAccNo = rows.getLong("beneficiary_acc_no");
-					Timestamp transactionDate = rows.getTimestamp("transaction_date");
+					LocalDateTime transactionDate = rows.getTimestamp("transaction_date").toLocalDateTime();
 					int transactionAmount = rows.getInt("transaction_amount");
 					String status = rows.getString("status");
 					LOGGER.debug(transactionId);
@@ -78,9 +79,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 					t.add(transaction);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 
 		return t;
@@ -96,9 +97,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows updated:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 	}
 
@@ -111,9 +112,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows deleted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 
 	}
@@ -132,7 +133,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 					int transactionId = rows.getInt("transaction_id");
 					long accNum = rows.getLong("acc_no");
 					long beneficiaryAccNo = rows.getLong("beneficiary_acc_no");
-					Timestamp transactionDate = rows.getTimestamp("transaction_date");
+					LocalDateTime transactionDate = rows.getTimestamp("transaction_date").toLocalDateTime();
 					int transactionAmount = rows.getInt("transaction_amount");
 					String status = rows.getString("status");
 					LOGGER.debug(transactionId);
@@ -152,9 +153,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 					t.add(transaction);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 
 		return t;

@@ -3,6 +3,7 @@ package com.megala.bankapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,9 @@ public class LoanDAOImpl implements LoanDAO {
 			pst.setString(5, loan.getStatus().toString());
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows inserted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD);
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 	}
 
@@ -66,9 +67,9 @@ public class LoanDAOImpl implements LoanDAO {
 					l.add(loan);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return l;
 	}
@@ -83,9 +84,9 @@ public class LoanDAOImpl implements LoanDAO {
 
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows updated:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 	}
 
@@ -98,8 +99,8 @@ public class LoanDAOImpl implements LoanDAO {
 
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows deleted:" + rows);
-		} catch (Exception e) {
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+		} catch (SQLException e) {
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 	}
 }

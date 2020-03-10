@@ -43,8 +43,8 @@ public class AccountDAOImpl implements AccountDAO {
 			pst.setInt(3, account.getAvailableBalance());
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows inserted:" + rows);
-		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_ADD);
+		} catch (SQLException e) {			
+			throw new DbException(ErrorConstants.INVALID_ADD, e);
 		}
 
 	}
@@ -80,7 +80,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return a;
 
@@ -118,7 +118,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return account;
 
@@ -134,7 +134,7 @@ public class AccountDAOImpl implements AccountDAO {
 			rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
 		} catch (Exception e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 		return rows;
 	}
@@ -150,7 +150,7 @@ public class AccountDAOImpl implements AccountDAO {
 			rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 		return rows;
 	}
@@ -166,7 +166,7 @@ public class AccountDAOImpl implements AccountDAO {
 			logger.info("no of rows deleted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 
 	}
@@ -198,7 +198,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return a;
 
@@ -221,7 +221,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return availableBalance;
 	}
@@ -258,7 +258,7 @@ public class AccountDAOImpl implements AccountDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return status;
 	}

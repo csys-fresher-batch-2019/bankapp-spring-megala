@@ -26,15 +26,18 @@ public class ListBeneficiaryDetailsServlet extends HttpServlet {
 		List<Beneficiary> a =null;
 		HttpSession session = request.getSession();
 		Long obj1 = (Long) session.getAttribute("accNumber");
-		String obj = request.getParameter("name");
-		if(obj!=null && !"".equals(obj.trim()))
+		
+		String ifscCode=request.getParameter("ifsc");
+		String obj = request.getParameter("acc");
+		
+		if(ifscCode!=null && !"".equals(ifscCode.trim()))
 		{
 			try {
-				a= dao.findByName(obj);
+				long accNo=Long.valueOf(obj);
+				a= dao.findByAccNo(accNo,ifscCode);
 			} catch (DbException e) {
 				e.printStackTrace();
 			}
-			System.out.println(a);
 		}
 		else
 		{

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.CustomerDAO;
 import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.service.CreditCardService;
@@ -23,8 +22,6 @@ import com.megala.bankapp.service.CreditCardService;
 public class RegisterServlet extends HttpServlet {
 	@Autowired
 	private CreditCardService creditCardService;
-	@Autowired
-	private CustomerDAO customer;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

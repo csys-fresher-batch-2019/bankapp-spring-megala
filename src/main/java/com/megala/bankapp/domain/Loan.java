@@ -1,6 +1,12 @@
 package com.megala.bankapp.domain;
 
 public class Loan {
+	@Override
+	public String toString() {
+		return "Loan [customerId=" + customerId + ", branchName=" + branchName + ", loanNo=" + loanNo + ", amount="
+				+ amount + ", status=" + status + "]";
+	}
+
 	private int customerId;
 	private String branchName;
 	private String loanNo;

@@ -13,6 +13,8 @@ import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.exception.ValidateException;
 import com.megala.bankapp.service.CreditCardService;
 
 @RestController
@@ -26,7 +28,7 @@ public class CustomerController {
 	public MessageDTO register(@RequestParam("name") String cusName, @RequestParam("street") String street,
 			@RequestParam("city") String city, @RequestParam("accType") String accType,
 			@RequestParam("mbleNo") long mbleNo, @RequestParam("email") String mailId,
-			@RequestParam("password") String passWord) {
+			@RequestParam("password") String passWord) throws ServiceException {
 		MessageDTO msg = new MessageDTO();
 		Customer c = new Customer();
 		c.setName(cusName);
@@ -58,7 +60,7 @@ public class CustomerController {
 	}
 
 	@PostMapping("/userLogin")
-	public MessageDTO userLogin(@RequestParam("email") String email, @RequestParam("pass") String password) {
+	public MessageDTO userLogin(@RequestParam("email") String email, @RequestParam("pass") String password) throws ValidateException, ServiceException {
 		MessageDTO msg = new MessageDTO();
 		boolean status = false;
 		PaymentResponse result=null;

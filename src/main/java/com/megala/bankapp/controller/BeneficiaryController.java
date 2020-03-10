@@ -60,11 +60,11 @@ public class BeneficiaryController {
 		return d;
 	}
 
-	@GetMapping("/listBeneDetailsByName")
-	public List<Beneficiary> listBeneDetailsByName(@RequestParam("name") String name) {
+	@GetMapping("/listBeneDetailsByAccNoAndIfsc")
+	public List<Beneficiary> listBeneDetailsByName(@RequestParam("acc") long accNo,@RequestParam("ifsc") String ifsc) {
 		List<Beneficiary> d = null;
 		try {
-			d = b.findByName(name);
+			d = b.findByAccNo(accNo,ifsc);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

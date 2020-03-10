@@ -1,6 +1,11 @@
 package com.megala.bankapp.domain;
 
 public class Branch {
+	@Override
+	public String toString() {
+		return "Branch [id=" + id + ", name=" + name + ", city=" + city + "]";
+	}
+
 	private int id;
 	private String name;
 	private String city;

@@ -1,6 +1,12 @@
 package com.megala.bankapp.domain;
 
 public class Customer {
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", id=" + id + ", street=" + street + ", city=" + city + ", accType="
+				+ accType + ", password=" + password + ", email=" + email + ", mobileNo=" + mobileNo + "]";
+	}
+
 	private String name;
 	private int id;
 	private String street;

@@ -52,7 +52,10 @@ input[type="text"] {
 
 <body class="b">
 	<form action="ListBeneficiaryDetailsServlet" class="b">
-		Search <br /> Enter Beneficiary Name:<input type="text" name="name">
+		Search <br />
+		Enter Ifsc Code:<input type="text" name="ifsc" required>
+		<br/>
+		 Enter AccNo:<input type="number" name="acc" required>
 		<button type="submit" class="b">Submit</button>
 	</form>
 
@@ -66,8 +69,6 @@ input[type="text"] {
 				<th>Beneficiary Name</th>
 				<th>Account Number</th>
 				<th>IFSC code</th>
-				<th>Amount</th>
-				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -77,8 +78,6 @@ input[type="text"] {
 						<td>${acc.beneficiaryName}</td>
 						<td>${acc.accNo}</td>
 						<td>${acc.iFSCCode}</td>
-						<td>${acc.amount}</td>
-						<td>${acc.comments}</td>
 				</c:forEach>
 		</tbody>
 	</table>

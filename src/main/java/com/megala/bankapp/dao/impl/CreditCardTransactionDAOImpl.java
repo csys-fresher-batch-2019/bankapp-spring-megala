@@ -3,6 +3,7 @@ package com.megala.bankapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -38,9 +39,9 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 			rows = pst.executeUpdate();
 			LOGGER.info("no of rows inserted:" + rows);
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD);
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 
 		return rows;
@@ -83,9 +84,9 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					c.add(creditCardTransaction);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return c;
 	}
@@ -122,9 +123,9 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					history.add(creditCardTransaction);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return history;
 	}
@@ -161,9 +162,9 @@ public class CreditCardTransactionDAOImpl implements CreditCardTransactionDAO {
 					history.add(creditCardTransaction);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return history;
 	}

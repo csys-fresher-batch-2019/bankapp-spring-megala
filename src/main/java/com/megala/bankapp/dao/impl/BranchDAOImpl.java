@@ -39,7 +39,7 @@ public class BranchDAOImpl implements BranchDAO {
 			logger.debug("no of rows inserted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD);
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 
 	}
@@ -66,10 +66,10 @@ public class BranchDAOImpl implements BranchDAO {
 				}
 			}
 			catch (SQLException e) {
-				throw new DbException(ErrorConstants.INVALID_CON);
+				throw new DbException(ErrorConstants.INVALID_CON,e);
 			}
 		} catch (RuntimeException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return b;
 	}
@@ -85,7 +85,7 @@ public class BranchDAOImpl implements BranchDAO {
 			int rows = pst.executeUpdate();
 			logger.info("no of rows updated:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class BranchDAOImpl implements BranchDAO {
 			logger.info("no of rows deleted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 
 	}

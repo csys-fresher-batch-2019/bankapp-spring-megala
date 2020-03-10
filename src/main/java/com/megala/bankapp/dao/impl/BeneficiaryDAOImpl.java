@@ -40,7 +40,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			logger.debug("no of rows inserted:" + rows);
 		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_ADD);
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 		return rows;
 	}
@@ -69,7 +69,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 
 		}
 		return b;
@@ -86,7 +86,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			int rows = pst.executeUpdate();
 			logger.debug("no of rows updated:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 
 		}
 	}
@@ -101,41 +101,36 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 			rows = pst.executeUpdate();
 			logger.debug("no of rows deleted:" + rows);
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 		return rows;
 	}
 
-	public List<Beneficiary> findByName(String name) throws DbException {
+	public List<Beneficiary> findByAccNo(long acc,String ifscCode) throws DbException {
 		List<Beneficiary> a = new ArrayList<>();
-		String sql = "select beneficiary_name,acc_no_1,IFSC_code,balance,status from beneficiary_list where beneficiary_name=?";
+		String sql = "select beneficiary_name,acc_no_1,IFSC_code from beneficiary_list where acc_no_1=? and IFSC_code=?";
 		logger.info(sql);
 		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, name);
+			pst.setLong(1, acc);
+			pst.setString(2, ifscCode);
 			try (ResultSet rows = pst.executeQuery()) {
 				if (rows.next()) {
 					String beneName = rows.getString("beneficiary_name");
 					long accNumber = rows.getLong("acc_no_1");
 					String ifsc = rows.getString("IFSC_code");
-					int balance = rows.getInt("balance");
-					String status = rows.getString("status");
 					logger.debug("beneName" + beneName);
 					logger.debug("accNumber" + accNumber);
 					logger.debug("ifsc" + ifsc);
-					logger.debug("balance" + balance);
-					logger.debug("comments" + status);
 					Beneficiary bene = new Beneficiary();
 					bene.setBeneficiaryName(beneName);
 					bene.setAccNo(accNumber);
 					bene.setiFSCCode(ifsc);
-					bene.setAmount(balance);
-					bene.setComments(status);
 					a.add(bene);
 
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return a;
 
@@ -172,7 +167,7 @@ public class BeneficiaryDAOImpl implements BeneficiaryDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return b;
 	}

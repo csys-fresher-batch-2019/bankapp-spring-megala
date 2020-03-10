@@ -1,6 +1,12 @@
 package com.megala.bankapp.domain;
 
 public class Beneficiary {
+	@Override
+	public String toString() {
+		return "Beneficiary [customerAccNo=" + customerAccNo + ", beneficiaryName=" + beneficiaryName + ", accNo="
+				+ accNo + ", iFSCCode=" + iFSCCode + ", amount=" + amount + ", comments=" + comments + "]";
+	}
+
 	private long customerAccNo;
 	private String beneficiaryName;
 	private long accNo;

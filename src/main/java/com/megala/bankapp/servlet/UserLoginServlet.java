@@ -38,6 +38,7 @@ public class UserLoginServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		status = result.isStatus();
+		System.out.println(status);
 		if (status) {
 			System.out.println(result.getAccountNo());
 			System.out.println(result.isStatus());

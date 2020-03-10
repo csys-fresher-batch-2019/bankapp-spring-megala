@@ -18,6 +18,7 @@ import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.domain.Transaction;
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
 //import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.exception.ValidateException;
 import com.megala.bankapp.factory.DAOFactory;
@@ -34,19 +35,19 @@ public class CreditCardService {
 	private static final Logger LOGGER = Logger.getInstance();
 
 	public static boolean validateCreditCard(long creditCardNo, LocalDate expiryDate, int cvvNo)
-			throws ValidateException {
+			throws ValidateException, ServiceException {
 		try {
 			CreditCardValidator.validateCreditCard(creditCardNo, expiryDate, cvvNo);
 			return true;
 
 		} catch (ValidateException e) {
 
-			throw new ValidateException(e.getMessage());
+			throw new ServiceException(e.getMessage());
 		}
 
 	}
 
-	public boolean checkLogin1(CreditCard creditCard) throws ValidateException {
+	public boolean checkLogin1(CreditCard creditCard) throws ValidateException, ServiceException {
 		boolean result = false;
 		boolean validate = false;
 		try {
@@ -72,7 +73,7 @@ public class CreditCardService {
 				}
 			}
 		} catch (ValidateException e) {
-			throw new ValidateException(e.getMessage());
+			throw new ServiceException(e.getMessage());
 		}
 		return result;
 
@@ -109,13 +110,13 @@ public class CreditCardService {
 			}
 		}
 		catch (SQLException e) {
-			throw new Exception(e.getMessage());
+			throw new ServiceException(e.getMessage());
 		}
 
 		return result;
 	}
 
-	public PaymentResponse login(String email, String password) throws SQLException {
+	public PaymentResponse login(String email, String password) throws SQLException, ValidateException, ServiceException {
 		boolean result = false;
 		PaymentResponse response = new PaymentResponse();
 		try (Connection con = dataSource.getConnection();
@@ -142,14 +143,14 @@ public class CreditCardService {
 		} catch (SQLException e) {
 			result = false;
 			response.setStatus(result);
-				throw new SQLException(e.getMessage());
+				throw new ServiceException(e.getMessage());
 			}
 		
 
 		return response;
 	}
 
-	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments) throws SQLException {
+	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments) throws SQLException, ValidateException, DbException, ServiceException {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean validate = false;
@@ -158,8 +159,7 @@ public class CreditCardService {
 					creditCard.getCvvNo());
 
 		} catch (ValidateException e) {
-			e.printStackTrace();
-			LOGGER.error(e);
+			throw new ValidateException(e.getMessage());
 		}
 		boolean validate1 = false;
 		try {
@@ -167,8 +167,7 @@ public class CreditCardService {
 			validate1 = CreditCardValidator.validateCreditCard(creditCard.getCardNo(), creditCard.getPin());
 
 		} catch (ValidateException e) {
-			e.printStackTrace();
-			LOGGER.error(e);
+			throw new ValidateException(e.getMessage());
 		}
 		boolean result = false;
 		if (validate || validate1) {
@@ -177,7 +176,7 @@ public class CreditCardService {
 			try {
 				ccId = c1.findId(creditCard.getCardNo(), creditCard.getExpiryDate(), creditCard.getCvvNo());
 			} catch (DbException e1) {
-				e1.printStackTrace();
+				throw new DbException(e1.getMessage());
 			}
 			System.out.println("CCDisplayCard:" + ccId);
 			if (ccId > 0) {
@@ -205,7 +204,7 @@ public class CreditCardService {
 				} catch (SQLException e) {
 					response.setStatus(result);
 					LOGGER.debug(response);
-					throw new SQLException(e.getMessage());
+					throw new ServiceException(e.getMessage());
 
 
 				}
@@ -218,7 +217,7 @@ public class CreditCardService {
 		return response;
 	}
 
-	public PaymentResponse fundTransaction(Transaction transaction) throws SQLException {
+	public PaymentResponse fundTransaction(Transaction transaction) throws SQLException, ServiceException {
 
 		PaymentResponse response = new PaymentResponse();
 		boolean result = false;
@@ -243,12 +242,12 @@ public class CreditCardService {
 				response.setStatus(result);
 			}
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			throw new ServiceException(e.getMessage());
 		}
 		return response;
 	}
 
-	public Register register(Customer c) throws SQLException {
+	public Register register(Customer c) throws SQLException, ServiceException {
 		Register reg = new Register();
 		boolean result = false;
 		try (Connection con = dataSource.getConnection();
@@ -278,7 +277,7 @@ public class CreditCardService {
 				reg.setStatus(result);
 			}
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			throw new ServiceException(e.getMessage());
 		}
 
 		return reg;

@@ -1,13 +1,12 @@
 package com.megala.bankapp.domain;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Transaction {
 	private int transactionId;
 	private long accNo;
 	private long beneficiaryAccNo;
-	private Timestamp transactionDate = Timestamp.valueOf(LocalDateTime.now());
+	private LocalDateTime transactionDate = LocalDateTime.now();
 	private int transactionAmount;
 	private String status = "debit";
 
@@ -27,11 +26,11 @@ public class Transaction {
 		this.beneficiaryAccNo = beneficiaryAccNo;
 	}
 
-	public Timestamp getTransactionDate() {
+	public LocalDateTime getTransactionDate() {
 		return transactionDate;
 	}
 
-	public void setTransactionDate(Timestamp transactionDate) {
+	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 

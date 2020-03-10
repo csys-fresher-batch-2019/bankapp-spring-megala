@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			pst.setFloat(7, creditCard.getAvailableBalance());
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows inserted:" + rows);
-		} catch (Exception e) {
-			throw new DbException(ErrorConstants.INVALID_ADD);
+		} catch (SQLException e) {
+			throw new DbException(ErrorConstants.INVALID_ADD,e);
 		}
 	}
 
@@ -56,9 +57,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 					creditCardId = rs.getInt("credit_card_id");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return creditCardId;
 	}
@@ -86,9 +87,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 					c.add(creditcard);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return c;
 	}
@@ -131,9 +132,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 					c.add(creditCard);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return c;
 	}
@@ -147,9 +148,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows deleted:" + rows);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_DELETE);
+			throw new DbException(ErrorConstants.INVALID_DELETE,e);
 		}
 
 	}
@@ -165,9 +166,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 			int rows = pst.executeUpdate();
 			LOGGER.info("no of rows updated:" + rows);
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_UPDATE);
+			throw new DbException(ErrorConstants.INVALID_UPDATE,e);
 		}
 
 	}
@@ -183,9 +184,9 @@ public class CreditCardDAOImpl implements CreditCardDAO {
 					availableBalance = rs.getFloat("available_balance");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 
-			throw new DbException(ErrorConstants.INVALID_SELECT);
+			throw new DbException(ErrorConstants.INVALID_SELECT,e);
 		}
 		return availableBalance;
 	}
