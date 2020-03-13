@@ -45,8 +45,8 @@ input[type="text"] {
 				value="${accNumber}" readonly> <br /> <br /> Enter Beneficiary
 			Name:<input type="text" name="name" placeholder="Beneficiary Name"
 				required autofocus> <br /> <br /> Enter Account No:<input
-				type="number" name="accNo" placeholder="Account Number" required>
-			<br /> <br /> Enter IFSC Code:<input type="text" name="ifsc"
+				type="number" name="accNo" pattern="\d{10}" placeholder="Account Number" required>
+			<br /> <br /> Enter IFSC Code:<input type="text" name="ifsc" pattern="[A-Z|a-z]{4}[0][\d]{6}$"
 				placeholder="IFSC Code" required> <br /> <br />
 						<c:if test="${not empty errormessage}">
 <font color="red" style="font-style: italic;">

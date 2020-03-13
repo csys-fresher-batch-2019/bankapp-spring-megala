@@ -11,33 +11,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.AccountDAO;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.AccountService;
 
 @SuppressWarnings("serial")
 @WebServlet("/updateAmountServlet")
 public class updateAmountServlet extends HttpServlet {
 	@Autowired
-	AccountDAO dao;
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	AccountService dao;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String obj = request.getParameter("accNo");
 		long val = Long.valueOf(obj);
 		String price = request.getParameter("price");
 		int amount = Integer.valueOf(price);
-		int account=0;
+		int account = 0;
 		try {
-			account = dao.update(val, amount);
-		} catch (DbException e) {
+			account = dao.updateAmount(val, amount);
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		String status=null;
+		String status = null;
 		if (account == 1) {
-			status="Amount Successfully added";
+			status = "Amount Successfully added";
 		} else {
-			status="Invalid Account Number!!";
+			status = "Invalid Account Number!!";
 		}
 		request.setAttribute("output", status);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("updateAccount.jsp");
 		dispatcher.forward(request, response);
-		}
+	}
 }

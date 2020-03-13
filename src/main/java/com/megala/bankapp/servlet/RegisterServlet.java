@@ -15,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.megala.bankapp.domain.Customer;
 import com.megala.bankapp.domain.Register;
 import com.megala.bankapp.exception.ServiceException;
-import com.megala.bankapp.service.CreditCardService;
+import com.megala.bankapp.service.CustomerService;
 
 @SuppressWarnings("serial")
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	@Autowired
-	private CreditCardService creditCardService;
+	private CustomerService cus;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -77,8 +77,7 @@ public class RegisterServlet extends HttpServlet {
 		boolean result = false;
 		Register reg = null;
 		try {
-			reg = creditCardService.register(c);
-
+			reg = cus.register(c);
 			result = reg.isStatus();
 			if (result) {
 				System.out.println(reg.getAccNo());
@@ -87,7 +86,6 @@ public class RegisterServlet extends HttpServlet {
 				sess.setAttribute("accNo", reg.getAccNo());
 				sess.setAttribute("accName", cusName);
 				response.sendRedirect("AccountCreated.jsp");
-
 			} else {
 				request.setAttribute("errormessage", "Registration Failed");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
@@ -95,8 +93,7 @@ public class RegisterServlet extends HttpServlet {
 
 			}
 		} catch (ServiceException e) {
-			e.printStackTrace();
-			request.setAttribute("errormessage", "Registration Failed");
+			request.setAttribute("errormessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
 			dispatcher.forward(request, response);
 		}

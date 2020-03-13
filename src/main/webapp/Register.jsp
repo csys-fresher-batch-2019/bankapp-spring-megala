@@ -1,8 +1,6 @@
 <!DOCTYPE html5>
 <html>
 <head>
-<br />
-
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -23,6 +21,7 @@ body {
 	font-family: cursive;
 	font-size: 24px;
 	color: #d7291f;
+	color:blue;
 }
 
 .b {
@@ -36,7 +35,7 @@ body {
 	font-size: 22px;
 	font-style: italic;
 	font-family: cursive;
-	color: red;
+	color: purple;
 }
 #accType{
 font-family: cursive;
@@ -64,15 +63,7 @@ input[type="number"] {
 <form action="RegisterServlet" class="a" method="post">
 	<body class="a">
 	<body background="assets/images/regi.jpg">
-		<%
-			String errorMessage = (String) request.getAttribute("errormessage");
-			if (errorMessage != null) {
-		%>
-		<font color="red" style="font-size: 18px"><%=errorMessage%></font>
-		<%
-			}
-		%>
-		<br /> Enter Name:
+		Enter Name:
 		<input type="text" name="name" placeholder="Enter Customer Name"
 			required autofocus>
 		<br />
@@ -92,10 +83,10 @@ input[type="number"] {
 		<br />
 		<br /> Enter mobile Number:
 		<input type="text" name="mbleNo" placeholder="Enter mobile Number"
-			required maxlength="10" pattern="\d{10}">
+			required maxlength="10"pattern="\d{10}" >
 		<br />
 		<br /> Enter Email:
-		<input type="text" name="email" placeholder="Enter Email id" required>
+		<input type="email" name="email" placeholder="Enter Email id" required>
 		<br />
 		<br /> Enter password:
 		<input type="password" id="psw" name="pass"
@@ -103,6 +94,15 @@ input[type="number"] {
 			title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 			required>
 		<br />
+		<br/>
+		<%
+			String errorMessage = (String) request.getAttribute("errormessage");
+			if (errorMessage != null) {
+		%>
+		<font color="red" style="font-size: 26px;text-align: right;"><%=errorMessage%></font>
+		<%
+			}
+		%>
 		<br />
 		<button type="submit" class="btn btn-primary" data-toggle="button"
 			aria-pressed="false">Submit</button>

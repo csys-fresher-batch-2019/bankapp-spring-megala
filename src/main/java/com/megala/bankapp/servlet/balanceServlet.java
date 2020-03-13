@@ -12,23 +12,22 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.AccountDAO;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.AccountService;
 
 @SuppressWarnings("serial")
 @WebServlet("/balanceServlet")
 public class balanceServlet extends HttpServlet {
 	@Autowired
-	AccountDAO dao;
-
+	AccountService accountDAO;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Long cardNo = (Long) session.getAttribute("accNumber");
+		Long accNum = (Long) session.getAttribute("accNumber");
 		int c = 0;
 		try {
-			c = dao.findBalanceByAccNo(cardNo);
-		} catch (DbException e) {
+			c = accountDAO.findBalance(accNum);
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("output", c);

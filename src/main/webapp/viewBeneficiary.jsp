@@ -20,7 +20,7 @@
 h3 {
 	color: navy;
 	font-family: monospace;
-	font-size: 22;
+	font-size: 26;
 	font-style: italic;
 	text-align: center;
 }

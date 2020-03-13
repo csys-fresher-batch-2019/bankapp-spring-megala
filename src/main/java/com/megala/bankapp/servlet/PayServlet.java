@@ -69,7 +69,9 @@ public class PayServlet extends HttpServlet {
 			}
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			request.setAttribute("output", e1.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("creditcardpayment.jsp");
+			dispatcher.forward(request, response);
 		}
 
 	}

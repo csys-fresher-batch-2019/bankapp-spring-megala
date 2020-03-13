@@ -188,6 +188,23 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		return availableBalance;
 	}
+	
+	public long findAccountNoByAccNo(long accNo) throws DbException{
+		String sql="select acc_no from account_details where acc_no=?";
+		logger.info(sql);
+		long accNumber=0;
+		try (Connection con = dataSource.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setLong(1, accNo);
+			try (ResultSet rows = pst.executeQuery()) {
+				if (rows.next()) {
+					accNumber = rows.getLong("acc_no");
+				}
+			}
+		} catch (SQLException e) {
+			throw new DbException("Unable to display balance", e);
+		}
+		return accNumber;
+	}
 
 	public String findStatusByAccNo(long accNo) throws DbException {
 		String sql = "select status from account_details where acc_no=?";

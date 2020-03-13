@@ -16,7 +16,7 @@ import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.exception.ServiceException;
-import com.megala.bankapp.service.CreditCardService;
+import com.megala.bankapp.service.TransactionService;
 
 @RestController
 @RequestMapping("api")
@@ -25,7 +25,7 @@ public class FundTransferController {
 	@Autowired
 	TransactionDAO dao;
 	@Autowired
-	private CreditCardService creditCardService;
+	private TransactionService trans;
 
 	@PostMapping("/fundTransfer")
 	public MessageDTO fundTransfer(@RequestParam("accNo") long accNum, @RequestParam("beneAccNo") long beneAccNo,
@@ -39,7 +39,7 @@ public class FundTransferController {
 		boolean result = false;
 		PaymentResponse fund = null;
 		try {
-			fund = creditCardService.fundTransaction(t);
+			fund = trans.fundTransaction(t);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}

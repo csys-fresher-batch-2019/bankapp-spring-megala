@@ -14,26 +14,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.ServiceException;
-import com.megala.bankapp.service.CreditCardService;
+import com.megala.bankapp.service.CustomerService;
 
 @SuppressWarnings("serial")
 @WebServlet("/UserLoginServlet")
 public class UserLoginServlet extends HttpServlet {
 	@Autowired
-	private CreditCardService creditCardService;
+	private CustomerService cus;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mail = request.getParameter("name");
 		String pass = request.getParameter("pin");
-		System.out.println("Name : " + mail);
-		System.out.println("Street : " + pass);
+		System.out.println("mailId : " + mail);
+		System.out.println("Password : " + pass);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("email", mail);
 		boolean status = false;
 		PaymentResponse result = null;
 		try {
-			result = creditCardService.login(mail, pass);
+			result = cus.login(mail, pass);
 			status = result.isStatus();
 			System.out.println(status);
 			if (status) {

@@ -12,15 +12,15 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.BeneficiaryService;
 
 @SuppressWarnings("serial")
 @WebServlet("/BeneficiaryServlet")
 public class BeneficiaryServlet extends HttpServlet {
 	@Autowired
-	BeneficiaryDAO c;
+	BeneficiaryService c;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,16 +37,10 @@ public class BeneficiaryServlet extends HttpServlet {
 		b.setiFSCCode(ifscNo);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("beneName", beneficiaryName);
-		String s = String.valueOf(acc);
-		if (s.length() == 10) {
-			int a = 0;
-			try {
-				a = c.save(b);
-			} catch (DbException e) {
-				e.printStackTrace();
-			}
-			System.out.println(a);
-			if (a == 1) {
+		int accNumber = 0;
+		try {
+			accNumber = c.addBene(b);
+			if (accNumber == 1) {
 				request.setAttribute("outputmessage", "Beneficiary successfully added");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
 				dispatcher.forward(request, response);
@@ -55,9 +49,8 @@ public class BeneficiaryServlet extends HttpServlet {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
 				dispatcher.forward(request, response);
 			}
-
-		} else {
-			request.setAttribute("errormessage", "Invalid Account Number!!");
+		} catch (ServiceException e) {
+			request.setAttribute("outputmessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("addBeneficiary.jsp");
 			dispatcher.forward(request, response);
 		}

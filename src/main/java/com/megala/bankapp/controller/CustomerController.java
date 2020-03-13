@@ -13,14 +13,14 @@ import com.megala.bankapp.dto.MessageDTO;
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.ServiceException;
 import com.megala.bankapp.exception.ValidateException;
-import com.megala.bankapp.service.CreditCardService;
+import com.megala.bankapp.service.CustomerService;
 
 @RestController
 @RequestMapping("api")
 @CrossOrigin(origins = "*")
 public class CustomerController {
 	@Autowired
-	private CreditCardService creditCardService;
+	private CustomerService cus;
 
 	@PostMapping("/register")
 	public MessageDTO register(@RequestParam("name") String cusName, @RequestParam("street") String street,
@@ -39,7 +39,7 @@ public class CustomerController {
 		boolean result = false;
 		Register reg = null;
 		try {
-			reg = creditCardService.register(c);
+			reg = cus.register(c);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
@@ -47,11 +47,9 @@ public class CustomerController {
 		result = reg.isStatus();
 		if (result) {
 			System.out.println("Registration success");
-			;
 			msg.setInfoMessage("Registered successfully");
 		} else {
 			System.out.println("Registration failed");
-			;
 			msg.setErrorMessage("Failed to register");
 		}
 		return msg;
@@ -64,7 +62,7 @@ public class CustomerController {
 		boolean status = false;
 		PaymentResponse result = null;
 		try {
-			result = creditCardService.login(email, password);
+			result = cus.login(email, password);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}

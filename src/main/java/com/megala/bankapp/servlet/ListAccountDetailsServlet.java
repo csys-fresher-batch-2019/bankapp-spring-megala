@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.AccountDAO;
 import com.megala.bankapp.domain.Account;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.AccountService;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListAccountDetailsServlet")
 public class ListAccountDetailsServlet extends HttpServlet {
 	@Autowired
-	AccountDAO dao;
+	AccountService dao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -30,14 +30,14 @@ public class ListAccountDetailsServlet extends HttpServlet {
 		if (obj != null && !"".equals(obj.trim())) {
 			long val = Long.valueOf(obj);
 			try {
-				a = dao.findByAccNo(val);
-			} catch (DbException e) {
+				a = dao.findByAccNum(val);
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
 				a = dao.findAll();
-			} catch (DbException e) {
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
 		}

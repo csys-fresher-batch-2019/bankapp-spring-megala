@@ -9,23 +9,29 @@
 </head>
 <style>
 .a {
-	font-family: monospace;
+	font-family: cursive;
+	font-size: 26;
+	font-style: italic;
+	text-align: center;
+	font:bold;
+}
+
+h2 {
+	font-family: sans-serif;
 	font-size: 26;
 	font-style: italic;
 	text-align: center;
 }
 </style>
 <body class="a">
-	<marquee>
-		<h2>
-			<p style="font-family: georgia; font-size: 26px; font-style: italic;">
-				AVAILABLE BALANCE</p>
-		</h2>
-	</marquee>
+<br/>
+<br/>
+<br/>
+		<h2>AVAILABLE BALANCE</h2>
 	<%
-		
-		int c = (Integer)request.getAttribute("output");%>
-		Rs.
-		<%=c%>
+		int c = (Integer) request.getAttribute("output");
+	%>
+	Rs.
+	<%=c%>
 </body>
 </html>

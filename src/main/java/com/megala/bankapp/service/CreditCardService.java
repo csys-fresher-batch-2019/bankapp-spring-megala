@@ -1,15 +1,15 @@
 package com.megala.bankapp.service;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.megala.bankapp.dao.CreditCardDAO;
-import com.megala.bankapp.dao.CustomerDAO;
-import com.megala.bankapp.dao.TransactionDAO;
+import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCard;
-import com.megala.bankapp.domain.Customer;
-import com.megala.bankapp.domain.Register;
-import com.megala.bankapp.domain.Transaction;
+import com.megala.bankapp.domain.CreditCardTransaction;
 import com.megala.bankapp.dto.PaymentResponse;
 import com.megala.bankapp.exception.DbException;
 import com.megala.bankapp.exception.ServiceException;
@@ -22,9 +22,7 @@ public class CreditCardService {
 	@Autowired
 	private CreditCardDAO credit;
 	@Autowired
-	private CustomerDAO cus;
-	@Autowired
-	private TransactionDAO trans;
+	private CreditCardTransactionDAO cardTrans;
 	private static final Logger LOGGER = Logger.getInstance();
 
 	public static boolean validateCreditCard(long creditCardNo, LocalDate expiryDate, int cvvNo)
@@ -38,6 +36,26 @@ public class CreditCardService {
 			throw new ServiceException(e.getMessage());
 		}
 
+	}
+
+	public List<CreditCardTransaction> findCardDetailsByCardId(int cardId) throws ServiceException {
+		List<CreditCardTransaction> trans = null;
+		try {
+			trans = cardTrans.findByCardId(cardId);
+		} catch (DbException e) {
+			throw new ServiceException(e.getMessage());
+		}
+		return trans;
+	}
+
+	public List<CreditCardTransaction> findAllCardDetails() throws ServiceException {
+		List<CreditCardTransaction> trans = null;
+		try {
+			trans = cardTrans.findAll();
+		} catch (DbException e) {
+			throw new ServiceException(e.getMessage());
+		}
+		return trans;
 	}
 
 	public boolean checkLogin(CreditCard creditCard) throws ServiceException, DbException {
@@ -77,16 +95,6 @@ public class CreditCardService {
 		return result;
 	}
 
-	public PaymentResponse login(String email, String password) throws ServiceException {
-		PaymentResponse response = new PaymentResponse();
-		try {
-			response=cus.login(email, password);
-		} catch (DbException e) {
-			throw new ServiceException(e.getMessage());
-		}
-		return response;
-	}
-
 	public PaymentResponse pay(CreditCard creditCard, float amount, String merchantId, String comments)
 			throws ServiceException {
 
@@ -121,28 +129,6 @@ public class CreditCardService {
 		}
 
 		return response;
-	}
-
-	public PaymentResponse fundTransaction(Transaction transaction) throws ServiceException {
-
-		PaymentResponse response = new PaymentResponse();
-		try {
-			response = trans.fundTransaction(transaction);
-		} catch (DbException e) {
-			throw new ServiceException(e.getMessage());
-		}
-		return response;
-	}
-
-	public Register register(Customer c) throws ServiceException {
-		Register reg = new Register();
-		try {
-			reg = cus.register(c);
-		} catch (DbException e) {
-			throw new ServiceException(e.getMessage());
-		}
-
-		return reg;
 	}
 
 }

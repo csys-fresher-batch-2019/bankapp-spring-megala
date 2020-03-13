@@ -54,6 +54,12 @@ input[type="password"] {
 </style>
 <form action="UserLoginServlet" class="a" method="post">
 	<body background="assets/images/userlog.jpg">
+	<br/>
+	<c:if test="${not empty errormessage}">
+<font color="red" style="font-style: normal;font-size:24px;">
+${errormessage}
+</font>
+</c:if>
 		<br /> Enter MailId:
 		<input type="text" name="name" placeholder="Enter mail id" required
 			autofocus>
@@ -61,12 +67,7 @@ input[type="password"] {
 		<br /> Enter Password:
 		<input type="password" name="pin" placeholder="Enter password"
 			required>
-		<br />
 		<br/>
-			<c:if test="${not empty errormessage}">
-<font color="black" style="font-style: normal;font-size:24px;">
-${errormessage}
-</c:if>
 	<br/>
 		<button type="submit" class="c" data-toggle="button"
 			aria-pressed="false">Submit</button>

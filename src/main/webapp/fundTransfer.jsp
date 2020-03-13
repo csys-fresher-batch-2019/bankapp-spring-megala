@@ -46,8 +46,12 @@ input[type="text"] {
 				placeholder="Beneficiary Account Number" required> <br /> <br />
 			Enter Amount:<input type="text" name="amount" placeholder="Amount"
 				required> <br />
-			
-			<br />
+				<br/>
+			<c:if test="${not empty errormessage}">
+				<font color="red" style="font-style: italic;">
+					${errormessage} 
+			</c:if>
+			<br /> <br />
 			<button type="submit" class="btn btn-primary" data-toggle="button"
 				aria-pressed="false">Submit</button>
 			<br /> <br />

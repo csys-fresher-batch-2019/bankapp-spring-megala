@@ -112,5 +112,20 @@ public class AccountController {
 		}
 		return account;
 	}
+	
+	@GetMapping("/GetAccountNo")
+	public int GetAccountNo(@RequestParam("accNo") long accNum) {
+		long accNo=0;
+		int status=0;
+		try {
+			accNo=u.findAccountNoByAccNo(accNum);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		if (accNo!=0) {
+			status=1;
+		}
+		return status;
+	}
 
 }

@@ -8,14 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.megala.bankapp.dao.AccountDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.megala.bankapp.domain.Account;
-import com.megala.bankapp.exception.DbException;
-import com.megala.bankapp.factory.DAOFactory;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.AccountService;
 
 @SuppressWarnings("serial")
 @WebServlet("/accountCreationServlet")
 public class accountCreationServlet extends HttpServlet {
+	@Autowired
+	private AccountService account;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -26,20 +29,14 @@ public class accountCreationServlet extends HttpServlet {
 		String accType = request.getParameter("accType");
 		String amount = request.getParameter("balance");
 		int price = Integer.valueOf(amount);
-
-		System.out.println("CustomerId : " + Id);
-		System.out.println("AccountNumber : " + accNo);
-		System.out.println("AccountType:" + accType);
-		System.out.println("Balance:" + price);
 		Account acc = new Account();
 		acc.setCustomerId(Id);
 		acc.setAccNo(accNo);
 		acc.setAccType(accType);
 		acc.setAvailableBalance(price);
-		AccountDAO a = DAOFactory.getAccountDAO();
 		try {
-			a.save(acc);
-		} catch (DbException e) {
+			account.addAccount(acc);
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 	}

@@ -21,4 +21,6 @@ public interface AccountDAO {
 	public int activeAccount(long accNo, String status) throws DbException;
 
 	public Account getAccount(String email) throws DbException;
+	
+	public long findAccountNoByAccNo(long accNo) throws DbException;
 }

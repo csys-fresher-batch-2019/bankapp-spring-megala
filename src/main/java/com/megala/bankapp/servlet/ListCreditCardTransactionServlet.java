@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.CreditCardTransactionDAO;
 import com.megala.bankapp.domain.CreditCardTransaction;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.CreditCardService;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListCreditCardTransactionServlet")
 public class ListCreditCardTransactionServlet extends HttpServlet {
 	@Autowired
 
-	CreditCardTransactionDAO dao;
+	CreditCardService dao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -34,14 +34,14 @@ public class ListCreditCardTransactionServlet extends HttpServlet {
 		if (cardId != null && !"".equals(cardId.trim())) {
 			Integer ccId = Integer.parseInt(cardId);
 			try {
-				c = dao.findByCardId(ccId);
-			} catch (DbException e) {
+				c = dao.findCardDetailsByCardId(ccId);
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				c = dao.findAll();
-			} catch (DbException e) {
+				c = dao.findAllCardDetails();
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
 		}

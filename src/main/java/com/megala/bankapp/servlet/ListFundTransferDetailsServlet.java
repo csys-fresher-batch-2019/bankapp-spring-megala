@@ -13,15 +13,15 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.TransactionDAO;
 import com.megala.bankapp.domain.Transaction;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.TransactionService;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListFundTransferDetailsServlet")
 public class ListFundTransferDetailsServlet extends HttpServlet {
 	@Autowired
-	TransactionDAO dao;
+	TransactionService dao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -30,8 +30,8 @@ public class ListFundTransferDetailsServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Long obj = (Long) session.getAttribute("accNumber");
 		try {
-			a = dao.findByAccNo(obj);
-		} catch (DbException e) {
+			a = dao.findByAccNumber(obj);
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("fundTransfer", a);

@@ -13,44 +13,43 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megala.bankapp.dao.BeneficiaryDAO;
 import com.megala.bankapp.domain.Beneficiary;
-import com.megala.bankapp.exception.DbException;
+import com.megala.bankapp.exception.ServiceException;
+import com.megala.bankapp.service.BeneficiaryService;
 
 @SuppressWarnings("serial")
 @WebServlet("/ListBeneficiaryDetailsServlet")
 public class ListBeneficiaryDetailsServlet extends HttpServlet {
 	@Autowired
-	BeneficiaryDAO dao;
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Beneficiary> a =null;
+	BeneficiaryService dao;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Beneficiary> a = null;
 		HttpSession session = request.getSession();
 		Long obj1 = (Long) session.getAttribute("accNumber");
-		
-		String ifscCode=request.getParameter("ifsc");
+
+		String ifscCode = request.getParameter("ifsc");
 		String obj = request.getParameter("acc");
-		
-		if(ifscCode!=null && !"".equals(ifscCode.trim()))
-		{
+
+		if (ifscCode != null && !"".equals(ifscCode.trim())) {
+			long accNo = Long.valueOf(obj);
 			try {
-				long accNo=Long.valueOf(obj);
-				a= dao.findByAccNoAndIfsc(accNo,ifscCode);
-			} catch (DbException e) {
+				a = dao.findByAccNoAndIfscCode(accNo, ifscCode);
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			try {
-				a=dao.findByCusAccNo(obj1);
-			} catch (DbException e) {
+				a = dao.findByCusAccNum(obj1);
+			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
 			System.out.println(a);
-			
+
 		}
 		request.setAttribute("bene", a);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("viewBeneficiary.jsp");
 		dispatcher.forward(request, response);
-}
+	}
 }
